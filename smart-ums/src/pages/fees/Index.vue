@@ -21,7 +21,7 @@
       </article>
       <article class="summary-card">
         <h2>Scholarship requests</h2>
-        <p class="value">67</p>
+        <p class="value">56</p>
         <span>Awaiting approval</span>
       </article>
     </div>
