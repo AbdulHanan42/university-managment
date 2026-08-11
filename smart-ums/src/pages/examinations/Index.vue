@@ -1,4 +1,29 @@
-﻿<template>
+﻿<script setup>
+import { ref, watch } from 'vue'
+
+const props = defineProps({
+  summaryCards: {
+    type: Array,
+    default: () => [
+      { title: 'Scheduled exams', value: '118', subtitle: 'Across all semesters' },
+      { title: 'Result entries', value: '94%', subtitle: 'Completed so far' },
+      { title: 'Grade reviews', value: '22', subtitle: 'Pending faculty approval' }
+    ]
+  }
+})
+
+const summaryCards = ref(props.summaryCards)
+
+watch(
+  () => props.summaryCards,
+  (newCards) => {
+    summaryCards.value = newCards
+  },
+  { immediate: true }
+)
+</script>
+
+<template>
   <section class="page-card">
     <header class="page-header">
       <div>
@@ -9,20 +34,10 @@
     </header>
 
     <div class="card-grid">
-      <article class="summary-card">
-        <h2>Scheduled exams</h2>
-        <p class="value">118</p>
-        <span>Across all semesters</span>
-      </article>
-      <article class="summary-card">
-        <h2>Result entries</h2>
-        <p class="value">94%</p>
-        <span>Completed so far</span>
-      </article>
-      <article class="summary-card">
-        <h2>Grade reviews</h2>
-        <p class="value">22</p>
-        <span>Pending faculty approval</span>
+      <article v-for="card in summaryCards" :key="card.title" class="summary-card">
+        <h2>{{ card.title }}</h2>
+        <p class="value">{{ card.value }}</p>
+        <span>{{ card.subtitle }}</span>
       </article>
     </div>
   </section>
