@@ -1,5 +1,6 @@
 ﻿<script setup>
 import { ref, watch } from 'vue'
+import AppButton from '@/components/common/AppButton.vue'
 
 const props = defineProps({
   summaryCards: {
@@ -31,7 +32,7 @@ watch(
         <h1>Student records</h1>
         <p>Track enrollment, personal details, academic progress, and support requests in one place.</p>
       </div>
-      <button type="button">+ Add student</button>
+      <AppButton type="button">+ Add student</AppButton>
     </header>
 
     <div class="card-grid">

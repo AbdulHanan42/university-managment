@@ -1,4 +1,6 @@
 ﻿<script setup>
+import AppButton from '@/components/common/AppButton.vue'
+
 defineProps({
   title: {
     type: String,
@@ -16,7 +18,7 @@ defineProps({
 
     <div class="navbar-actions">
       <span class="pill">Live data</span>
-      <button type="button">Quick action</button>
+      <AppButton>Quick action</AppButton>
     </div>
   </header>
 </template>

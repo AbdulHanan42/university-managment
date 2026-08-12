@@ -1,4 +1,8 @@
-﻿<template>
+﻿<script setup>
+import AppButton from '@/components/common/AppButton.vue'
+</script>
+
+<template>
   <section class="auth-card">
     <div>
       <p class="eyebrow">Secure access</p>
@@ -15,7 +19,7 @@
         <span>Password</span>
         <input type="password" placeholder="••••••••" />
       </label>
-      <button type="submit">Continue</button>
+      <AppButton type="submit" block>Continue</AppButton>
     </form>
   </section>
 </template>
