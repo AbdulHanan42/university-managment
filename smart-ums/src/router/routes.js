@@ -3,6 +3,9 @@ import StudentIndex from '../pages/students/Index.vue'
 import FacultyIndex from '../pages/faculty/Index.vue'
 import DepartmentIndex from '../pages/departments/Index.vue'
 import ProgramIndex from '../pages/programs/Index.vue'
+import ProgramCreate from '../pages/programs/Create.vue'
+import ProgramEdit from '../pages/programs/Edit.vue'
+import ProgramShow from '../pages/programs/Show.vue'
 import CourseIndex from '../pages/courses/Index.vue'
 import EnrollmentIndex from '../pages/enrollment/Index.vue'
 import AttendanceIndex from '../pages/attendance/Index.vue'
@@ -49,6 +52,24 @@ export const routes = [
     name: 'programs',
     component: ProgramIndex,
     meta: { title: 'Programs' },
+  },
+  {
+    path: '/programs/create',
+    name: 'programs-create',
+    component: ProgramCreate,
+    meta: { title: 'Create Program' },
+  },
+  {
+    path: '/programs/:id',
+    name: 'programs-show',
+    component: ProgramShow,
+    meta: { title: 'Program Details' },
+  },
+  {
+    path: '/programs/:id/edit',
+    name: 'programs-edit',
+    component: ProgramEdit,
+    meta: { title: 'Edit Program' },
   },
   {
     path: '/courses',
