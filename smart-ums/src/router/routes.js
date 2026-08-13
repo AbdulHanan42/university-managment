@@ -2,6 +2,8 @@
 import StudentIndex from '../pages/students/Index.vue'
 import FacultyIndex from '../pages/faculty/Index.vue'
 import DepartmentIndex from '../pages/departments/Index.vue'
+import DepartmentCreate from '../pages/departments/Create.vue'
+import DepartmentEdit from '../pages/departments/Edit.vue'
 import ProgramIndex from '../pages/programs/Index.vue'
 import ProgramCreate from '../pages/programs/Create.vue'
 import ProgramEdit from '../pages/programs/Edit.vue'
@@ -46,6 +48,18 @@ export const routes = [
     name: 'departments',
     component: DepartmentIndex,
     meta: { title: 'Departments' },
+  },
+  {
+    path: '/departments/create',
+    name: 'departments-create',
+    component: DepartmentCreate,
+    meta: { title: 'Create Department' },
+  },
+  {
+    path: '/departments/:id/edit',
+    name: 'departments-edit',
+    component: DepartmentEdit,
+    meta: { title: 'Edit Department' },
   },
   {
     path: '/programs',
