@@ -2,21 +2,35 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useDepartmentStore } from '@/stores/department.store'
+import { useToast } from '@/composables/useToast'
 import AppButton from '@/components/common/AppButton.vue'
+import AppConfirmDialog from '@/components/common/AppConfirmDialog.vue'
 
 defineOptions({ name: 'DepartmentShow' })
 
 const router = useRouter()
 const route = useRoute()
 const departmentStore = useDepartmentStore()
+const toast = useToast()
 
 const department = ref(null)
 const loading = ref(true)
+
+// Confirm dialog state
+const confirmDialog = ref({
+  visible: false,
+  title: '',
+  message: '',
+  detail: '',
+  type: 'danger',
+  onConfirm: null
+})
 
 onMounted(async () => {
   try {
     department.value = await departmentStore.fetchDepartmentById(route.params.id)
   } catch (error) {
+    toast.error('Failed to load department data')
     console.error('Failed to fetch department:', error)
   } finally {
     loading.value = false
@@ -27,15 +41,30 @@ const handleEdit = () => {
   router.push({ name: 'departments-edit', params: { id: route.params.id } })
 }
 
-const handleDelete = async () => {
-  if (confirm('Are you sure you want to delete this department?')) {
-    try {
-      await departmentStore.deleteDepartment(route.params.id)
-      router.push({ name: 'departments' })
-    } catch (error) {
-      console.error('Failed to delete department:', error)
+const handleDelete = () => {
+  confirmDialog.value = {
+    visible: true,
+    title: 'Delete Department',
+    message: `Are you sure you want to delete ${department.value?.name || 'this department'}?`,
+    detail: 'This action cannot be undone.',
+    type: 'danger',
+    onConfirm: async () => {
+      try {
+        await departmentStore.deleteDepartment(route.params.id)
+        toast.success('Department deleted successfully')
+        router.push({ name: 'departments' })
+      } catch (error) {
+        toast.error('Failed to delete department')
+        console.error('Failed to delete department:', error)
+      } finally {
+        confirmDialog.value.visible = false
+      }
     }
   }
+}
+
+const handleConfirmDialogCancel = () => {
+  confirmDialog.value.visible = false
 }
 
 const handleBack = () => {
@@ -182,6 +211,19 @@ const handleBack = () => {
       <p>Department not found</p>
       <button @click="handleBack" class="btn-back">Back to Departments</button>
     </div>
+
+    <!-- Confirm Dialog -->
+    <AppConfirmDialog
+      :visible="confirmDialog.visible"
+      :title="confirmDialog.title"
+      :message="confirmDialog.message"
+      :detail="confirmDialog.detail"
+      :type="confirmDialog.type"
+      confirmText="Delete"
+      cancelText="Cancel"
+      @confirm="confirmDialog.onConfirm"
+      @cancel="handleConfirmDialogCancel"
+    />
   </section>
 </template>
 

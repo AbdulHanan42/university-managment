@@ -2,6 +2,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useDepartmentStore } from '@/stores/department.store'
+import { useToast } from '@/composables/useToast'
 import DepartmentForm from '@/components/departments/DepartmentForm.vue'
 
 defineOptions({ name: 'DepartmentEdit' })
@@ -9,6 +10,7 @@ defineOptions({ name: 'DepartmentEdit' })
 const router = useRouter()
 const route = useRoute()
 const departmentStore = useDepartmentStore()
+const toast = useToast()
 
 const department = ref(null)
 const loading = ref(true)
@@ -17,6 +19,7 @@ onMounted(async () => {
   try {
     department.value = await departmentStore.fetchDepartmentById(route.params.id)
   } catch (error) {
+    toast.error('Failed to load department data')
     console.error('Failed to fetch department:', error)
   } finally {
     loading.value = false
@@ -26,8 +29,10 @@ onMounted(async () => {
 const handleSubmit = async (formData) => {
   try {
     await departmentStore.updateDepartment(route.params.id, formData)
+    toast.success('Department updated successfully')
     router.push({ name: 'departments' })
   } catch (error) {
+    toast.error('Failed to update department')
     console.error('Failed to update department:', error)
   }
 }
