@@ -51,13 +51,13 @@ const pageTitle = computed(() => {
 </script>
 
 <template>
-  <div class="app-shell">
+  <div class="grid grid-cols-[280px_minmax(0,1fr)] min-h-screen bg-gradient-to-br from-blue-50/50 to-blue-100/50">
     <AppSidebar :navigation="navigation" />
 
-    <div class="main-panel">
+    <div class="flex flex-col">
       <AppNavbar :title="pageTitle" />
 
-      <main class="content">
+      <main class="flex-1 p-6">
         <router-view />
       </main>
 
@@ -78,29 +78,12 @@ const pageTitle = computed(() => {
   box-sizing: border-box;
 }
 
-.app-shell {
-  display: grid;
-  grid-template-columns: 280px minmax(0, 1fr);
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f8fbff 0%, #eef3ff 100%);
-}
-
-.main-panel {
-  display: flex;
-  flex-direction: column;
-}
-
-.content {
-  flex: 1;
-  padding: 1.5rem;
-}
-
 @media (max-width: 960px) {
-  .app-shell {
+  .grid.grid-cols-\[280px_minmax\(0\,1fr\)\] {
     grid-template-columns: 1fr;
   }
 
-  .content {
+  .p-6 {
     padding: 1rem;
   }
 }

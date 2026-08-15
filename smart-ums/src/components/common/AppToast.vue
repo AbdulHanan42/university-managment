@@ -1,23 +1,23 @@
 ﻿<template>
   <Transition name="toast">
-    <div v-if="visible" :class="['toast', `toast--${type}`]">
-      <div class="toast-icon">
+    <div v-if="visible" :class="toastClasses">
+      <div :class="iconClasses">
         <span v-if="type === 'success'">✓</span>
         <span v-else-if="type === 'error'">✕</span>
         <span v-else-if="type === 'warning'">⚠</span>
         <span v-else>ℹ</span>
       </div>
-      <div class="toast-content">
-        <h4 v-if="title" class="toast-title">{{ title }}</h4>
-        <p class="toast-message">{{ message }}</p>
+      <div class="flex-1 min-w-0">
+        <h4 v-if="title" class="text-sm font-semibold text-gray-900 mb-1">{{ title }}</h4>
+        <p class="text-xs text-gray-600 leading-relaxed m-0">{{ message }}</p>
       </div>
-      <button @click="close" class="toast-close" aria-label="Close">×</button>
+      <button @click="close" class="text-gray-400 text-2xl leading-none cursor-pointer p-0 w-6 h-6 flex items-center justify-center rounded hover:bg-gray-100 hover:text-gray-600 transition-colors flex-shrink-0" aria-label="Close">×</button>
     </div>
   </Transition>
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 defineOptions({ name: 'AppToast' })
 
@@ -48,6 +48,28 @@ const props = defineProps({
 const visible = ref(true)
 let timeoutId = null
 
+const toastClasses = computed(() => {
+  const baseClasses = 'fixed top-5 right-5 min-w-[320px] max-w-[480px] bg-white rounded-xl shadow-lg flex items-start gap-3 p-4 z-[9999] border-l-4'
+  const typeClasses = {
+    success: 'border-emerald-500',
+    error: 'border-red-500',
+    warning: 'border-amber-500',
+    info: 'border-blue-500'
+  }
+  return `${baseClasses} ${typeClasses[props.type]}`
+})
+
+const iconClasses = computed(() => {
+  const baseClasses = 'w-8 h-8 rounded-full flex items-center justify-center text-lg font-bold flex-shrink-0'
+  const typeClasses = {
+    success: 'bg-emerald-100 text-emerald-600',
+    error: 'bg-red-100 text-red-600',
+    warning: 'bg-amber-100 text-amber-600',
+    info: 'bg-blue-100 text-blue-600'
+  }
+  return `${baseClasses} ${typeClasses[props.type]}`
+})
+
 const close = () => {
   visible.value = false
   if (props.onClose) {
@@ -69,113 +91,6 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
-.toast {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  min-width: 320px;
-  max-width: 480px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 16px;
-  z-index: 9999;
-  border-left: 4px solid;
-}
-
-.toast--success {
-  border-left-color: #10b981;
-}
-
-.toast--success .toast-icon {
-  background: #d1fae5;
-  color: #10b981;
-}
-
-.toast--error {
-  border-left-color: #ef4444;
-}
-
-.toast--error .toast-icon {
-  background: #fee2e2;
-  color: #ef4444;
-}
-
-.toast--warning {
-  border-left-color: #f59e0b;
-}
-
-.toast--warning .toast-icon {
-  background: #fef3c7;
-  color: #f59e0b;
-}
-
-.toast--info {
-  border-left-color: #3b82f6;
-}
-
-.toast--info .toast-icon {
-  background: #dbeafe;
-  color: #3b82f6;
-}
-
-.toast-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.toast-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.toast-title {
-  margin: 0 0 4px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.toast-message {
-  margin: 0;
-  font-size: 13px;
-  color: #6b7280;
-  line-height: 1.5;
-}
-
-.toast-close {
-  background: none;
-  border: none;
-  color: #9ca3af;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: all 0.2s;
-  flex-shrink: 0;
-}
-
-.toast-close:hover {
-  background: #f3f4f6;
-  color: #4b5563;
-}
-
 .toast-enter-active,
 .toast-leave-active {
   transition: all 0.3s ease;
@@ -192,7 +107,7 @@ onUnmounted(() => {
 }
 
 @media (max-width: 640px) {
-  .toast {
+  .fixed.top-5.right-5 {
     left: 16px;
     right: 16px;
     min-width: auto;

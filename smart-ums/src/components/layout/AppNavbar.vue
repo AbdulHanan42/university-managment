@@ -10,63 +10,15 @@ defineProps({
 </script>
 
 <template>
-  <header class="navbar">
+  <header class="flex justify-between items-center px-6 py-4 bg-white/75 backdrop-blur-md border-b border-blue-100">
     <div>
-      <p class="eyebrow">Operations center</p>
-      <h2>{{ title }}</h2>
+      <p class="mb-1 text-xs uppercase tracking-widest text-gray-500">Operations center</p>
+      <h2 class="m-0 text-xl">{{ title }}</h2>
     </div>
 
-    <div class="navbar-actions">
-      <span class="pill">Live data</span>
+    <div class="flex items-center gap-3">
+      <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-sm">Live data</span>
       <AppButton>Quick action</AppButton>
     </div>
   </header>
 </template>
-
-<style scoped>
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid #dfe7fb;
-}
-
-.eyebrow {
-  margin: 0 0 0.2rem;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: #5f6f92;
-}
-
-h2 {
-  margin: 0;
-  font-size: 1.2rem;
-}
-
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.pill {
-  background: #e8f1ff;
-  color: #214d9c;
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  font-size: 0.9rem;
-}
-
-button {
-  border: none;
-  border-radius: 999px;
-  padding: 0.6rem 0.9rem;
-  background: #214d9c;
-  color: white;
-  cursor: pointer;
-}
-</style>

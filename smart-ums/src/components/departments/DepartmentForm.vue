@@ -1,22 +1,23 @@
 ﻿<template>
-  <form @submit.prevent="handleSubmit" class="department-form">
+  <form @submit.prevent="handleSubmit" class="bg-white border border-blue-100 rounded-xl p-8">
     <!-- Basic Information Section -->
-    <fieldset class="form-section">
-      <legend>Basic Information</legend>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="name">Department Name *</label>
+    <fieldset class="border-none p-0 pb-8 mb-6 border-b border-blue-50">
+      <legend class="text-lg font-bold text-gray-900 mb-4 p-0">Basic Information</legend>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-col">
+          <label for="name" class="font-semibold text-gray-600 mb-2 text-sm">Department Name *</label>
           <input 
             id="name"
             v-model="formData.name" 
             type="text" 
             placeholder="e.g., Computer Science"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
-          <span v-if="errors.name" class="error">{{ errors.name }}</span>
+          <span v-if="errors.name" class="text-red-600 text-xs mt-1">{{ errors.name }}</span>
         </div>
-        <div class="form-group">
-          <label for="code">Department Code *</label>
+        <div class="flex flex-col">
+          <label for="code" class="font-semibold text-gray-600 mb-2 text-sm">Department Code *</label>
           <input 
             id="code"
             v-model="formData.code" 
@@ -24,203 +25,218 @@
             placeholder="e.g., CS"
             maxlength="5"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
-          <span v-if="errors.code" class="error">{{ errors.code }}</span>
+          <span v-if="errors.code" class="text-red-600 text-xs mt-1">{{ errors.code }}</span>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="description">Description</label>
+      <div class="flex flex-col">
+        <label for="description" class="font-semibold text-gray-600 mb-2 text-sm">Description</label>
         <textarea 
           id="description"
           v-model="formData.description" 
           placeholder="Brief description of the department"
           rows="3"
+          class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100 resize-y"
         ></textarea>
       </div>
     </fieldset>
 
     <!-- Administrative Section -->
-    <fieldset class="form-section">
-      <legend>Administrative</legend>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="faculty">Faculty *</label>
+    <fieldset class="border-none p-0 pb-8 mb-6 border-b border-blue-50">
+      <legend class="text-lg font-bold text-gray-900 mb-4 p-0">Administrative</legend>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-col">
+          <label for="faculty" class="font-semibold text-gray-600 mb-2 text-sm">Faculty *</label>
           <input 
             id="faculty"
             v-model="formData.faculty" 
             type="text" 
             placeholder="e.g., Engineering"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
-        <div class="form-group">
-          <label for="status">Status *</label>
-          <select v-model="formData.status" required>
+        <div class="flex flex-col">
+          <label for="status" class="font-semibold text-gray-600 mb-2 text-sm">Status *</label>
+          <select v-model="formData.status" required class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100">
             <option value="active">Active</option>
             <option value="inactive">Inactive</option>
           </select>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="head">Department Head *</label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-col">
+          <label for="head" class="font-semibold text-gray-600 mb-2 text-sm">Department Head *</label>
           <input 
             id="head"
             v-model="formData.head" 
             type="text" 
             placeholder="Full name of department head"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
-        <div class="form-group">
-          <label for="headEmail">Head Email *</label>
+        <div class="flex flex-col">
+          <label for="headEmail" class="font-semibold text-gray-600 mb-2 text-sm">Head Email *</label>
           <input 
             id="headEmail"
             v-model="formData.headEmail" 
             type="email" 
             placeholder="head@university.edu"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="phone">Phone</label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-col">
+          <label for="phone" class="font-semibold text-gray-600 mb-2 text-sm">Phone</label>
           <input 
             id="phone"
             v-model="formData.phone" 
             type="tel" 
             placeholder="+1-555-0101"
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
-        <div class="form-group">
-          <label for="building">Building</label>
+        <div class="flex flex-col">
+          <label for="building" class="font-semibold text-gray-600 mb-2 text-sm">Building</label>
           <input 
             id="building"
             v-model="formData.building" 
             type="text" 
             placeholder="e.g., Tech Building"
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label for="floor">Floor</label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="flex flex-col">
+          <label for="floor" class="font-semibold text-gray-600 mb-2 text-sm">Floor</label>
           <input 
             id="floor"
             v-model="formData.floor" 
             type="text" 
             placeholder="e.g., 3rd Floor"
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
-        <div class="form-group">
-          <label for="office_hours">Office Hours</label>
+        <div class="flex flex-col">
+          <label for="office_hours" class="font-semibold text-gray-600 mb-2 text-sm">Office Hours</label>
           <input 
             id="office_hours"
             v-model="formData.office_hours" 
             type="text" 
             placeholder="e.g., Monday-Friday, 9:00 AM - 5:00 PM"
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
       </div>
     </fieldset>
 
     <!-- Resources Section -->
-    <fieldset class="form-section">
-      <legend>Resources</legend>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="programs">Number of Programs *</label>
+    <fieldset class="border-none p-0 pb-8 mb-6 border-b border-blue-50">
+      <legend class="text-lg font-bold text-gray-900 mb-4 p-0">Resources</legend>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="flex flex-col">
+          <label for="programs" class="font-semibold text-gray-600 mb-2 text-sm">Number of Programs *</label>
           <input 
             id="programs"
             v-model.number="formData.programs" 
             type="number" 
             min="1"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
-        <div class="form-group">
-          <label for="faculty_count">Faculty Count *</label>
+        <div class="flex flex-col">
+          <label for="faculty_count" class="font-semibold text-gray-600 mb-2 text-sm">Faculty Count *</label>
           <input 
             id="faculty_count"
             v-model.number="formData.faculty_count" 
             type="number" 
             min="1"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
-        <div class="form-group">
-          <label for="students">Total Students *</label>
+        <div class="flex flex-col">
+          <label for="students" class="font-semibold text-gray-600 mb-2 text-sm">Total Students *</label>
           <input 
             id="students"
             v-model.number="formData.students" 
             type="number" 
             min="0"
             required
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
           />
         </div>
       </div>
     </fieldset>
 
     <!-- Accreditation Section -->
-    <fieldset class="form-section">
-      <legend>Accreditation</legend>
-      <div class="form-row">
-        <div class="form-group checkbox-group">
-          <label>
-            <input v-model="formData.accredited" type="checkbox" />
+    <fieldset class="border-none p-0 pb-8 mb-6 border-b border-blue-50">
+      <legend class="text-lg font-bold text-gray-900 mb-4 p-0">Accreditation</legend>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+        <div class="flex flex-row items-center">
+          <label class="flex items-center gap-2 font-normal">
+            <input v-model="formData.accredited" type="checkbox" class="m-0" />
             Accredited
           </label>
         </div>
-        <div class="form-group">
-          <label for="accreditationBody">Accreditation Body</label>
+        <div class="flex flex-col">
+          <label for="accreditationBody" class="font-semibold text-gray-600 mb-2 text-sm">Accreditation Body</label>
           <input 
             id="accreditationBody"
             v-model="formData.accreditationBody" 
             type="text" 
             placeholder="e.g., ABET, AACSB"
             :disabled="!formData.accredited"
+            class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed"
           />
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="establishment_year">Year Established</label>
+      <div class="flex flex-col">
+        <label for="establishment_year" class="font-semibold text-gray-600 mb-2 text-sm">Year Established</label>
         <input 
           id="establishment_year"
           v-model.number="formData.establishment_year" 
           type="number" 
           min="1900"
           :max="new Date().getFullYear()"
+          class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
         />
       </div>
     </fieldset>
 
     <!-- Specializations Section -->
-    <fieldset class="form-section">
-      <legend>Specializations</legend>
-      <div class="form-group">
-        <label for="specialization">Specializations (comma-separated)</label>
+    <fieldset class="border-none p-0 pb-8 mb-6 border-b border-blue-50 last:border-b-0">
+      <legend class="text-lg font-bold text-gray-900 mb-4 p-0">Specializations</legend>
+      <div class="flex flex-col">
+        <label for="specialization" class="font-semibold text-gray-600 mb-2 text-sm">Specializations (comma-separated)</label>
         <input 
           id="specialization"
           v-model="specializationInput" 
           type="text" 
           placeholder="e.g., AI, Machine Learning, Cloud Computing"
+          class="px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
         />
-        <small class="help-text">Enter specializations separated by commas</small>
+        <small class="text-gray-500 text-xs mt-1">Enter specializations separated by commas</small>
       </div>
     </fieldset>
 
     <!-- Form Actions -->
-    <div class="form-actions">
-      <button type="submit" class="btn-primary" :disabled="isSubmitting">
+    <div class="flex gap-4 mt-8 pt-6 border-t border-blue-50">
+      <button type="submit" :disabled="isSubmitting" class="px-6 py-3 border-none rounded-lg font-semibold cursor-pointer transition-all text-sm bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed">
         {{ isSubmitting ? 'Saving...' : (isEditing ? 'Update Department' : 'Create Department') }}
       </button>
-      <button type="button" @click="$emit('cancel')" class="btn-secondary">Cancel</button>
+      <button type="button" @click="$emit('cancel')" class="px-6 py-3 bg-blue-50 text-blue-600 border border-blue-100 rounded-lg font-semibold cursor-pointer transition-all text-sm hover:bg-blue-100">Cancel</button>
     </div>
   </form>
 </template>
@@ -314,168 +330,24 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-.department-form {
-  background: white;
-  border: 1px solid #dfe7fb;
-  border-radius: 1.2rem;
-  padding: 2rem;
-}
-
-.form-section {
-  border: none;
-  padding: 0 0 2rem 0;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #eef2f9;
-}
-
-.form-section:last-of-type {
-  border-bottom: none;
-}
-
-legend {
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #14213d;
-  margin-bottom: 1rem;
-  padding: 0;
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.checkbox-group {
-  flex-direction: row;
-  align-items: center;
-}
-
-.checkbox-group label {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
-}
-
-.checkbox-group input {
-  margin: 0;
-}
-
-label {
-  font-weight: 600;
-  color: #5d6d8f;
-  margin-bottom: 0.5rem;
-  font-size: 0.9rem;
-}
-
-input,
-textarea,
-select {
-  padding: 0.75rem;
-  border: 1px solid #dfe7fb;
-  border-radius: 0.6rem;
-  font-size: 0.9rem;
-  font-family: inherit;
-  transition: all 0.2s;
-}
-
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #214d9c;
-  box-shadow: 0 0 0 3px rgba(33, 77, 156, 0.1);
-}
-
-input:disabled,
-select:disabled {
-  background: #f8fafb;
-  color: #7f8fa3;
-  cursor: not-allowed;
-}
-
-textarea {
-  resize: vertical;
-  font-family: inherit;
-}
-
-.error {
-  color: #dc3545;
-  font-size: 0.8rem;
-  margin-top: 0.3rem;
-}
-
-.help-text {
-  color: #7f8fa3;
-  font-size: 0.8rem;
-  margin-top: 0.3rem;
-}
-
-.form-actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #eef2f9;
-}
-
-.btn-primary,
-.btn-secondary {
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 0.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.9rem;
-}
-
-.btn-primary {
-  background: #214d9c;
-  color: white;
-}
-
-.btn-primary:hover:not(:disabled) {
-  background: #1a3d7a;
-}
-
-.btn-primary:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-secondary {
-  background: #f0f4ff;
-  color: #214d9c;
-  border: 1px solid #dfe7fb;
-}
-
-.btn-secondary:hover {
-  background: #ecf1ff;
-}
-
 @media (max-width: 768px) {
-  .form-row {
+  .grid.grid-cols-1.md\:grid-cols-2 {
     grid-template-columns: 1fr;
   }
 
-  .department-form {
+  .grid.grid-cols-1.md\:grid-cols-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .p-8 {
     padding: 1.5rem;
   }
 
-  .form-actions {
+  .flex.gap-4 {
     flex-direction: column;
   }
 
-  .btn-primary,
-  .btn-secondary {
+  .px-6.py-3 {
     width: 100%;
   }
 }

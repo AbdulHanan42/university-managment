@@ -1,27 +1,27 @@
 ﻿<template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="visible" class="modal-overlay" @click="handleOverlayClick">
-        <div class="modal-container" @click.stop>
-          <div class="modal-header">
-            <div class="modal-icon" :class="`icon--${type}`">
+      <div v-if="visible" class="fixed inset-0 bg Black/50 flex items-center justify-center z-[10000] p-5 backdrop-blur-sm" @click="handleOverlayClick">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-[480px] w-full overflow-hidden animate-modal-slide-in" @click.stop>
+          <div class="p-6 pb-4 flex items-center gap-4">
+            <div :class="iconClasses">
               <span v-if="type === 'danger'">⚠</span>
               <span v-else-if="type === 'warning'">⚠</span>
               <span v-else>?</span>
             </div>
-            <h3 class="modal-title">{{ title }}</h3>
+            <h3 class="text-xl font-bold text-gray-900 m-0">{{ title }}</h3>
           </div>
 
-          <div class="modal-body">
-            <p class="modal-message">{{ message }}</p>
-            <p v-if="detail" class="modal-detail">{{ detail }}</p>
+          <div class="px-6 pb-6">
+            <p class="text-base text-gray-600 leading-relaxed mb-2 m-0">{{ message }}</p>
+            <p v-if="detail" class="text-xs text-gray-400 leading-relaxed m-0">{{ detail }}</p>
           </div>
 
-          <div class="modal-footer">
-            <button @click="handleCancel" class="btn btn--cancel">
+          <div class="flex gap-3 p-4 bg-gray-50 border-t border-gray-200 justify-end">
+            <button @click="handleCancel" class="px-5 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all border-none min-w-[100px] bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 hover:border-gray-400">
               {{ cancelText }}
             </button>
-            <button @click="handleConfirm" :class="['btn', `btn--${type}`]">
+            <button @click="handleConfirm" :class="confirmButtonClasses">
               {{ confirmText }}
             </button>
           </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 
 defineOptions({ name: 'AppConfirmDialog' })
 
@@ -74,6 +74,26 @@ const props = defineProps({
 
 const emit = defineEmits(['confirm', 'cancel'])
 
+const iconClasses = computed(() => {
+  const baseClasses = 'w-12 h-12 rounded-full flex items-center justify-center text-2xl flex-shrink-0'
+  const typeClasses = {
+    danger: 'bg-red-100 text-red-600',
+    warning: 'bg-amber-100 text-amber-600',
+    primary: 'bg-blue-100 text-blue-600'
+  }
+  return `${baseClasses} ${typeClasses[props.type]}`
+})
+
+const confirmButtonClasses = computed(() => {
+  const baseClasses = 'px-5 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-all border-none min-w-[100px]'
+  const typeClasses = {
+    primary: 'bg-blue-600 text-white hover:bg-blue-700',
+    danger: 'bg-red-600 text-white hover:bg-red-700',
+    warning: 'bg-amber-600 text-white hover:bg-amber-700'
+  }
+  return `${baseClasses} ${typeClasses[props.type]}`
+})
+
 const handleConfirm = () => {
   emit('confirm')
 }
@@ -90,31 +110,6 @@ const handleOverlayClick = () => {
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  padding: 20px;
-  backdrop-filter: blur(4px);
-}
-
-.modal-container {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  max-width: 480px;
-  width: 100%;
-  overflow: hidden;
-  animation: modalSlideIn 0.3s ease;
-}
-
 @keyframes modalSlideIn {
   from {
     opacity: 0;
@@ -126,120 +121,8 @@ const handleOverlayClick = () => {
   }
 }
 
-.modal-header {
-  padding: 24px 24px 16px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.modal-icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  flex-shrink: 0;
-}
-
-.icon--danger {
-  background: #fee2e2;
-  color: #ef4444;
-}
-
-.icon--warning {
-  background: #fef3c7;
-  color: #f59e0b;
-}
-
-.icon--primary {
-  background: #dbeafe;
-  color: #3b82f6;
-}
-
-.modal-title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: #1f2937;
-}
-
-.modal-body {
-  padding: 0 24px 24px;
-}
-
-.modal-message {
-  margin: 0 0 8px;
-  font-size: 15px;
-  color: #4b5563;
-  line-height: 1.6;
-}
-
-.modal-detail {
-  margin: 0;
-  font-size: 13px;
-  color: #9ca3af;
-  line-height: 1.5;
-}
-
-.modal-footer {
-  display: flex;
-  gap: 12px;
-  padding: 16px 24px;
-  background: #f9fafb;
-  border-top: 1px solid #e5e7eb;
-  justify-content: flex-end;
-}
-
-.btn {
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  border: none;
-  min-width: 100px;
-}
-
-.btn--cancel {
-  background: white;
-  color: #4b5563;
-  border: 1px solid #d1d5db;
-}
-
-.btn--cancel:hover {
-  background: #f3f4f6;
-  border-color: #9ca3af;
-}
-
-.btn--primary {
-  background: #3b82f6;
-  color: white;
-}
-
-.btn--primary:hover {
-  background: #2563eb;
-}
-
-.btn--danger {
-  background: #ef4444;
-  color: white;
-}
-
-.btn--danger:hover {
-  background: #dc2626;
-}
-
-.btn--warning {
-  background: #f59e0b;
-  color: white;
-}
-
-.btn--warning:hover {
-  background: #d97706;
+.animate-modal-slide-in {
+  animation: modalSlideIn 0.3s ease;
 }
 
 .modal-enter-active,
@@ -253,16 +136,16 @@ const handleOverlayClick = () => {
 }
 
 @media (max-width: 640px) {
-  .modal-container {
+  .max-w-\[480px\] {
     margin: 16px;
     max-width: none;
   }
 
-  .modal-footer {
+  .flex.gap-3.justify-end {
     flex-direction: column-reverse;
   }
 
-  .btn {
+  .min-w-\[100px\] {
     width: 100%;
   }
 }

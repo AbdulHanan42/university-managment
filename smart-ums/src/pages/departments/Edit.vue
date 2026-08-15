@@ -43,16 +43,16 @@ const handleCancel = () => {
 </script>
 
 <template>
-  <section class="page-card">
-    <header class="page-header">
+  <section class="bg-white border border-blue-100 rounded-xl shadow-lg p-5">
+    <header class="mb-6">
       <div>
-        <p class="eyebrow">Department Management</p>
-        <h1>Edit Department</h1>
-        <p>Update department information in the university system.</p>
+        <p class="mb-1 text-xs uppercase tracking-wider text-gray-500 font-semibold">Department Management</p>
+        <h1 class="mb-1 text-2xl font-bold text-gray-900">Edit Department</h1>
+        <p class="m-0 text-sm text-gray-600">Update department information in the university system.</p>
       </div>
     </header>
 
-    <div v-if="loading" class="loading-state">
+    <div v-if="loading" class="text-center py-12 text-gray-500">
       <p>Loading department data...</p>
     </div>
 
@@ -63,72 +63,11 @@ const handleCancel = () => {
       @cancel="handleCancel"
     />
 
-    <div v-else class="error-state">
+    <div v-else class="text-center py-12 text-red-600">
       <p>Department not found</p>
-      <button @click="router.push({ name: 'departments' })" class="btn-back">
+      <button @click="router.push({ name: 'departments' })" class="mt-4 px-6 py-3 bg-blue-600 text-white border-none rounded-lg font-semibold cursor-pointer transition-colors hover:bg-blue-700">
         Back to Departments
       </button>
     </div>
   </section>
 </template>
-
-<style scoped>
-.page-card {
-  background: white;
-  border: 1px solid #dfe7fb;
-  border-radius: 1.2rem;
-  box-shadow: 0 16px 40px rgba(20, 33, 61, 0.06);
-  padding: 1.25rem;
-}
-
-.page-header {
-  margin-bottom: 2rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #60708f;
-  font-weight: 600;
-}
-
-h1 {
-  margin: 0 0 0.4rem;
-  color: #14213d;
-}
-
-.page-header > div > p:last-child {
-  margin: 0;
-  color: #5d6d8f;
-  font-size: 0.95rem;
-}
-
-.loading-state,
-.error-state {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8fa3;
-}
-
-.error-state {
-  color: #dc3545;
-}
-
-.btn-back {
-  margin-top: 1rem;
-  padding: 0.75rem 1.5rem;
-  background: #214d9c;
-  color: white;
-  border: none;
-  border-radius: 0.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-back:hover {
-  background: #1a3d7a;
-}
-</style>
