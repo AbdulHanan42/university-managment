@@ -91,7 +91,7 @@ export const useDepartmentStore = defineStore('department', () => {
     loading.value = true
     try {
       const response = await departmentService.update(id, data)
-      const index = departments.value.findIndex(d => d.id === id)
+      const index = departments.value.findIndex(d => d.id == id)
       if (index !== -1) {
         departments.value[index] = response.data
       }
@@ -107,7 +107,7 @@ export const useDepartmentStore = defineStore('department', () => {
   const deleteDepartment = async (id) => {
     try {
       await departmentService.delete(id)
-      departments.value = departments.value.filter(d => d.id !== id)
+      departments.value = departments.value.filter(d => d.id != id)
     } catch (err) {
       error.value = err.message
       throw err
@@ -117,7 +117,7 @@ export const useDepartmentStore = defineStore('department', () => {
   const deleteMultipleDepartments = async (ids) => {
     try {
       await departmentService.deleteBulk(ids)
-      departments.value = departments.value.filter(d => !ids.includes(d.id))
+      departments.value = departments.value.filter(d => !ids.includes(String(d.id)))
     } catch (err) {
       error.value = err.message
       throw err

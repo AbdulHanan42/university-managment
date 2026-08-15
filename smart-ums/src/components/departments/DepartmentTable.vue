@@ -26,7 +26,7 @@
           <th @click="sortBy('programs')" class="sortable">Programs</th>
           <th @click="sortBy('students')" class="sortable">Students</th>
           <th @click="sortBy('status')" class="sortable">Status</th>
-          <th style="width: 120px">Actions</th>
+          <th style="width: 150px">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -58,8 +58,9 @@
             </span>
           </td>
           <td class="actions">
-            <button @click="$emit('edit', department.id)" class="btn-icon" title="Edit">✎</button>
-            <button @click="$emit('delete', department.id)" class="btn-icon delete" title="Delete">🗑</button>
+            <button @click="$emit('view', department.id)" class="btn-icon" title="View">View</button>
+            <button @click="$emit('edit', department.id)" class="btn-icon" title="Edit">Edit</button>
+            <button @click="$emit('delete', department.id)" class="btn-icon delete" title="Delete">Delete</button>
           </td>
         </tr>
       </tbody>
@@ -85,7 +86,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['edit', 'delete', 'bulk-delete'])
+const emit = defineEmits(['view', 'edit', 'delete', 'bulk-delete'])
 
 const selected = ref([])
 const sortField = ref('name')
@@ -264,13 +265,13 @@ td {
 
 .btn-icon {
   background: none;
-  border: none;
+  border: 1px solid #dfe7fb;
   cursor: pointer;
-  font-size: 1rem;
-  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
   border-radius: 0.4rem;
   transition: all 0.2s;
-  hover-color: #214d9c;
+  font-weight: 500;
 }
 
 .btn-icon:hover {

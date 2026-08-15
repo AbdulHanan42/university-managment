@@ -29,7 +29,7 @@ export const departmentService = {
   // Get single department by ID
   async getById(id) {
     await new Promise(resolve => setTimeout(resolve, 200))
-    const department = mockDepartments.find(d => d.id === id)
+    const department = mockDepartments.find(d => d.id == id)
     return { data: department, success: !!department }
   },
 
@@ -49,9 +49,9 @@ export const departmentService = {
   // Update existing department
   async update(id, data) {
     await new Promise(resolve => setTimeout(resolve, 400))
-    const index = mockDepartments.findIndex(d => d.id === id)
+    const index = mockDepartments.findIndex(d => d.id == id)
     if (index === -1) return { success: false, error: 'Department not found' }
-    
+
     mockDepartments[index] = {
       ...mockDepartments[index],
       ...data,
@@ -63,7 +63,7 @@ export const departmentService = {
   // Delete single department
   async delete(id) {
     await new Promise(resolve => setTimeout(resolve, 300))
-    const index = mockDepartments.findIndex(d => d.id === id)
+    const index = mockDepartments.findIndex(d => d.id == id)
     if (index === -1) return { success: false }
     mockDepartments.splice(index, 1)
     return { success: true }
@@ -73,7 +73,7 @@ export const departmentService = {
   async deleteBulk(ids) {
     await new Promise(resolve => setTimeout(resolve, 400))
     ids.forEach(id => {
-      const index = mockDepartments.findIndex(d => d.id === id)
+      const index = mockDepartments.findIndex(d => d.id == id)
       if (index !== -1) mockDepartments.splice(index, 1)
     })
     return { success: true }
