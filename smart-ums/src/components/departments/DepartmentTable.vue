@@ -140,10 +140,8 @@ const toggleSelectAll = () => {
 }
 
 const handleBulkDelete = () => {
-  if (confirm(`Delete ${selected.value.length} departments?`)) {
-    emit('bulk-delete', selected.value)
-    selected.value = []
-  }
+  emit('bulk-delete', selected.value)
+  selected.value = []
 }
 </script>
 

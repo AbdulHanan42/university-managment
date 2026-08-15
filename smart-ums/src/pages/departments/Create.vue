@@ -2,18 +2,22 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useDepartmentStore } from '@/stores/department.store'
+import { useToast } from '@/composables/useToast'
 import DepartmentForm from '@/components/departments/DepartmentForm.vue'
 
 defineOptions({ name: 'DepartmentCreate' })
 
 const router = useRouter()
 const departmentStore = useDepartmentStore()
+const toast = useToast()
 
 const handleSubmit = async (formData) => {
   try {
     await departmentStore.createDepartment(formData)
+    toast.success('Department created successfully')
     router.push({ name: 'departments' })
   } catch (error) {
+    toast.error('Failed to create department')
     console.error('Failed to create department:', error)
   }
 }
