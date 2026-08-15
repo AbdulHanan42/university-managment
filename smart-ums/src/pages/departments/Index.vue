@@ -112,51 +112,53 @@ onMounted(updateSummary)
 </script>
 
 <template>
-  <section class="page-card">
+  <section class="bg-white border border-blue-100 rounded-xl shadow-lg p-5">
     <!-- Header Section -->
-    <header class="page-header">
+    <header class="flex justify-between items-center gap-4 mb-6 flex-wrap">
       <div>
-        <p class="eyebrow">Department Management</p>
-        <h1>Departments</h1>
-        <p>Manage departments, faculty heads, and academic resources.</p>
+        <p class="mb-1 text-xs uppercase tracking-wider text-gray-500 font-semibold">Department Management</p>
+        <h1 class="mb-1 text-2xl font-bold text-gray-900">Departments</h1>
+        <p class="m-0 text-sm text-gray-600">Manage departments, faculty heads, and academic resources.</p>
       </div>
       <AppButton @click="handleAddDepartment">+ Add Department</AppButton>
     </header>
 
     <!-- Summary Cards -->
-    <div class="card-grid">
-      <article v-for="card in summaryCards" :key="card.title" class="summary-card">
-        <h2>{{ card.title }}</h2>
-        <p class="value">{{ card.value }}</p>
-        <span>{{ card.subtitle }}</span>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <article v-for="card in summaryCards" :key="card.title" class="bg-blue-50 rounded-xl p-5 border border-blue-100 transition-all hover:bg-blue-100">
+        <h2 class="mb-2 text-sm text-gray-600 font-semibold">{{ card.title }}</h2>
+        <p class="mb-1 text-3xl font-bold text-gray-900">{{ card.value }}</p>
+        <span class="text-xs text-gray-500">{{ card.subtitle }}</span>
       </article>
     </div>
 
     <!-- View Toggle & Controls -->
-    <div class="controls-section">
-      <div class="view-toggle">
+    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+      <div class="flex gap-2 bg-gray-50 p-2 rounded-lg">
         <button
-          :class="{ active: viewMode === 'table' }"
+          :class="viewMode === 'table' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-blue-100'"
           @click="viewMode = 'table'"
           title="Table View"
+          class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
         >
           📋 Table
         </button>
         <button
-          :class="{ active: viewMode === 'grid' }"
+          :class="viewMode === 'grid' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white border-blue-100'"
           @click="viewMode = 'grid'"
           title="Grid View"
+          class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
         >
           ⊞ Grid
         </button>
       </div>
-      <div class="filter-info">
+      <div class="text-sm text-gray-500">
         Showing {{ departmentStore.filteredDepartments.length }} of {{ departmentStore.departments.length }} departments
       </div>
     </div>
 
     <!-- Table View -->
-    <div v-if="viewMode === 'table'" class="content-section">
+    <div v-if="viewMode === 'table'" class="animate-fade-in">
       <DepartmentTable
         :departments="departmentStore.filteredDepartments"
         @view="handleViewDepartment"
@@ -167,8 +169,8 @@ onMounted(updateSummary)
     </div>
 
     <!-- Grid View -->
-    <div v-else class="content-section">
-      <div class="departments-grid">
+    <div v-else class="animate-fade-in">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <DepartmentCard
           v-for="department in departmentStore.filteredDepartments"
           :key="department.id"
@@ -178,7 +180,7 @@ onMounted(updateSummary)
           @delete="handleDeleteDepartment(department.id)"
         />
       </div>
-      <div v-if="departmentStore.filteredDepartments.length === 0" class="empty-state">
+      <div v-if="departmentStore.filteredDepartments.length === 0" class="text-center py-12 text-gray-500">
         <p>No departments found</p>
       </div>
     </div>
@@ -199,125 +201,6 @@ onMounted(updateSummary)
 </template>
 
 <style scoped>
-.page-card {
-  background: white;
-  border: 1px solid #dfe7fb;
-  border-radius: 1.2rem;
-  box-shadow: 0 16px 40px rgba(20, 33, 61, 0.06);
-  padding: 1.25rem;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #60708f;
-  font-weight: 600;
-}
-
-h1 {
-  margin: 0 0 0.4rem;
-  color: #14213d;
-}
-
-.page-header > div > p:last-child {
-  margin: 0;
-  color: #5d6d8f;
-  font-size: 0.95rem;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.summary-card {
-  background: #f6f9ff;
-  border-radius: 1rem;
-  padding: 1.25rem;
-  border: 1px solid #eef2f9;
-  transition: all 0.3s ease;
-}
-
-.summary-card:hover {
-  background: #ecf1ff;
-  border-color: #dfe7fb;
-}
-
-.summary-card h2 {
-  margin: 0 0 0.5rem;
-  font-size: 0.95rem;
-  color: #5d6d8f;
-  font-weight: 600;
-}
-
-.summary-card .value {
-  margin: 0 0 0.35rem;
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #14213d;
-}
-
-.summary-card span {
-  font-size: 0.85rem;
-  color: #7f8fa3;
-}
-
-.controls-section {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.view-toggle {
-  display: flex;
-  gap: 0.5rem;
-  background: #f8fafb;
-  padding: 0.5rem;
-  border-radius: 0.75rem;
-}
-
-.view-toggle button {
-  padding: 0.6rem 1rem;
-  border: 1px solid #dfe7fb;
-  background: white;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.view-toggle button.active {
-  background: #214d9c;
-  color: white;
-  border-color: #214d9c;
-}
-
-.filter-info {
-  color: #7f8fa3;
-  font-size: 0.9rem;
-}
-
-.content-section {
-  animation: fadeIn 0.3s ease-in;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -329,15 +212,7 @@ h1 {
   }
 }
 
-.departments-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 1.5rem;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8fa3;
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
 }
 </style>

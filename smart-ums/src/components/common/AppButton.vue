@@ -1,4 +1,6 @@
 ﻿<script setup>
+import { computed } from 'vue'
+
 defineOptions({ name: 'AppButton' })
 
 const props = defineProps({
@@ -27,78 +29,41 @@ const props = defineProps({
   },
 })
 
-const classes = ['app-button', `app-button--${props.variant}`, `app-button--${props.size}`]
-
-if (props.block) {
-  classes.push('app-button--block')
-}
+const buttonClasses = computed(() => {
+  const baseClasses = 'inline-flex items-center justify-center border-none rounded-full font-semibold cursor-pointer transition-all'
+  
+  const sizeClasses = {
+    sm: 'px-3 py-2 text-xs',
+    md: 'px-4 py-2 text-sm',
+    lg: 'px-5 py-3 text-base'
+  }
+  
+  const variantClasses = {
+    primary: 'bg-blue-600 text-white shadow-lg hover:-translate-y-0.5',
+    secondary: 'bg-blue-50 text-blue-600',
+    ghost: 'bg-transparent text-blue-600 border border-blue-100'
+  }
+  
+  let classes = `${baseClasses} ${sizeClasses[props.size]} ${variantClasses[props.variant]}`
+  
+  if (props.disabled) {
+    classes += ' opacity-60 cursor-not-allowed'
+  }
+  
+  if (props.block) {
+    classes += ' w-full'
+  }
+  
+  return classes
+})
 </script>
 
 <template>
   <button
     :type="type"
     :disabled="disabled"
-    :class="classes"
-    class="app-button"
+    :class="buttonClasses"
   >
     <slot />
   </button>
 </template>
-
-<style scoped>
-.app-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 999px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
-}
-
-.app-button:hover:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.app-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.app-button--sm {
-  padding: 0.55rem 0.9rem;
-  font-size: 0.82rem;
-}
-
-.app-button--md {
-  padding: 0.7rem 1rem;
-  font-size: 0.95rem;
-}
-
-.app-button--lg {
-  padding: 0.8rem 1.2rem;
-  font-size: 1rem;
-}
-
-.app-button--primary {
-  background: #214d9c;
-  color: #fff;
-  box-shadow: 0 10px 20px rgba(33, 77, 156, 0.18);
-}
-
-.app-button--secondary {
-  background: #eaf0ff;
-  color: #214d9c;
-}
-
-.app-button--ghost {
-  background: transparent;
-  color: #214d9c;
-  border: 1px solid #dfe7fb;
-}
-
-.app-button--block {
-  width: 100%;
-}
-</style>

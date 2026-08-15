@@ -73,143 +73,143 @@ const handleBack = () => {
 </script>
 
 <template>
-  <section class="page-card">
-    <header class="page-header">
+  <section class="bg-white border border-blue-100 rounded-xl shadow-lg p-5">
+    <header class="flex justify-between items-center gap-4 mb-8 flex-wrap">
       <div>
-        <p class="eyebrow">Department Management</p>
-        <h1>Department Details</h1>
-        <p>View detailed information about this department.</p>
+        <p class="mb-1 text-xs uppercase tracking-wider text-gray-500 font-semibold">Department Management</p>
+        <h1 class="mb-1 text-2xl font-bold text-gray-900">Department Details</h1>
+        <p class="m-0 text-sm text-gray-600">View detailed information about this department.</p>
       </div>
-      <div class="header-actions">
+      <div class="flex gap-3">
         <AppButton @click="handleEdit">Edit Department</AppButton>
-        <button @click="handleDelete" class="btn-delete">Delete</button>
+        <button @click="handleDelete" class="bg-red-600 text-white border-none px-6 py-3 rounded-lg font-semibold cursor-pointer transition-colors hover:bg-red-700">Delete</button>
       </div>
     </header>
 
-    <div v-if="loading" class="loading-state">
+    <div v-if="loading" class="text-center py-12 text-gray-500">
       <p>Loading department data...</p>
     </div>
 
-    <div v-else-if="department" class="department-detail">
+    <div v-else-if="department" class="flex flex-col gap-6">
       <!-- Basic Info Card -->
-      <div class="detail-card">
-        <h2>Basic Information</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Department Name</span>
-            <span class="value">{{ department.name }}</span>
+      <div class="bg-gray-50 border border-blue-100 rounded-xl p-6">
+        <h2 class="mb-5 text-lg font-bold text-gray-900">Basic Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Department Name</span>
+            <span class="text-base font-medium text-gray-900">{{ department.name }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Department Code</span>
-            <span class="value code-badge">{{ department.code }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Department Code</span>
+            <span class="inline-block bg-blue-600 text-white px-3 py-1 rounded font-semibold text-sm">{{ department.code }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Faculty</span>
-            <span class="value">{{ department.faculty }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Faculty</span>
+            <span class="text-base font-medium text-gray-900">{{ department.faculty }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Status</span>
-            <span :class="['status-badge', department.status]">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Status</span>
+            <span :class="department.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'" class="inline-block px-3 py-1 rounded-full text-xs font-semibold">
               {{ department.status === 'active' ? '✓ Active' : '✗ Inactive' }}
             </span>
           </div>
-          <div class="info-item full-width">
-            <span class="label">Description</span>
-            <span class="value">{{ department.description }}</span>
+          <div class="flex flex-col gap-1 md:col-span-2 lg:col-span-3">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Description</span>
+            <span class="text-base font-medium text-gray-900">{{ department.description }}</span>
           </div>
         </div>
       </div>
 
       <!-- Administrative Card -->
-      <div class="detail-card">
-        <h2>Administrative Information</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Department Head</span>
-            <span class="value">{{ department.head }}</span>
+      <div class="bg-gray-50 border border-blue-100 rounded-xl p-6">
+        <h2 class="mb-5 text-lg font-bold text-gray-900">Administrative Information</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Department Head</span>
+            <span class="text-base font-medium text-gray-900">{{ department.head }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Head Email</span>
-            <span class="value email">{{ department.headEmail }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Head Email</span>
+            <span class="text-base font-medium text-blue-600">{{ department.headEmail }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Phone</span>
-            <span class="value">{{ department.phone || 'N/A' }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Phone</span>
+            <span class="text-base font-medium text-gray-900">{{ department.phone || 'N/A' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Building</span>
-            <span class="value">{{ department.building || 'N/A' }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Building</span>
+            <span class="text-base font-medium text-gray-900">{{ department.building || 'N/A' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Floor</span>
-            <span class="value">{{ department.floor || 'N/A' }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Floor</span>
+            <span class="text-base font-medium text-gray-900">{{ department.floor || 'N/A' }}</span>
           </div>
-          <div class="info-item">
-            <span class="label">Office Hours</span>
-            <span class="value">{{ department.office_hours || 'N/A' }}</span>
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Office Hours</span>
+            <span class="text-base font-medium text-gray-900">{{ department.office_hours || 'N/A' }}</span>
           </div>
         </div>
       </div>
 
       <!-- Resources Card -->
-      <div class="detail-card">
-        <h2>Resources & Statistics</h2>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-value">{{ department.programs }}</div>
-            <div class="stat-label">Programs</div>
+      <div class="bg-gray-50 border border-blue-100 rounded-xl p-6">
+        <h2 class="mb-5 text-lg font-bold text-gray-900">Resources & Statistics</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-white border border-blue-100 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-1">{{ department.programs }}</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider">Programs</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-value">{{ department.faculty_count }}</div>
-            <div class="stat-label">Faculty Members</div>
+          <div class="bg-white border border-blue-100 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-1">{{ department.faculty_count }}</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider">Faculty Members</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-value">{{ department.students }}</div>
-            <div class="stat-label">Total Students</div>
+          <div class="bg-white border border-blue-100 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-1">{{ department.students }}</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider">Total Students</div>
           </div>
-          <div class="stat-card">
-            <div class="stat-value">{{ department.establishment_year }}</div>
-            <div class="stat-label">Established</div>
+          <div class="bg-white border border-blue-100 rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-blue-600 mb-1">{{ department.establishment_year }}</div>
+            <div class="text-xs text-gray-500 uppercase tracking-wider">Established</div>
           </div>
         </div>
       </div>
 
       <!-- Accreditation Card -->
-      <div class="detail-card">
-        <h2>Accreditation</h2>
-        <div class="info-grid">
-          <div class="info-item">
-            <span class="label">Accredited</span>
-            <span :class="['value', department.accredited ? 'accredited' : 'not-accredited']">
+      <div class="bg-gray-50 border border-blue-100 rounded-xl p-6">
+        <h2 class="mb-5 text-lg font-bold text-gray-900">Accreditation</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Accredited</span>
+            <span :class="department.accredited ? 'text-green-800 font-semibold' : 'text-red-800 font-semibold'" class="text-base">
               {{ department.accredited ? '✓ Yes' : '✗ No' }}
             </span>
           </div>
-          <div class="info-item" v-if="department.accreditationBody">
-            <span class="label">Accreditation Body</span>
-            <span class="value">{{ department.accreditationBody }}</span>
+          <div v-if="department.accreditationBody" class="flex flex-col gap-1">
+            <span class="text-xs font-semibold text-gray-600 uppercase tracking-wider">Accreditation Body</span>
+            <span class="text-base font-medium text-gray-900">{{ department.accreditationBody }}</span>
           </div>
         </div>
       </div>
 
       <!-- Specializations Card -->
-      <div v-if="department.specialization && department.specialization.length" class="detail-card">
-        <h2>Specializations</h2>
-        <div class="specialization-tags">
-          <span v-for="spec in department.specialization" :key="spec" class="spec-tag">
+      <div v-if="department.specialization && department.specialization.length" class="bg-gray-50 border border-blue-100 rounded-xl p-6">
+        <h2 class="mb-5 text-lg font-bold text-gray-900">Specializations</h2>
+        <div class="flex flex-wrap gap-2">
+          <span v-for="spec in department.specialization" :key="spec" class="bg-white border border-blue-100 text-blue-600 px-3 py-1 rounded-full text-sm font-medium">
             {{ spec }}
           </span>
         </div>
       </div>
 
       <!-- Back Button -->
-      <div class="back-section">
-        <button @click="handleBack" class="btn-back">← Back to Departments</button>
+      <div class="mt-4">
+        <button @click="handleBack" class="bg-blue-50 text-blue-600 border border-blue-100 px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all hover:bg-blue-100 hover:border-blue-600">← Back to Departments</button>
       </div>
     </div>
 
-    <div v-else class="error-state">
+    <div v-else class="text-center py-12 text-red-600">
       <p>Department not found</p>
-      <button @click="handleBack" class="btn-back">Back to Departments</button>
+      <button @click="handleBack" class="bg-blue-50 text-blue-600 border border-blue-100 px-6 py-3 rounded-lg font-semibold cursor-pointer transition-all hover:bg-blue-100 hover:border-blue-600 mt-4">Back to Departments</button>
     </div>
 
     <!-- Confirm Dialog -->
@@ -226,253 +226,3 @@ const handleBack = () => {
     />
   </section>
 </template>
-
-<style scoped>
-.page-card {
-  background: white;
-  border: 1px solid #dfe7fb;
-  border-radius: 1.2rem;
-  box-shadow: 0 16px 40px rgba(20, 33, 61, 0.06);
-  padding: 1.25rem;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-}
-
-.eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #60708f;
-  font-weight: 600;
-}
-
-h1 {
-  margin: 0 0 0.4rem;
-  color: #14213d;
-}
-
-.page-header > div > p:last-child {
-  margin: 0;
-  color: #5d6d8f;
-  font-size: 0.95rem;
-}
-
-.header-actions {
-  display: flex;
-  gap: 0.75rem;
-}
-
-.btn-delete {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn-delete:hover {
-  background: #c82333;
-}
-
-.loading-state,
-.error-state {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8fa3;
-}
-
-.error-state {
-  color: #dc3545;
-}
-
-.department-detail {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.detail-card {
-  background: #f8fafb;
-  border: 1px solid #eef2f9;
-  border-radius: 1rem;
-  padding: 1.5rem;
-}
-
-.detail-card h2 {
-  margin: 0 0 1.25rem;
-  font-size: 1.1rem;
-  color: #14213d;
-  font-weight: 700;
-}
-
-.info-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.25rem;
-}
-
-.info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-.info-item.full-width {
-  grid-column: 1 / -1;
-}
-
-.label {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #5d6d8f;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.value {
-  font-size: 1rem;
-  color: #14213d;
-  font-weight: 500;
-}
-
-.value.email {
-  color: #214d9c;
-}
-
-.code-badge {
-  display: inline-block;
-  background: #214d9c;
-  color: white;
-  padding: 0.35rem 0.7rem;
-  border-radius: 0.4rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 0.35rem 0.8rem;
-  border-radius: 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.status-badge.active {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status-badge.inactive {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.value.accredited {
-  color: #155724;
-  font-weight: 600;
-}
-
-.value.not-accredited {
-  color: #721c24;
-  font-weight: 600;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 1rem;
-}
-
-.stat-card {
-  background: white;
-  border: 1px solid #dfe7fb;
-  border-radius: 0.75rem;
-  padding: 1.25rem;
-  text-align: center;
-}
-
-.stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #214d9c;
-  margin-bottom: 0.35rem;
-}
-
-.stat-label {
-  font-size: 0.85rem;
-  color: #7f8fa3;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.specialization-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.spec-tag {
-  background: white;
-  border: 1px solid #dfe7fb;
-  color: #214d9c;
-  padding: 0.4rem 0.8rem;
-  border-radius: 1rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.back-section {
-  margin-top: 1rem;
-}
-
-.btn-back {
-  background: #f0f4ff;
-  color: #214d9c;
-  border: 1px solid #dfe7fb;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.6rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-back:hover {
-  background: #ecf1ff;
-  border-color: #214d9c;
-}
-
-@media (max-width: 768px) {
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .header-actions {
-    width: 100%;
-    flex-direction: column;
-  }
-
-  .header-actions button {
-    width: 100%;
-  }
-
-  .info-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-</style>

@@ -1,75 +1,93 @@
 ﻿<template>
-  <div class="table-container">
-    <div v-if="departments.length === 0" class="empty-state">
+  <div class="w-full">
+    <div v-if="departments.length === 0" class="text-center py-12 text-gray-500">
       <p>No departments found</p>
     </div>
-    <table v-else class="data-table">
-      <thead>
-        <tr>
-          <th style="width: 40px">
-            <input 
-              type="checkbox" 
-              :checked="allSelected"
-              @change="toggleSelectAll"
-              class="checkbox"
-            />
-          </th>
-          <th @click="sortBy('name')" class="sortable">
-            Department Name
-            <span v-if="sortField === 'name'" class="sort-indicator">
-              {{ sortOrder === 'asc' ? '▲' : '▼' }}
-            </span>
-          </th>
-          <th @click="sortBy('code')" class="sortable">Code</th>
-          <th @click="sortBy('faculty')" class="sortable">Faculty</th>
-          <th @click="sortBy('head')" class="sortable">Department Head</th>
-          <th @click="sortBy('programs')" class="sortable">Programs</th>
-          <th @click="sortBy('students')" class="sortable">Students</th>
-          <th @click="sortBy('status')" class="sortable">Status</th>
-          <th style="width: 150px">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="department in sortedDepartments" :key="department.id" class="table-row">
-          <td>
-            <input 
-              type="checkbox" 
-              :checked="selected.includes(department.id)"
-              @change="toggleSelect(department.id)"
-              class="checkbox"
-            />
-          </td>
-          <td class="name-cell">
-            <div class="dept-name">{{ department.name }}</div>
-          </td>
-          <td><span class="code-badge">{{ department.code }}</span></td>
-          <td>{{ department.faculty }}</td>
-          <td>
-            <div class="head-info">
-              <div>{{ department.head }}</div>
-              <small>{{ department.headEmail }}</small>
-            </div>
-          </td>
-          <td class="center">{{ department.programs }}</td>
-          <td class="center">{{ department.students }}</td>
-          <td>
-            <span :class="['status-badge', department.status]">
-              {{ department.status === 'active' ? '✓ Active' : '✗ Inactive' }}
-            </span>
-          </td>
-          <td class="actions">
-            <button @click="$emit('view', department.id)" class="btn-icon" title="View">View</button>
-            <button @click="$emit('edit', department.id)" class="btn-icon" title="Edit">Edit</button>
-            <button @click="$emit('delete', department.id)" class="btn-icon delete" title="Delete">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-else class="overflow-hidden rounded-xl shadow-lg border border-blue-100">
+      <table class="w-full border-collapse bg-white">
+        <thead class="bg-gradient-to-r from-blue-600 to-blue-700 text-white">
+          <tr>
+            <th class="w-12 p-4 text-left font-semibold text-sm select-none">
+              <input 
+                type="checkbox" 
+                :checked="allSelected"
+                @change="toggleSelectAll"
+                class="cursor-pointer w-[18px] h-[18px] accent-white"
+              />
+            </th>
+            <th @click="sortBy('name')" class="p-4 text-left font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">
+              Department Name
+              <span v-if="sortField === 'name'" class="ml-2 text-xs">
+                {{ sortOrder === 'asc' ? '▲' : '▼' }}
+              </span>
+            </th>
+            <th @click="sortBy('code')" class="w-24 p-4 text-left font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">Code</th>
+            <th @click="sortBy('faculty')" class="w-32 p-4 text-left font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">Faculty</th>
+            <th @click="sortBy('head')" class="w-48 p-4 text-left font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">Department Head</th>
+            <th @click="sortBy('programs')" class="w-20 p-4 text-center font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">Programs</th>
+            <th @click="sortBy('students')" class="w-20 p-4 text-center font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">Students</th>
+            <th @click="sortBy('status')" class="w-24 p-4 text-center font-semibold text-sm select-none cursor-pointer transition-colors hover:bg-blue-500/80">Status</th>
+            <th class="w-40 p-4 text-center font-semibold text-sm">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            v-for="(department, index) in sortedDepartments" 
+            :key="department.id" 
+            :class="[
+              'border-b border-blue-100 transition-all duration-200',
+              index % 2 === 0 ? 'bg-white' : 'bg-blue-50/30',
+              'hover:bg-blue-100 hover:shadow-md'
+            ]"
+          >
+            <td class="p-4">
+              <input 
+                type="checkbox" 
+                :checked="selected.includes(department.id)"
+                @change="toggleSelect(department.id)"
+                class="cursor-pointer w-[18px] h-[18px] accent-blue-600"
+              />
+            </td>
+            <td class="p-4">
+              <div class="font-semibold text-gray-900">{{ department.name }}</div>
+            </td>
+            <td class="p-4">
+              <span class="inline-block bg-blue-600 text-white px-3 py-1 rounded-lg font-semibold text-xs shadow-sm">{{ department.code }}</span>
+            </td>
+            <td class="p-4 text-sm text-gray-700">{{ department.faculty }}</td>
+            <td class="p-4">
+              <div class="text-sm">
+                <div class="font-medium text-gray-900">{{ department.head }}</div>
+                <small class="block text-gray-500 text-xs">{{ department.headEmail }}</small>
+              </div>
+            </td>
+            <td class="p-4 text-center">
+              <span class="inline-block bg-purple-100 text-purple-700 px-3 py-1 rounded-full font-bold text-sm">{{ department.programs }}</span>
+            </td>
+            <td class="p-4 text-center">
+              <span class="inline-block bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold text-sm">{{ department.students }}</span>
+            </td>
+            <td class="p-4 text-center">
+              <span :class="statusBadgeClasses(department.status)">
+                {{ department.status === 'active' ? '✓ Active' : '✗ Inactive' }}
+              </span>
+            </td>
+            <td class="p-4">
+              <div class="flex gap-2 justify-center">
+                <button @click="$emit('view', department.id)" class="bg-blue-50 text-blue-600 border border-blue-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:bg-blue-600 hover:text-white hover:shadow-md" title="View">View</button>
+                <button @click="$emit('edit', department.id)" class="bg-amber-50 text-amber-600 border border-amber-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:bg-amber-600 hover:text-white hover:shadow-md" title="Edit">Edit</button>
+                <button @click="$emit('delete', department.id)" class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all hover:bg-red-600 hover:text-white hover:shadow-md" title="Delete">Delete</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
     <!-- Bulk Actions -->
-    <div v-if="selected.length > 0" class="bulk-actions">
-      <span>{{ selected.length }} selected</span>
-      <button @click="handleBulkDelete" class="btn-delete">Delete Selected</button>
+    <div v-if="selected.length > 0" class="flex justify-between items-center p-4 bg-gradient-to-r from-blue-50 to-blue-100 border-t border-blue-200 rounded-b-xl shadow-md mt-4">
+      <span class="font-semibold text-gray-700">{{ selected.length }} selected</span>
+      <button @click="handleBulkDelete" class="bg-red-600 text-white border-none px-6 py-2.5 rounded-lg font-semibold cursor-pointer transition-all hover:bg-red-700 hover:shadow-lg">Delete Selected</button>
     </div>
   </div>
 </template>
@@ -143,173 +161,11 @@ const handleBulkDelete = () => {
   emit('bulk-delete', selected.value)
   selected.value = []
 }
+
+const statusBadgeClasses = (status) => {
+  const baseClasses = 'inline-block px-3 py-1 rounded-full text-xs font-semibold'
+  return status === 'active'
+    ? `${baseClasses} bg-green-100 text-green-800`
+    : `${baseClasses} bg-red-100 text-red-800`
+}
 </script>
-
-<style scoped>
-.table-container {
-  width: 100%;
-}
-
-.empty-state {
-  text-align: center;
-  padding: 3rem;
-  color: #7f8fa3;
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-}
-
-thead {
-  background: #f8fafb;
-  border-bottom: 2px solid #dfe7fb;
-}
-
-th {
-  padding: 1rem;
-  text-align: left;
-  font-weight: 600;
-  color: #5d6d8f;
-  font-size: 0.9rem;
-  user-select: none;
-}
-
-.sortable {
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.sortable:hover {
-  background: #ecf1ff;
-}
-
-.sort-indicator {
-  margin-left: 0.4rem;
-  font-size: 0.7rem;
-}
-
-.table-row {
-  border-bottom: 1px solid #eef2f9;
-  transition: background 0.2s;
-}
-
-.table-row:hover {
-  background: #f8fafb;
-}
-
-td {
-  padding: 1rem;
-  font-size: 0.9rem;
-}
-
-.name-cell {
-  font-weight: 600;
-  color: #14213d;
-}
-
-.dept-name {
-  font-weight: 600;
-}
-
-.code-badge {
-  background: #eef2f9;
-  padding: 0.3rem 0.7rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  color: #214d9c;
-  font-size: 0.85rem;
-}
-
-.head-info {
-  font-size: 0.9rem;
-}
-
-.head-info small {
-  display: block;
-  color: #7f8fa3;
-  font-size: 0.8rem;
-}
-
-.center {
-  text-align: center;
-  font-weight: 600;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 0.35rem 0.8rem;
-  border-radius: 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-}
-
-.status-badge.active {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status-badge.inactive {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.actions {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-}
-
-.btn-icon {
-  background: none;
-  border: 1px solid #dfe7fb;
-  cursor: pointer;
-  font-size: 0.8rem;
-  padding: 0.3rem 0.5rem;
-  border-radius: 0.4rem;
-  transition: all 0.2s;
-  font-weight: 500;
-}
-
-.btn-icon:hover {
-  background: #ecf1ff;
-  color: #214d9c;
-}
-
-.btn-icon.delete:hover {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.checkbox {
-  cursor: pointer;
-  width: 18px;
-  height: 18px;
-}
-
-.bulk-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background: #f0f4ff;
-  border-top: 1px solid #dfe7fb;
-  border-radius: 0 0 1.2rem 1.2rem;
-}
-
-.btn-delete {
-  background: #dc3545;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.6rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 0.2s;
-}
-
-.btn-delete:hover {
-  background: #c82333;
-}
-</style>
