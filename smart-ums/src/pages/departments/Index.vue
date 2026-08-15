@@ -26,6 +26,10 @@ const handleAddDepartment = () => {
   router.push({ name: 'departments-create' })
 }
 
+const handleViewDepartment = (id) => {
+  router.push({ name: 'departments-show', params: { id } })
+}
+
 const handleEditDepartment = (id) => {
   router.push({ name: 'departments-edit', params: { id } })
 }
@@ -116,6 +120,7 @@ onMounted(updateSummary)
     <div v-if="viewMode === 'table'" class="content-section">
       <DepartmentTable
         :departments="departmentStore.filteredDepartments"
+        @view="handleViewDepartment"
         @edit="handleEditDepartment"
         @delete="handleDeleteDepartment"
         @bulk-delete="handleBulkDelete"
@@ -129,6 +134,7 @@ onMounted(updateSummary)
           v-for="department in departmentStore.filteredDepartments"
           :key="department.id"
           :department="department"
+          @view="handleViewDepartment(department.id)"
           @edit="handleEditDepartment(department.id)"
           @delete="handleDeleteDepartment(department.id)"
         />

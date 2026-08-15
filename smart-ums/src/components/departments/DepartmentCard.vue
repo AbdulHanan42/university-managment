@@ -67,8 +67,9 @@
         </span>
       </div>
       <div class="actions">
-        <button @click="$emit('edit')" class="btn-action" title="Edit">✎</button>
-        <button @click="$emit('delete')" class="btn-action delete" title="Delete">🗑</button>
+        <button @click="$emit('view')" class="btn-action" title="View Details">View</button>
+        <button @click="$emit('edit')" class="btn-action" title="Edit">Edit</button>
+        <button @click="$emit('delete')" class="btn-action delete" title="Delete">Delete</button>
       </div>
     </div>
   </article>
@@ -84,7 +85,7 @@ defineProps({
   }
 })
 
-defineEmits(['edit', 'delete'])
+defineEmits(['view', 'edit', 'delete'])
 </script>
 
 <style scoped>
@@ -303,14 +304,11 @@ defineEmits(['edit', 'delete'])
 .btn-action {
   background: white;
   border: 1px solid #dfe7fb;
-  width: 32px;
-  height: 32px;
+  padding: 0.4rem 0.6rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   transition: all 0.2s;
 }
 

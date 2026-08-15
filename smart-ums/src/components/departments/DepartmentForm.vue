@@ -106,6 +106,27 @@
           />
         </div>
       </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="floor">Floor</label>
+          <input 
+            id="floor"
+            v-model="formData.floor" 
+            type="text" 
+            placeholder="e.g., 3rd Floor"
+          />
+        </div>
+        <div class="form-group">
+          <label for="office_hours">Office Hours</label>
+          <input 
+            id="office_hours"
+            v-model="formData.office_hours" 
+            type="text" 
+            placeholder="e.g., Monday-Friday, 9:00 AM - 5:00 PM"
+          />
+        </div>
+      </div>
     </fieldset>
 
     <!-- Resources Section -->
@@ -179,6 +200,21 @@
       </div>
     </fieldset>
 
+    <!-- Specializations Section -->
+    <fieldset class="form-section">
+      <legend>Specializations</legend>
+      <div class="form-group">
+        <label for="specialization">Specializations (comma-separated)</label>
+        <input 
+          id="specialization"
+          v-model="specializationInput" 
+          type="text" 
+          placeholder="e.g., AI, Machine Learning, Cloud Computing"
+        />
+        <small class="help-text">Enter specializations separated by commas</small>
+      </div>
+    </fieldset>
+
     <!-- Form Actions -->
     <div class="form-actions">
       <button type="submit" class="btn-primary" :disabled="isSubmitting">
@@ -229,11 +265,24 @@ const formData = ref({
   specialization: []
 })
 
+const specializationInput = computed({
+  get: () => formData.value.specialization.join(', '),
+  set: (value) => {
+    formData.value.specialization = value
+      .split(',')
+      .map(s => s.trim())
+      .filter(s => s.length > 0)
+  }
+})
+
 watch(
   () => props.initialData,
   (newData) => {
     if (newData) {
       formData.value = { ...newData }
+      if (!formData.value.specialization) {
+        formData.value.specialization = []
+      }
     }
   },
   { immediate: true }
@@ -359,6 +408,12 @@ textarea {
 
 .error {
   color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+}
+
+.help-text {
+  color: #7f8fa3;
   font-size: 0.8rem;
   margin-top: 0.3rem;
 }
