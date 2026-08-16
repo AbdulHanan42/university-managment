@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-  <aside class="bg-[#071a3a] text-blue-50 p-6 flex flex-col gap-5">
+  <aside class="fixed left-0 top-0 h-screen w-[280px] bg-[#071a3a] text-blue-50 p-6 flex flex-col gap-5 overflow-y-auto z-50">
     <div class="border-b border-white/16 pb-4">
       <p class="mb-1 text-xs uppercase tracking-widest opacity-70">University management</p>
       <h1 class="m-0 text-2xl">Smart UMS</h1>
@@ -32,3 +32,27 @@ defineProps({
     </nav>
   </aside>
 </template>
+
+<style scoped>
+/* Custom Scrollbar */
+aside::-webkit-scrollbar {
+  width: 8px;
+}
+
+aside::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+
+aside::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+aside::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  background-clip: content-box;
+}
+</style>

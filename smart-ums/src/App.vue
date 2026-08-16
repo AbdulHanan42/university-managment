@@ -51,7 +51,7 @@ const pageTitle = computed(() => {
 </script>
 
 <template>
-  <div class="grid grid-cols-[280px_minmax(0,1fr)] min-h-screen bg-gradient-to-br from-blue-50/50 to-blue-100/50">
+  <div class="min-h-screen bg-gradient-to-br from-blue-50/50 to-blue-100/50 ml-[280px]">
     <AppSidebar :navigation="navigation" />
 
     <div class="flex flex-col">
@@ -79,8 +79,8 @@ const pageTitle = computed(() => {
 }
 
 @media (max-width: 960px) {
-  .grid.grid-cols-\[280px_minmax\(0\,1fr\)\] {
-    grid-template-columns: 1fr;
+  .ml-\[280px\] {
+    margin-left: 0;
   }
 
   .p-6 {
