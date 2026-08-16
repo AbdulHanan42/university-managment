@@ -4,7 +4,6 @@ import { useRouter } from 'vue-router'
 import { useDepartmentStore } from '@/stores/department.store'
 import { useToast } from '@/composables/useToast'
 import AppButton from '@/components/common/AppButton.vue'
-import AppConfirmDialog from '@/components/common/AppConfirmDialog.vue'
 import DepartmentTable from '@/components/departments/DepartmentTable.vue'
 import DepartmentCard from '@/components/departments/DepartmentCard.vue'
 
@@ -20,16 +19,6 @@ const summaryCards = ref([
   { title: 'Faculty members', value: '59', subtitle: 'Across all departments' },
   { title: 'Total students', value: '1,900', subtitle: 'Enrolled in departments' }
 ])
-
-// Confirm dialog state
-const confirmDialog = ref({
-  visible: false,
-  title: '',
-  message: '',
-  detail: '',
-  type: 'danger',
-  onConfirm: null
-})
 
 onMounted(() => {
   departmentStore.fetchDepartments()
@@ -47,42 +36,24 @@ const handleEditDepartment = (id) => {
   router.push({ name: 'departments-edit', params: { id } })
 }
 
-const showDeleteConfirm = (id, isBulk = false, ids = []) => {
-  const count = isBulk ? ids.length : 1
-  confirmDialog.value = {
-    visible: true,
-    title: 'Delete Department' + (isBulk ? 's' : ''),
-    message: `Are you sure you want to delete ${count} department${isBulk ? 's' : ''}?`,
-    detail: isBulk ? 'This action cannot be undone and will affect all selected departments.' : 'This action cannot be undone.',
-    type: 'danger',
-    onConfirm: async () => {
-      try {
-        if (isBulk) {
-          await departmentStore.deleteMultipleDepartments(ids)
-          toast.success(`${count} departments deleted successfully`)
-        } else {
-          await departmentStore.deleteDepartment(id)
-          toast.success('Department deleted successfully')
-        }
-        confirmDialog.value.visible = false
-      } catch (error) {
-        toast.error('Failed to delete department(s)')
-        console.error('Delete error:', error)
-      }
-    }
+const handleDeleteDepartment = async (id) => {
+  try {
+    await departmentStore.deleteDepartment(id)
+    toast.success('Department deleted successfully')
+  } catch (error) {
+    toast.error('Failed to delete department')
+    console.error('Delete error:', error)
   }
 }
 
-const handleDeleteDepartment = (id) => {
-  showDeleteConfirm(id)
-}
-
-const handleBulkDelete = (ids) => {
-  showDeleteConfirm(null, true, ids)
-}
-
-const handleConfirmDialogCancel = () => {
-  confirmDialog.value.visible = false
+const handleBulkDelete = async (ids) => {
+  try {
+    await departmentStore.deleteMultipleDepartments(ids)
+    toast.success(`${ids.length} departments deleted successfully`)
+  } catch (error) {
+    toast.error('Failed to delete departments')
+    console.error('Bulk delete error:', error)
+  }
 }
 
 const updateSummary = () => {
@@ -184,19 +155,6 @@ onMounted(updateSummary)
         <p>No departments found</p>
       </div>
     </div>
-
-    <!-- Confirm Dialog -->
-    <AppConfirmDialog
-      :visible="confirmDialog.visible"
-      :title="confirmDialog.title"
-      :message="confirmDialog.message"
-      :detail="confirmDialog.detail"
-      :type="confirmDialog.type"
-      confirmText="Delete"
-      cancelText="Cancel"
-      @confirm="confirmDialog.onConfirm"
-      @cancel="handleConfirmDialogCancel"
-    />
   </section>
 </template>
 
