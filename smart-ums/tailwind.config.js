@@ -8,22 +8,54 @@ export default {
     extend: {
       colors: {
         primary: {
-          50: '#f0f4ff',
-          100: '#e0e7ff',
-          200: '#c7d2fe',
-          300: '#a5b4fc',
-          400: '#818cf8',
-          500: '#6366f1',
-          600: '#4f46e5',
-          700: '#4338ca',
-          800: '#3730a3',
-          900: '#312e81',
-          950: '#1e1b4b',
+          DEFAULT: 'var(--color-primary)',
+          light: 'var(--color-primary-light)',
+          dark: 'var(--color-primary-dark)',
+          accent: 'var(--color-primary-accent)',
+        },
+        secondary: {
+          DEFAULT: 'var(--color-secondary)',
+          light: 'var(--color-secondary-light)',
+        },
+        success: {
+          DEFAULT: 'var(--color-success)',
+          bg: 'var(--color-success-bg)',
+        },
+        error: {
+          DEFAULT: 'var(--color-error)',
+          bg: 'var(--color-error-bg)',
+          light: 'var(--color-error-light)',
+          dark: 'var(--color-error-dark)',
+        },
+        warning: {
+          DEFAULT: 'var(--color-warning)',
+          bg: 'var(--color-warning-bg)',
+        },
+        text: {
+          primary: 'var(--color-text-primary)',
+          secondary: 'var(--color-text-secondary)',
+          muted: 'var(--color-text-muted)',
+        },
+        border: {
+          DEFAULT: 'var(--color-border)',
+          light: 'var(--color-border-light)',
+        },
+        bg: {
+          white: 'var(--color-bg-white)',
+          light: 'var(--color-bg-light)',
+          selected: 'var(--color-bg-selected)',
+          page: 'var(--color-bg-page)',
+        },
+        accent: {
+          purple: 'var(--color-accent-purple)',
+          'purple-light': 'var(--color-accent-purple-light)',
+          green: 'var(--color-accent-green)',
+          'green-light': 'var(--color-accent-green-light)',
         },
         brand: {
-          blue: '#214d9c',
-          light: '#ecf1ff',
-          border: '#dfe7fb',
+          blue: 'var(--color-primary)',
+          light: 'var(--color-primary-light)',
+          border: 'var(--color-border)',
         }
       },
       fontFamily: {

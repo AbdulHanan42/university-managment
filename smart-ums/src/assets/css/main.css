@@ -5,4 +5,78 @@
 /* src/assets/css/main.css */
 :root {
   color-scheme: light;
+  
+  /* Primary Colors */
+  --color-primary: #214d9c;
+  --color-primary-light: #e8f4ff;
+  --color-primary-dark: #1a3d7a;
+  --color-primary-accent: #0066cc;
+  
+  /* Secondary Colors */
+  --color-secondary: #7c3aed;
+  --color-secondary-light: #f0e8ff;
+  
+  /* Success Colors */
+  --color-success: #155724;
+  --color-success-bg: #d4edda;
+  
+  /* Error Colors */
+  --color-error: #721c24;
+  --color-error-bg: #f8d7da;
+  --color-error-light: #fee8e8;
+  --color-error-dark: #c0392b;
+  
+  /* Warning Colors */
+  --color-warning: #856404;
+  --color-warning-bg: #fff3cd;
+  
+  /* Neutral Colors */
+  --color-text-primary: #14213d;
+  --color-text-secondary: #5d6d8f;
+  --color-text-muted: #7f8fa3;
+  --color-border: #dfe7fb;
+  --color-border-light: #eef2f9;
+  --color-bg-light: #f8fafb;
+  --color-bg-selected: #f0f4ff;
+  
+  /* Background Colors */
+  --color-bg-white: #ffffff;
+  --color-bg-page: #f3f6ff;
+  
+  /* Accent Colors */
+  --color-accent-purple: #7c3aed;
+  --color-accent-purple-light: #f0e8ff;
+  --color-accent-green: #155724;
+  --color-accent-green-light: #d4edda;
+}
+
+/* Ensure CSS variables are available globally */
+* {
+  --color-primary: #214d9c;
+  --color-primary-light: #e8f4ff;
+  --color-primary-dark: #1a3d7a;
+  --color-primary-accent: #0066cc;
+  --color-secondary: #7c3aed;
+  --color-secondary-light: #f0e8ff;
+  --color-success: #155724;
+  --color-success-bg: #d4edda;
+  --color-error: #721c24;
+  --color-error-bg: #f8d7da;
+  --color-error-light: #fee8e8;
+  --color-error-dark: #c0392b;
+  --color-warning: #856404;
+  --color-warning-bg: #fff3cd;
+  --color-text-primary: #14213d;
+  --color-text-secondary: #5d6d8f;
+  --color-text-muted: #7f8fa3;
+  --color-border: #dfe7fb;
+  --color-border-light: #eef2f9;
+  --color-bg-light: #f8fafb;
+  --color-bg-selected: #f0f4ff;
+  --color-bg-white: #ffffff;
+  --color-bg-page: #f3f6ff;
+  --color-accent-purple: #7c3aed;
+  --color-accent-purple-light: #f0e8ff;
+  --color-accent-green: #155724;
+  --color-accent-green-light: #d4edda;
 }

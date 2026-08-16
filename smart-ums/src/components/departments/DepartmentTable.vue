@@ -164,14 +164,15 @@ const handleBulkDelete = () => {
 
 <style scoped>
 .department-table-container {
-  background: white;
+  background: var(--color-bg-white);
   border-radius: 1rem;
-  border: 1px solid #dfe7fb;
+  border: 1px solid var(--color-border);
   overflow: hidden;
 }
 
 .table-wrapper {
   overflow-x: auto;
+  overflow-y: visible;
 }
 
 .department-table {
@@ -180,18 +181,18 @@ const handleBulkDelete = () => {
 }
 
 .department-table thead {
-  background: #f8fafb;
+  background: var(--color-bg-light);
 }
 
 .department-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  border-bottom: 2px solid #dfe7fb;
+  border-bottom: 2px solid var(--color-border);
 }
 
 .department-table th.sortable {
@@ -200,20 +201,20 @@ const handleBulkDelete = () => {
 }
 
 .department-table th.sortable:hover {
-  background: #eef2f9;
+  background: var(--color-border-light);
 }
 
 .department-table td {
   padding: 1rem;
-  border-bottom: 1px solid #eef2f9;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .department-table tbody tr:hover {
-  background: #f8fafb;
+  background: var(--color-bg-light);
 }
 
 .department-table tbody tr.selected {
-  background: #f0f4ff;
+  background: var(--color-bg-selected);
 }
 
 .checkbox-col {
@@ -234,19 +235,19 @@ const handleBulkDelete = () => {
 
 .department-info .name {
   margin: 0;
-  color: #14213d;
+  color: var(--color-text-primary);
   font-weight: 500;
 }
 
 .department-info .description {
   margin: 0;
-  color: #7f8fa3;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
 .code {
   font-weight: 500;
-  color: #214d9c;
+  color: var(--color-primary);
 }
 
 .head-info {
@@ -257,13 +258,13 @@ const handleBulkDelete = () => {
 
 .head-info .head-name {
   margin: 0;
-  color: #14213d;
+  color: var(--color-text-primary);
   font-weight: 500;
 }
 
 .head-info .head-email {
   margin: 0;
-  color: #7f8fa3;
+  color: var(--color-text-muted);
   font-size: 0.85rem;
 }
 
@@ -276,13 +277,13 @@ const handleBulkDelete = () => {
 }
 
 .status-active {
-  background: #d4edda;
-  color: #155724;
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .status-inactive {
-  background: #f8d7da;
-  color: #721c24;
+  background: var(--color-error-bg);
+  color: var(--color-error);
 }
 
 .actions-col {
@@ -302,9 +303,9 @@ const handleBulkDelete = () => {
   justify-content: center;
   width: 36px;
   height: 36px;
-  border: 1px solid #dfe7fb;
+  border: 1px solid var(--color-border);
   border-radius: 0.6rem;
-  background: white;
+  background: var(--color-bg-white);
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 1rem;
@@ -316,18 +317,18 @@ const handleBulkDelete = () => {
 }
 
 .btn-view:hover {
-  background: #e8f4ff;
-  border-color: #0066cc;
+  background: var(--color-primary-light);
+  border-color: var(--color-primary-accent);
 }
 
 .btn-edit:hover {
-  background: #f0e8ff;
-  border-color: #7c3aed;
+  background: var(--color-secondary-light);
+  border-color: var(--color-secondary);
 }
 
 .btn-delete:hover {
-  background: #fee8e8;
-  border-color: #c0392b;
+  background: var(--color-error-light);
+  border-color: var(--color-error-dark);
 }
 
 .bulk-actions {
@@ -335,13 +336,13 @@ const handleBulkDelete = () => {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 1.5rem;
-  background: #f8fafb;
-  border-top: 1px solid #dfe7fb;
+  background: var(--color-bg-light);
+  border-top: 1px solid var(--color-border);
 }
 
 .btn-delete-multi {
-  background: #fee8e8;
-  color: #c0392b;
+  background: var(--color-error-light);
+  color: var(--color-error-dark);
   padding: 0.65rem 1.2rem;
   border: none;
   border-radius: 0.75rem;
