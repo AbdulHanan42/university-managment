@@ -45,7 +45,6 @@
             <td class="faculty-name">
               <div class="faculty-info">
                 <p class="name">{{ facultyMember.name }}</p>
-                <p class="specialization">{{ facultyMember.specialization }}</p>
               </div>
             </td>
             <td class="email">{{ facultyMember.email }}</td>
@@ -209,7 +208,7 @@ const handleBulkDelete = () => {
 }
 
 .faculty-table td {
-  padding: 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid var(--color-border-light);
 }
 
@@ -263,20 +262,12 @@ const handleBulkDelete = () => {
 
 .faculty-info {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 .faculty-info .name {
   margin: 0;
   color: var(--color-text-primary);
   font-weight: 500;
-}
-
-.faculty-info .specialization {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
 }
 
 .email {
