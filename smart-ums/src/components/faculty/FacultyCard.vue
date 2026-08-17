@@ -1,9 +1,15 @@
 ﻿<template>
   <article class="bg-gradient-to-br from-primary-light/50 to-bg-page/50 border border-border rounded-xl p-6 flex flex-col h-full transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:border-primary">
     <div class="flex justify-between items-start gap-4 mb-4 pb-4 border-b border-border">
-      <div>
-        <h3 class="text-xl font-bold text-text-primary mb-1">{{ faculty.name }}</h3>
-        <span class="inline-block bg-primary text-white px-2 py-0.5 rounded text-sm font-semibold">{{ faculty.designation }}</span>
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-lg border-2 border-border bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+          <img v-if="faculty.imageUrl" :src="faculty.imageUrl" :alt="faculty.name" class="w-full h-full object-cover" />
+          <span v-else class="text-gray-400 text-2xl font-bold">{{ faculty.name?.charAt(0) || '?' }}</span>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-text-primary mb-1">{{ faculty.name }}</h3>
+          <span class="inline-block bg-primary text-white px-2 py-0.5 rounded text-sm font-semibold">{{ faculty.designation }}</span>
+        </div>
       </div>
       <span :class="statusBadgeClasses">
         {{ faculty.status === 'active' ? '✓' : faculty.status === 'on-leave' ? '⏸' : '✗' }}

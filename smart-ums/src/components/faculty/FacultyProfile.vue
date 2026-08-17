@@ -2,7 +2,8 @@
   <div class="faculty-profile">
     <div class="profile-header">
       <div class="avatar-placeholder">
-        {{ faculty.name?.charAt(0) || '?' }}
+        <img v-if="faculty.imageUrl" :src="faculty.imageUrl" :alt="faculty.name" class="w-full h-full object-cover" />
+        <span v-else>{{ faculty.name?.charAt(0) || '?' }}</span>
       </div>
       <div class="profile-info">
         <h3>{{ faculty.name }}</h3>

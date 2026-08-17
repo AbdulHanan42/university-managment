@@ -14,6 +14,7 @@
                 :checked="selected.length === faculty.length && faculty.length > 0"
               />
             </th>
+            <th class="image-col">Photo</th>
             <th @click="sortBy('name')" class="sortable">
               Name {{ sortField === 'name' ? (sortOrder === 'asc' ? '↑' : '↓') : '' }}
             </th>
@@ -34,6 +35,12 @@
                 :checked="isSelected(facultyMember.id)"
                 @change="toggleSelect(facultyMember.id)"
               />
+            </td>
+            <td class="image-col">
+              <div class="faculty-avatar">
+                <img v-if="facultyMember.imageUrl" :src="facultyMember.imageUrl" :alt="facultyMember.name" class="avatar-img" />
+                <span v-else class="avatar-initial">{{ facultyMember.name?.charAt(0) || '?' }}</span>
+              </div>
             </td>
             <td class="faculty-name">
               <div class="faculty-info">
@@ -222,6 +229,36 @@ const handleBulkDelete = () => {
   cursor: pointer;
   width: 18px;
   height: 18px;
+}
+
+.image-col {
+  width: 60px;
+  text-align: center;
+}
+
+.faculty-avatar {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-bg-light);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initial {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-text-muted);
 }
 
 .faculty-info {
