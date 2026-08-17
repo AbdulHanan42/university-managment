@@ -107,7 +107,7 @@ onMounted(updateSummary)
     <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
       <div class="flex gap-2 bg-bg-light p-2 rounded-lg">
         <button
-          :class="viewMode === 'table' ? 'bg-primary text-white border-primary' : 'bg-white border-border'"
+          :class="viewMode === 'table' ? 'bg-[#214d9c] text-white border-[#214d9c]' : 'bg-white border-border'"
           @click="viewMode = 'table'"
           title="Table View"
           class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
@@ -115,7 +115,7 @@ onMounted(updateSummary)
           📋 Table
         </button>
         <button
-          :class="viewMode === 'grid' ? 'bg-primary text-white border-primary' : 'bg-white border-border'"
+          :class="viewMode === 'grid' ? 'bg-[#214d9c] text-white border-[#214d9c]' : 'bg-white border-border'"
           @click="viewMode = 'grid'"
           title="Grid View"
           class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
