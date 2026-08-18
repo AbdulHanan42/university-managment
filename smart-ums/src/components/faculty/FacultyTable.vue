@@ -14,6 +14,7 @@
                 :checked="selected.length === faculty.length && faculty.length > 0"
               />
             </th>
+            <th class="image-col">Photo</th>
             <th @click="sortBy('name')" class="sortable">
               Name {{ sortField === 'name' ? (sortOrder === 'asc' ? '↑' : '↓') : '' }}
             </th>
@@ -35,10 +36,15 @@
                 @change="toggleSelect(facultyMember.id)"
               />
             </td>
+            <td class="image-col">
+              <div class="faculty-avatar">
+                <img v-if="facultyMember.imageUrl" :src="facultyMember.imageUrl" :alt="facultyMember.name" class="avatar-img" />
+                <span v-else class="avatar-initial">{{ facultyMember.name?.charAt(0) || '?' }}</span>
+              </div>
+            </td>
             <td class="faculty-name">
               <div class="faculty-info">
                 <p class="name">{{ facultyMember.name }}</p>
-                <p class="specialization">{{ facultyMember.specialization }}</p>
               </div>
             </td>
             <td class="email">{{ facultyMember.email }}</td>
@@ -202,7 +208,7 @@ const handleBulkDelete = () => {
 }
 
 .faculty-table td {
-  padding: 1rem;
+  padding: 0.75rem;
   border-bottom: 1px solid var(--color-border-light);
 }
 
@@ -224,22 +230,44 @@ const handleBulkDelete = () => {
   height: 18px;
 }
 
+.image-col {
+  width: 60px;
+  text-align: center;
+}
+
+.faculty-avatar {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--color-bg-light);
+  border: 2px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initial {
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-text-muted);
+}
+
 .faculty-info {
   display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
 }
 
 .faculty-info .name {
   margin: 0;
   color: var(--color-text-primary);
   font-weight: 500;
-}
-
-.faculty-info .specialization {
-  margin: 0;
-  color: var(--color-text-muted);
-  font-size: 0.85rem;
 }
 
 .email {

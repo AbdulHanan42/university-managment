@@ -3,6 +3,30 @@
     <!-- Personal Information Section -->
     <fieldset class="border-none p-0 pb-8 mb-6 border-b border-blue-50">
       <legend class="text-lg font-bold text-gray-900 mb-4 p-0">Personal Information</legend>
+      
+      <!-- Profile Image Upload -->
+      <div class="mb-6">
+        <label class="font-semibold text-gray-600 mb-2 text-sm block">Profile Image</label>
+        <div class="flex items-start gap-6">
+          <div class="flex-shrink-0">
+            <div class="w-32 h-32 rounded-lg border-2 border-dashed border-blue-200 bg-blue-50 flex items-center justify-center overflow-hidden">
+              <img v-if="formData.imageUrl" :src="formData.imageUrl" alt="Profile" class="w-full h-full object-cover" />
+              <span v-else class="text-gray-400 text-sm">No image</span>
+            </div>
+          </div>
+          <div class="flex-grow">
+            <input 
+              id="imageUrl"
+              v-model="formData.imageUrl" 
+              type="text" 
+              placeholder="Enter image URL (e.g., https://example.com/photo.jpg)"
+              class="w-full px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100 mb-2"
+            />
+            <p class="text-xs text-gray-500">Enter a URL for the faculty member's profile image</p>
+          </div>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
         <div class="flex flex-col">
           <label for="name" class="font-semibold text-gray-600 mb-2 text-sm">Full Name *</label>
@@ -297,6 +321,7 @@ const formData = ref({
   name: '',
   email: '',
   phone: '',
+  imageUrl: '',
   department: '',
   designation: 'Assistant Professor',
   status: 'active',
