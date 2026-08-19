@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="placeholder">
     <h2>FacultyFilters</h2>
-    <p>Placeholder component for src/components/faculty/FacultyFilters.vue.</p>
+    <p>Placeholder component  src/components/faculty/FacultyFilters.vue.</p>
   </div>
 </template>
 
