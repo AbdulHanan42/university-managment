@@ -1,13 +1,13 @@
 ﻿<template>
-  <article class="bg-gradient-to-br from-primary-light/50 to-bg-page/50 border border-border rounded-xl p-6 flex flex-col h-full transition-all duration-300 cursor-pointer hover:-translate-y-1 hover:shadow-lg hover:border-primary">
+  <article class="faculty-card bg-white border border-border rounded-xl p-6 flex flex-col h-full transition-all duration-300 cursor-pointer">
     <div class="flex justify-between items-start gap-4 mb-4 pb-4 border-b border-border">
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 rounded-lg border-2 border-border bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+        <div class="faculty-avatar w-16 h-16 rounded-lg border-2 border-border bg-white flex items-center justify-center overflow-hidden flex-shrink-0 transition-all duration-300">
           <img v-if="faculty.imageUrl" :src="faculty.imageUrl" :alt="faculty.name" class="w-full h-full object-cover" />
           <span v-else class="text-gray-400 text-2xl font-bold">{{ faculty.name?.charAt(0) || '?' }}</span>
         </div>
         <div>
-          <h3 class="text-xl font-bold text-text-primary mb-1">{{ faculty.name }}</h3>
+          <h3 class="text-xl font-bold text-text-primary mb-1 transition-colors duration-300">{{ faculty.name }}</h3>
           <span class="inline-block bg-primary text-white px-2 py-0.5 rounded text-sm font-semibold">{{ faculty.designation }}</span>
         </div>
       </div>
@@ -20,7 +20,7 @@
       <p class="text-text-secondary text-sm leading-relaxed m-0">{{ faculty.specialization }}</p>
     </div>
 
-    <div class="bg-white rounded-lg p-4 mb-4 border border-border-light">
+    <div class="bg-gray-50 rounded-lg p-4 mb-4 border border-border-light transition-all duration-300">
       <div class="flex gap-2 mb-2 text-sm">
         <span class="font-semibold text-text-secondary min-w-[70px]">Email:</span>
         <span class="text-primary flex-1 break-all">{{ faculty.email }}</span>
@@ -35,21 +35,21 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-3 mb-4 bg-white p-4 rounded-lg border border-border-light">
-      <div class="text-center">
-        <div class="text-2xl font-bold text-primary">{{ faculty.courses }}</div>
+    <div class="grid grid-cols-4 gap-3 mb-4 bg-gray-50 p-4 rounded-lg border border-border-light transition-all duration-300">
+      <div class="text-center stat-item">
+        <div class="text-2xl font-bold text-primary transition-colors duration-300">{{ faculty.courses }}</div>
         <div class="text-xs text-text-muted uppercase tracking-wider mt-0.5">Courses</div>
       </div>
-      <div class="text-center">
-        <div class="text-2xl font-bold text-primary">{{ faculty.totalStudents }}</div>
+      <div class="text-center stat-item">
+        <div class="text-2xl font-bold text-primary transition-colors duration-300">{{ faculty.totalStudents }}</div>
         <div class="text-xs text-text-muted uppercase tracking-wider mt-0.5">Students</div>
       </div>
-      <div class="text-center">
-        <div class="text-2xl font-bold text-primary">{{ faculty.experience }}</div>
+      <div class="text-center stat-item">
+        <div class="text-2xl font-bold text-primary transition-colors duration-300">{{ faculty.experience }}</div>
         <div class="text-xs text-text-muted uppercase tracking-wider mt-0.5">Years</div>
       </div>
-      <div class="text-center">
-        <div class="text-2xl font-bold text-primary">{{ faculty.publications }}</div>
+      <div class="text-center stat-item">
+        <div class="text-2xl font-bold text-primary transition-colors duration-300">{{ faculty.publications }}</div>
         <div class="text-xs text-text-muted uppercase tracking-wider mt-0.5">Pubs</div>
       </div>
     </div>
@@ -57,7 +57,7 @@
     <div v-if="faculty.researchInterests && faculty.researchInterests.length" class="mb-4">
       <span class="block text-sm font-semibold text-text-secondary mb-2">Research Interests:</span>
       <div class="flex flex-wrap gap-2">
-        <span v-for="interest in faculty.researchInterests" :key="interest" class="bg-white border border-border text-primary px-2 py-0.5 rounded-full text-sm font-medium">
+        <span v-for="interest in faculty.researchInterests" :key="interest" class="bg-gray-50 border border-border text-primary px-2 py-0.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:border-primary cursor-default">
           {{ interest }}
         </span>
       </div>
@@ -65,12 +65,12 @@
 
     <div class="flex justify-between items-center pt-4 border-t border-border">
       <div class="flex gap-2 items-center">
-        <span v-if="faculty.isHead" class="inline-block bg-success-bg text-success px-3 py-1 rounded text-sm font-semibold">👑 Dept Head</span>
+        <span v-if="faculty.isHead" class="inline-block bg-success-bg text-success px-3 py-1 rounded text-sm font-semibold transition-all duration-300 hover:bg-success hover:text-white">👑 Dept Head</span>
       </div>
       <div class="flex gap-2">
-        <button @click="$emit('view', faculty.id)" class="bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-primary hover:text-white">View</button>
-        <button @click="$emit('edit', faculty.id)" class="bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-primary hover:text-white">Edit</button>
-        <button @click="$emit('delete', faculty.id)" class="bg-error-light text-error border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-error hover:text-white">Delete</button>
+        <button @click="$emit('view', faculty.id)" class="action-btn btn-view bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">View</button>
+        <button @click="$emit('edit', faculty.id)" class="action-btn btn-edit bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">Edit</button>
+        <button @click="$emit('delete', faculty.id)" class="action-btn btn-delete bg-error-light text-error border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">Delete</button>
       </div>
     </div>
   </article>
@@ -102,6 +102,114 @@ const statusBadgeClasses = computed(() => {
 </script>
 
 <style scoped>
+.faculty-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.faculty-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border-color: var(--color-primary);
+}
+
+.faculty-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.faculty-card:hover::before {
+  transform: scaleX(1);
+}
+
+.faculty-avatar {
+  transition: all 0.3s ease;
+}
+
+.faculty-card:hover .faculty-avatar {
+  transform: scale(1.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(33, 77, 156, 0.3);
+}
+
+.faculty-card:hover h3 {
+  color: var(--color-primary);
+}
+
+.faculty-card:hover .bg-gray-50 {
+  background: #f8fafc;
+  border-color: var(--color-primary-light);
+}
+
+.stat-item {
+  transition: all 0.3s ease;
+}
+
+.faculty-card:hover .stat-item {
+  transform: translateY(-2px);
+}
+
+.faculty-card:hover .stat-item .text-2xl {
+  color: var(--color-primary-accent);
+  transform: scale(1.1);
+}
+
+.action-btn {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.action-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.action-btn:hover::before {
+  width: 200px;
+  height: 200px;
+}
+
+.btn-view:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(33, 77, 156, 0.4);
+}
+
+.btn-edit:hover {
+  background: var(--color-secondary);
+  color: white;
+  border-color: var(--color-secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.btn-delete:hover {
+  background: var(--color-error);
+  color: white;
+  border-color: var(--color-error);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

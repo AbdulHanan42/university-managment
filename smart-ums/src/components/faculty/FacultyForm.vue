@@ -15,14 +15,58 @@
             </div>
           </div>
           <div class="flex-grow">
-            <input 
-              id="imageUrl"
-              v-model="formData.imageUrl" 
-              type="text" 
-              placeholder="Enter image URL (e.g., https://example.com/photo.jpg)"
-              class="w-full px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100 mb-2"
-            />
-            <p class="text-xs text-gray-500">Enter a URL for the faculty member's profile image</p>
+            <!-- Image Source Toggle -->
+            <div class="flex gap-2 mb-3">
+              <button 
+                type="button"
+                @click="imageSource = 'upload'"
+                :class="imageSource === 'upload' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'"
+                class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              >
+                Upload from PC
+              </button>
+              <button 
+                type="button"
+                @click="imageSource = 'url'"
+                :class="imageSource === 'url' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-600'"
+                class="px-4 py-2 rounded-lg text-sm font-medium transition-all"
+              >
+                Enter URL
+              </button>
+            </div>
+
+            <!-- File Upload -->
+            <div v-if="imageSource === 'upload'" class="mb-2">
+              <input 
+                type="file"
+                accept="image/*"
+                @change="handleFileUpload"
+                class="w-full px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
+              />
+              <p class="text-xs text-gray-500 mt-1">Select an image file from your computer</p>
+            </div>
+
+            <!-- URL Input -->
+            <div v-else class="mb-2">
+              <input 
+                id="imageUrl"
+                v-model="formData.imageUrl" 
+                type="text" 
+                placeholder="Enter image URL (e.g., https://example.com/photo.jpg)"
+                class="w-full px-3 py-2 border border-blue-100 rounded-lg text-sm transition-all focus:outline-none focus:border-blue-600 focus:ring-3 focus:ring-blue-100"
+              />
+              <p class="text-xs text-gray-500 mt-1">Enter a URL for the faculty member's profile image</p>
+            </div>
+
+            <!-- Clear Image Button -->
+            <button 
+              v-if="formData.imageUrl"
+              type="button"
+              @click="clearImage"
+              class="text-red-600 text-xs hover:underline mt-1"
+            >
+              Remove image
+            </button>
           </div>
         </div>
       </div>
@@ -314,6 +358,7 @@ const emit = defineEmits(['submit', 'cancel'])
 
 const isSubmitting = ref(false)
 const errors = ref({})
+const imageSource = ref('upload') // 'upload' or 'url'
 
 const isEditing = computed(() => !!props.initialData?.id)
 
@@ -388,6 +433,27 @@ const handleSubmit = async () => {
     emit('submit', { ...formData.value })
   } finally {
     isSubmitting.value = false
+  }
+}
+
+const handleFileUpload = (event) => {
+  const file = event.target.files[0]
+  if (file) {
+    // Create a local URL for the uploaded file
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      formData.value.imageUrl = e.target.result
+    }
+    reader.readAsDataURL(file)
+  }
+}
+
+const clearImage = () => {
+  formData.value.imageUrl = ''
+  // Reset file input
+  const fileInput = document.querySelector('input[type="file"]')
+  if (fileInput) {
+    fileInput.value = ''
   }
 }
 </script>
