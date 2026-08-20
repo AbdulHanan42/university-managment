@@ -17,6 +17,23 @@
     </div>
 
     <div v-else-if="faculty" class="flex flex-col gap-6">
+      <!-- Profile Image Card -->
+      <div class="bg-gray-50 border border-blue-100 rounded-xl p-6">
+        <div class="flex items-center gap-6">
+          <div class="flex-shrink-0">
+            <div class="w-32 h-32 rounded-lg border-2 border-blue-200 bg-white flex items-center justify-center overflow-hidden">
+              <img v-if="faculty.imageUrl" :src="faculty.imageUrl" :alt="faculty.name" class="w-full h-full object-cover" />
+              <span v-else class="text-4xl font-bold text-gray-400">{{ faculty.name?.charAt(0) || '?' }}</span>
+            </div>
+          </div>
+          <div class="flex-grow">
+            <h2 class="text-2xl font-bold text-gray-900 mb-1">{{ faculty.name }}</h2>
+            <p class="text-lg text-blue-600 font-medium mb-2">{{ faculty.designation }}</p>
+            <p class="text-sm text-gray-600">{{ faculty.department }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- Basic Info Card -->
       <div class="bg-gray-50 border border-blue-100 rounded-xl p-6">
         <h2 class="mb-5 text-lg font-bold text-gray-900">Personal Information</h2>
