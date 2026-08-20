@@ -1,6 +1,9 @@
 ﻿import Dashboard from '../pages/admin/Dashboard.vue'
 import StudentIndex from '../pages/students/Index.vue'
 import FacultyIndex from '../pages/faculty/Index.vue'
+import FacultyCreate from '../pages/faculty/Create.vue'
+import FacultyEdit from '../pages/faculty/Edit.vue'
+import FacultyShow from '../pages/faculty/Show.vue'
 import DepartmentIndex from '../pages/departments/Index.vue'
 import DepartmentCreate from '../pages/departments/Create.vue'
 import DepartmentEdit from '../pages/departments/Edit.vue'
@@ -43,6 +46,24 @@ export const routes = [
     name: 'faculty',
     component: FacultyIndex,
     meta: { title: 'Faculty' },
+  },
+  {
+    path: '/faculty/create',
+    name: 'faculty-create',
+    component: FacultyCreate,
+    meta: { title: 'Create Faculty' },
+  },
+  {
+    path: '/faculty/:id',
+    name: 'faculty-show',
+    component: FacultyShow,
+    meta: { title: 'Faculty Details' },
+  },
+  {
+    path: '/faculty/:id/edit',
+    name: 'faculty-edit',
+    component: FacultyEdit,
+    meta: { title: 'Edit Faculty' },
   },
   {
     path: '/departments',
