@@ -9,6 +9,9 @@ import DepartmentCreate from '../pages/departments/Create.vue'
 import DepartmentEdit from '../pages/departments/Edit.vue'
 import DepartmentShow from '../pages/departments/Show.vue'
 import CourseIndex from '../pages/courses/Index.vue'
+import CourseCreate from '../pages/courses/Create.vue'
+import CourseEdit from '../pages/courses/Edit.vue'
+import CourseShow from '../pages/courses/Show.vue'
 import ProgramIndex from '../pages/programs/Index.vue'
 import ProgramCreate from '../pages/programs/Create.vue'
 import ProgramEdit from '../pages/programs/Edit.vue'
@@ -70,6 +73,24 @@ export const routes = [
     name: 'courses',
     component: CourseIndex,
     meta: { title: 'Courses' },
+  },
+  {
+    path: '/courses/create',
+    name: 'course-create',
+    component: CourseCreate,
+    meta: { title: 'Create Course' },
+  },
+  {
+    path: '/courses/:id',
+    name: 'course-show',
+    component: CourseShow,
+    meta: { title: 'Course Details' },
+  },
+  {
+    path: '/courses/:id/edit',
+    name: 'course-edit',
+    component: CourseEdit,
+    meta: { title: 'Edit Course' },
   },
   {
     path: '/departments',

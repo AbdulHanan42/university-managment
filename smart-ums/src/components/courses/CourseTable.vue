@@ -74,9 +74,6 @@
                 <button class="btn-action btn-edit" @click="$emit('edit', course.id)" title="Edit">
                   ✎
                 </button>
-                <button class="btn-action btn-assign" @click="$emit('assign', course.id)" title="Assign Faculty">
-                  👤
-                </button>
                 <button class="btn-action btn-delete" @click="handleDelete(course.id)" title="Delete">
                   🗑️
                 </button>
@@ -107,7 +104,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['view', 'edit', 'delete', 'bulk-delete', 'assign'])
+const emit = defineEmits(['view', 'edit', 'delete', 'bulk-delete'])
 
 const selected = ref([])
 const sortField = ref('code')
@@ -349,11 +346,6 @@ const handleBulkDelete = () => {
 .btn-edit:hover {
   background: var(--color-secondary-light);
   border-color: var(--color-secondary);
-}
-
-.btn-assign:hover {
-  background: var(--color-success-light);
-  border-color: var(--color-success);
 }
 
 .btn-delete:hover {

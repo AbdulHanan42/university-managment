@@ -35,10 +35,6 @@ const handleEditCourse = (id) => {
   router.push({ name: 'course-edit', params: { id } })
 }
 
-const handleAssignFaculty = (id) => {
-  router.push({ name: 'course-assign', params: { id } })
-}
-
 const handleDeleteCourse = async (id) => {
   try {
     await courseStore.deleteCourse(id)
@@ -112,7 +108,6 @@ onMounted(updateSummary)
         :courses="courseStore.filteredCourses"
         @view="handleViewCourse"
         @edit="handleEditCourse"
-        @assign="handleAssignFaculty"
         @delete="handleDeleteCourse"
         @bulk-delete="handleBulkDelete"
       />
