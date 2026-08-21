@@ -1,95 +1,138 @@
 ﻿<script setup>
-import { ref, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import { useCourseStore } from '@/stores/course.store'
+import { useToast } from '@/composables/useToast'
+import AppButton from '@/components/common/AppButton.vue'
+import CourseTable from '@/components/courses/CourseTable.vue'
 
-const props = defineProps({
-  summaryCards: {
-    type: Array,
-    default: () => [
-      { title: 'Active courses', value: '146', subtitle: 'Across 14 departments' },
-      { title: 'Open sections', value: '84', subtitle: 'Ready for registration' },
-      { title: 'Pending approvals', value: '9', subtitle: 'Needs faculty review' }
-    ]
-  }
+defineOptions({ name: 'CourseIndex' })
+
+const router = useRouter()
+const courseStore = useCourseStore()
+const toast = useToast()
+
+const viewMode = ref('table')
+const summaryCards = ref([
+  { title: 'Total courses', value: '12', subtitle: 'Across 5 departments' },
+  { title: 'Active courses', value: '11', subtitle: 'Currently offered' },
+  { title: 'Total enrolled', value: '531', subtitle: 'Students registered' }
+])
+
+onMounted(() => {
+  courseStore.fetchCourses()
 })
 
-const summaryCards = ref(props.summaryCards)
+const handleAddCourse = () => {
+  router.push({ name: 'course-create' })
+}
 
-watch(
-  () => props.summaryCards,
-  (newCards) => {
-    summaryCards.value = newCards
-  },
-  { immediate: true }
-)
+const handleViewCourse = (id) => {
+  router.push({ name: 'course-show', params: { id } })
+}
+
+const handleEditCourse = (id) => {
+  router.push({ name: 'course-edit', params: { id } })
+}
+
+const handleAssignFaculty = (id) => {
+  router.push({ name: 'course-assign', params: { id } })
+}
+
+const handleDeleteCourse = async (id) => {
+  try {
+    await courseStore.deleteCourse(id)
+    toast.success('Course deleted successfully')
+  } catch (error) {
+    toast.error('Failed to delete course')
+    console.error('Delete error:', error)
+  }
+}
+
+const handleBulkDelete = async (ids) => {
+  try {
+    await courseStore.deleteMultipleCourses(ids)
+    toast.success(`${ids.length} courses deleted successfully`)
+  } catch (error) {
+    toast.error('Failed to delete courses')
+    console.error('Bulk delete error:', error)
+  }
+}
+
+const updateSummary = () => {
+  const stats = courseStore.statistics
+  summaryCards.value = [
+    {
+      title: 'Total courses',
+      value: stats.total,
+      subtitle: `Across ${stats.departments.length} departments`
+    },
+    {
+      title: 'Active courses',
+      value: stats.active,
+      subtitle: 'Currently offered'
+    },
+    {
+      title: 'Total enrolled',
+      value: stats.totalEnrolled.toLocaleString(),
+      subtitle: 'Students registered'
+    }
+  ]
+}
+
+watch(() => courseStore.courses, updateSummary, { deep: true })
+
+onMounted(updateSummary)
 </script>
 
 <template>
-  <section class="page-card">
-    <header class="page-header">
+  <section class="bg-bg-white border border-border rounded-xl shadow-lg p-5">
+    <!-- Header Section -->
+    <header class="flex justify-between items-center gap-4 mb-6 flex-wrap">
       <div>
-        <p class="eyebrow">Course management</p>
-        <h1>Course catalog</h1>
-        <p>Organize programs, offerings, and instructor assignments from a single screen.</p>
+        <p class="mb-1 text-xs uppercase tracking-wider text-text-muted font-semibold">Course Management</p>
+        <h1 class="mb-1 text-2xl font-bold text-text-primary">Courses</h1>
+        <p class="m-0 text-sm text-text-secondary">Manage course catalog, faculty assignments, and enrollment.</p>
       </div>
+      <AppButton @click="handleAddCourse">+ Add Course</AppButton>
     </header>
 
-    <div class="card-grid">
-      <article v-for="card in summaryCards" :key="card.title" class="summary-card">
-        <h2>{{ card.title }}</h2>
-        <p class="value">{{ card.value }}</p>
-        <span>{{ card.subtitle }}</span>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+      <article v-for="card in summaryCards" :key="card.title" class="bg-primary-light rounded-xl p-5 border border-border transition-all hover:bg-primary">
+        <h2 class="mb-2 text-sm text-text-secondary font-semibold">{{ card.title }}</h2>
+        <p class="mb-1 text-3xl font-bold text-text-primary">{{ card.value }}</p>
+        <span class="text-xs text-text-muted">{{ card.subtitle }}</span>
       </article>
+    </div>
+
+    <!-- Course Table -->
+    <div class="animate-fade-in">
+      <CourseTable
+        :courses="courseStore.filteredCourses"
+        @view="handleViewCourse"
+        @edit="handleEditCourse"
+        @assign="handleAssignFaculty"
+        @delete="handleDeleteCourse"
+        @bulk-delete="handleBulkDelete"
+      />
     </div>
   </section>
 </template>
 
 <style scoped>
-.page-card {
-  background: white;
-  border: 1px solid #dfe7fb;
-  border-radius: 1.2rem;
-  padding: 1.25rem;
-  box-shadow: 0 16px 40px rgba(20, 33, 61, 0.06);
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.page-header {
-  margin-bottom: 1rem;
-}
-
-.eyebrow {
-  margin: 0 0 0.25rem;
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  color: #60708f;
-}
-
-h1 {
-  margin: 0 0 0.4rem;
-}
-
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
-}
-
-.summary-card {
-  background: #f6f9ff;
-  border-radius: 1rem;
-  padding: 1rem;
-}
-
-.summary-card h2 {
-  margin: 0 0 0.4rem;
-  font-size: 1rem;
-  color: #5d6d8f;
-}
-
-.value {
-  margin: 0 0 0.2rem;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #14213d;
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
 }
 </style>

@@ -8,11 +8,11 @@ import DepartmentIndex from '../pages/departments/Index.vue'
 import DepartmentCreate from '../pages/departments/Create.vue'
 import DepartmentEdit from '../pages/departments/Edit.vue'
 import DepartmentShow from '../pages/departments/Show.vue'
+import CourseIndex from '../pages/courses/Index.vue'
 import ProgramIndex from '../pages/programs/Index.vue'
 import ProgramCreate from '../pages/programs/Create.vue'
 import ProgramEdit from '../pages/programs/Edit.vue'
 import ProgramShow from '../pages/programs/Show.vue'
-import CourseIndex from '../pages/courses/Index.vue'
 import EnrollmentIndex from '../pages/enrollment/Index.vue'
 import AttendanceIndex from '../pages/attendance/Index.vue'
 import ExaminationIndex from '../pages/examinations/Index.vue'
@@ -64,6 +64,12 @@ export const routes = [
     name: 'faculty-edit',
     component: FacultyEdit,
     meta: { title: 'Edit Faculty' },
+  },
+  {
+    path: '/courses',
+    name: 'courses',
+    component: CourseIndex,
+    meta: { title: 'Courses' },
   },
   {
     path: '/departments',
