@@ -84,7 +84,7 @@
                 <button class="btn-action btn-edit" @click="$emit('edit', program.id)" title="Edit">
                   ✎
                 </button>
-                <button class="btn-action btn-delete" @click="handleDelete(program.id)" title="Delete">
+                <button class="btn-action btn-delete" @click="handleDelete(program)" title="Delete">
                   🗑️
                 </button>
               </div>
@@ -93,11 +93,24 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Program"
+      :message="`Are you sure you want to delete program ${selectedProgram?.name}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="showDeleteModal = false"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
 
 defineOptions({ name: 'ProgramTable' })
 
@@ -114,6 +127,8 @@ const searchQuery = ref('')
 const selectedPrograms = ref([])
 const sortKey = ref('name')
 const sortOrder = ref('asc')
+const showDeleteModal = ref(false)
+const selectedProgram = ref(null)
 
 const filteredPrograms = computed(() => {
   if (!searchQuery.value) return props.programs
@@ -174,10 +189,15 @@ const sortBy = (key) => {
   }
 }
 
-const handleDelete = (id) => {
-  if (confirm('Are you sure you want to delete this program?')) {
-    emit('delete', id)
-  }
+const handleDelete = (program) => {
+  selectedProgram.value = program
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = () => {
+  emit('delete', selectedProgram.value.id)
+  showDeleteModal.value = false
+  selectedProgram.value = null
 }
 
 const handleBulkDelete = () => {

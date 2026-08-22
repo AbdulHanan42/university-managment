@@ -1,5 +1,57 @@
 ﻿/* src/assets/css/variables.css */
 :root {
   color-scheme: light;
+  
+  /* Primary Colors */
+  --color-primary: #3b82f6;
+  --color-primary-light: #dbeafe;
+  --color-primary-dark: #2563eb;
+  --color-primary-accent: #1d4ed8;
+  
+  /* Secondary Colors */
+  --color-secondary: #8b5cf6;
+  --color-secondary-light: #ede9fe;
+  --color-secondary-dark: #7c3aed;
+  
+  /* Success Colors */
+  --color-success: #10b981;
+  --color-success-light: #d1fae5;
+  --color-success-bg: #d4edda;
+  
+  /* Warning Colors */
+  --color-warning: #f59e0b;
+  --color-warning-light: #fef3c7;
+  --color-warning-bg: #fff3cd;
+  
+  /* Error Colors */
+  --color-error: #ef4444;
+  --color-error-light: #fee2e2;
+  --color-error-dark: #dc2626;
+  --color-error-bg: #f8d7da;
+  
+  /* Text Colors */
+  --color-text-primary: #1f2937;
+  --color-text-secondary: #4b5563;
+  --color-text-muted: #6b7280;
+  
+  /* Background Colors */
+  --color-bg-white: #ffffff;
+  --color-bg-light: #f3f4f6;
+  --color-bg-selected: #eff6ff;
+  
+  /* Border Colors */
+  --color-border: #e5e7eb;
+  --color-border-light: #eef2f9;
+  
+  /* Neutral Colors */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
 }
-
