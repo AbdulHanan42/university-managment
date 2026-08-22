@@ -1,8 +1,10 @@
-﻿<script setup>
+<script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useTransportStore } from '@/stores/transport.store'
 import { useToast } from '@/composables/useToast'
 import AppButton from '@/components/common/AppButton.vue'
+import VehicleForm from '@/components/transport/VehicleForm.vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
 
 defineOptions({ name: 'Vehicles' })
 
@@ -11,6 +13,8 @@ const toast = useToast()
 
 const showAddModal = ref(false)
 const showEditModal = ref(false)
+const showMaintenanceModal = ref(false)
+const showDeleteModal = ref(false)
 const selectedVehicle = ref(null)
 const loading = ref(false)
 
@@ -27,6 +31,7 @@ const fuelColor = computed(() => (percentage) => {
 
 onMounted(() => {
   transportStore.fetchVehicles()
+  transportStore.fetchRoutes()
 })
 
 const handleAddVehicle = () => {
@@ -39,20 +44,56 @@ const handleEditVehicle = (vehicle) => {
   showEditModal.value = true
 }
 
-const handleDeleteVehicle = async (id) => {
-  if (confirm('Are you sure you want to delete this vehicle?')) {
-    try {
-      await transportStore.deleteVehicle(id)
-      toast.success('Vehicle deleted successfully')
-    } catch (error) {
-      toast.error('Failed to delete vehicle')
-      console.error('Delete error:', error)
-    }
+const handleDeleteVehicle = (vehicle) => {
+  selectedVehicle.value = vehicle
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = async () => {
+  try {
+    await transportStore.deleteVehicle(selectedVehicle.value.id)
+    toast.success('Vehicle deleted successfully')
+    showDeleteModal.value = false
+    selectedVehicle.value = null
+  } catch (error) {
+    toast.error('Failed to delete vehicle')
+    console.error('Delete error:', error)
   }
 }
 
 const handleMaintenance = (vehicle) => {
-  toast.info(`Maintenance scheduled for ${vehicle.registrationNumber}`)
+  selectedVehicle.value = vehicle
+  showMaintenanceModal.value = true
+}
+
+const handleFormSubmit = () => {
+  showAddModal.value = false
+  showEditModal.value = false
+  selectedVehicle.value = null
+}
+
+const handleFormCancel = () => {
+  showAddModal.value = false
+  showEditModal.value = false
+  showMaintenanceModal.value = false
+  showDeleteModal.value = false
+  selectedVehicle.value = null
+}
+
+const handleMaintenanceSubmit = async () => {
+  try {
+    const today = new Date().toISOString().split('T')[0]
+    await transportStore.updateVehicle(selectedVehicle.value.id, {
+      lastMaintenance: today,
+      status: 'active'
+    })
+    toast.success('Maintenance recorded successfully')
+    showMaintenanceModal.value = false
+    selectedVehicle.value = null
+  } catch (error) {
+    toast.error('Failed to record maintenance')
+    console.error('Maintenance error:', error)
+  }
 }
 </script>
 
@@ -111,7 +152,7 @@ const handleMaintenance = (vehicle) => {
               <div class="flex gap-2">
                 <button @click="handleEditVehicle(vehicle)" class="text-primary hover:text-primary-dark" title="Edit">✎</button>
                 <button @click="handleMaintenance(vehicle)" class="text-secondary hover:text-secondary-dark" title="Maintenance">🔧</button>
-                <button @click="handleDeleteVehicle(vehicle.id)" class="text-error hover:text-error-dark" title="Delete">🗑️</button>
+                <button @click="handleDeleteVehicle(vehicle)" class="text-error hover:text-error-dark" title="Delete">🗑️</button>
               </div>
             </td>
           </tr>
@@ -122,22 +163,127 @@ const handleMaintenance = (vehicle) => {
     <div v-else class="text-center py-12 text-text-muted">
       <p>No vehicles found. Add your first vehicle to get started.</p>
     </div>
+
+    <!-- Add Vehicle Modal -->
+    <div v-if="showAddModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in" @click.self="handleFormCancel">
+      <div class="bg-white rounded-xl max-w-3xl w-[90%] max-h-[90vh] overflow-y-auto p-8 animate-slide-up shadow-2xl">
+        <VehicleForm
+          :is-edit="false"
+          @submit="handleFormSubmit"
+          @cancel="handleFormCancel"
+        />
+      </div>
+    </div>
+
+    <!-- Edit Vehicle Modal -->
+    <div v-if="showEditModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in" @click.self="handleFormCancel">
+      <div class="bg-white rounded-xl max-w-3xl w-[90%] max-h-[90vh] overflow-y-auto p-8 animate-slide-up shadow-2xl">
+        <VehicleForm
+          :vehicle="selectedVehicle"
+          :is-edit="true"
+          @submit="handleFormSubmit"
+          @cancel="handleFormCancel"
+        />
+      </div>
+    </div>
+
+    <!-- Maintenance Modal -->
+    <div v-if="showMaintenanceModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 animate-fade-in" @click.self="handleFormCancel">
+      <div class="bg-white rounded-xl max-w-md w-[90%] p-8 animate-slide-up shadow-2xl">
+        <div class="mb-6">
+          <h2 class="text-xl font-bold text-gray-900">Record Maintenance</h2>
+          <p class="text-sm text-gray-600">Record maintenance for {{ selectedVehicle?.registrationNumber }}</p>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Vehicle</label>
+            <input
+              :value="selectedVehicle?.registrationNumber + ' - ' + selectedVehicle?.model"
+              type="text"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+              disabled
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Driver</label>
+            <input
+              :value="selectedVehicle?.driverName"
+              type="text"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+              disabled
+            />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Last Maintenance</label>
+            <input
+              :value="selectedVehicle?.lastMaintenance || 'No previous maintenance recorded'"
+              type="text"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-100"
+              disabled
+            />
+          </div>
+          <div class="flex gap-3 justify-end pt-4 border-t border-gray-200">
+            <button
+              @click="handleFormCancel"
+              class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              @click="handleMaintenanceSubmit"
+              class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Record Maintenance
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Vehicle"
+      :message="`Are you sure you want to delete vehicle ${selectedVehicle?.registrationNumber}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="handleFormCancel"
+    />
   </div>
 </template>
 
 <style scoped>
-.vehicles-container {
-  animation: fadeIn 0.3s ease-in;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-in;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-in;
+}
+
+.vehicles-container {
+  animation: fadeIn 0.3s ease-in;
 }
 </style>
