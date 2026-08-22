@@ -70,14 +70,27 @@
       <div class="flex gap-2">
         <button @click="$emit('view', faculty.id)" class="action-btn btn-view bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">View</button>
         <button @click="$emit('edit', faculty.id)" class="action-btn btn-edit bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">Edit</button>
-        <button @click="$emit('delete', faculty.id)" class="action-btn btn-delete bg-error-light text-error border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">Delete</button>
+        <button @click="handleDelete" class="action-btn btn-delete bg-error-light text-error border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all duration-300">Delete</button>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Faculty Member"
+      :message="`Are you sure you want to delete faculty member ${faculty.name}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="showDeleteModal = false"
+    />
   </article>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
 
 defineOptions({ name: 'FacultyCard' })
 
@@ -88,7 +101,18 @@ const props = defineProps({
   }
 })
 
-defineEmits(['view', 'edit', 'delete'])
+const emit = defineEmits(['view', 'edit', 'delete'])
+
+const showDeleteModal = ref(false)
+
+const handleDelete = () => {
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = () => {
+  emit('delete', props.faculty.id)
+  showDeleteModal.value = false
+}
 
 const statusBadgeClasses = computed(() => {
   if (props.faculty.status === 'active') {
