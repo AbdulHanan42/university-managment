@@ -67,7 +67,7 @@
                 <button class="btn-action btn-edit" @click="$emit('edit', facultyMember.id)" title="Edit">
                   ✎
                 </button>
-                <button class="btn-action btn-delete" @click="handleDelete(facultyMember.id)" title="Delete">
+                <button class="btn-action btn-delete" @click="handleDelete(facultyMember)" title="Delete">
                   🗑️
                 </button>
               </div>
@@ -82,11 +82,24 @@
       <span>{{ selected.length }} selected</span>
       <button @click="handleBulkDelete" class="btn-delete-multi">Delete ({{ selected.length }})</button>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Faculty Member"
+      :message="`Are you sure you want to delete faculty member ${selectedFacultyMember?.name}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="showDeleteModal = false"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
 
 defineOptions({ name: 'FacultyTable' })
 
@@ -102,6 +115,8 @@ const emit = defineEmits(['view', 'edit', 'delete', 'bulk-delete'])
 const selected = ref([])
 const sortField = ref('name')
 const sortOrder = ref('asc')
+const showDeleteModal = ref(false)
+const selectedFacultyMember = ref(null)
 
 const sortedFaculty = computed(() => {
   const sorted = [...props.faculty]
@@ -151,10 +166,15 @@ const sortBy = (field) => {
   }
 }
 
-const handleDelete = (id) => {
-  if (confirm('Are you sure you want to delete this faculty member?')) {
-    emit('delete', id)
-  }
+const handleDelete = (facultyMember) => {
+  selectedFacultyMember.value = facultyMember
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = () => {
+  emit('delete', selectedFacultyMember.value.id)
+  showDeleteModal.value = false
+  selectedFacultyMember.value = null
 }
 
 const handleBulkDelete = () => {

@@ -64,7 +64,7 @@
                 <button class="btn-action btn-edit" @click="$emit('edit', department.id)" title="Edit">
                   ✎
                 </button>
-                <button class="btn-action btn-delete" @click="handleDelete(department.id)" title="Delete">
+                <button class="btn-action btn-delete" @click="handleDelete(department)" title="Delete">
                   🗑️
                 </button>
               </div>
@@ -79,11 +79,24 @@
       <span>{{ selected.length }} selected</span>
       <button @click="handleBulkDelete" class="btn-delete-multi">Delete ({{ selected.length }})</button>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Department"
+      :message="`Are you sure you want to delete department ${selectedDepartment?.name}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="showDeleteModal = false"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
 
 defineOptions({ name: 'DepartmentTable' })
 
@@ -99,6 +112,8 @@ const emit = defineEmits(['view', 'edit', 'delete', 'bulk-delete'])
 const selected = ref([])
 const sortField = ref('name')
 const sortOrder = ref('asc')
+const showDeleteModal = ref(false)
+const selectedDepartment = ref(null)
 
 const sortedDepartments = computed(() => {
   const sorted = [...props.departments]
@@ -148,10 +163,15 @@ const sortBy = (field) => {
   }
 }
 
-const handleDelete = (id) => {
-  if (confirm('Are you sure you want to delete this department?')) {
-    emit('delete', id)
-  }
+const handleDelete = (department) => {
+  selectedDepartment.value = department
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = () => {
+  emit('delete', selectedDepartment.value.id)
+  showDeleteModal.value = false
+  selectedDepartment.value = null
 }
 
 const handleBulkDelete = () => {

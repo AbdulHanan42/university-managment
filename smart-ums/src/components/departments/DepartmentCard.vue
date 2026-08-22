@@ -67,25 +67,49 @@
       <div class="flex gap-2">
         <button @click="$emit('view', department.id)" class="bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-primary hover:text-white">View</button>
         <button @click="$emit('edit', department.id)" class="bg-primary-light text-primary border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-primary hover:text-white">Edit</button>
-        <button @click="$emit('delete', department.id)" class="bg-error-light text-error border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-error hover:text-white">Delete</button>
+        <button @click="handleDelete" class="bg-error-light text-error border border-border px-3 py-1.5 rounded text-sm font-semibold transition-all hover:bg-error hover:text-white">Delete</button>
       </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Department"
+      :message="`Are you sure you want to delete department ${department.name}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="showDeleteModal = false"
+    />
   </article>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
 
 defineOptions({ name: 'DepartmentCard' })
 
-defineProps({
+const props = defineProps({
   department: {
     type: Object,
     required: true
   }
 })
 
-defineEmits(['view', 'edit', 'delete'])
+const emit = defineEmits(['view', 'edit', 'delete'])
+
+const showDeleteModal = ref(false)
+
+const handleDelete = () => {
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = () => {
+  emit('delete', props.department.id)
+  showDeleteModal.value = false
+}
 
 const statusBadgeClasses = computed(() => {
   return department.status === 'active'

@@ -62,10 +62,25 @@
     <div class="card-footer">
       <button class="btn-primary" @click="$emit('view')">View Details</button>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <ConfirmModal
+      :show="showDeleteModal"
+      title="Delete Program"
+      :message="`Are you sure you want to delete program ${program.name}? This action cannot be undone.`"
+      confirm-text="Delete"
+      cancel-text="Cancel"
+      type="danger"
+      @confirm="handleConfirmDelete"
+      @cancel="showDeleteModal = false"
+    />
   </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import ConfirmModal from '@/components/common/ConfirmModal.vue'
+
 defineOptions({ name: 'ProgramCard' })
 
 const props = defineProps({
@@ -77,10 +92,15 @@ const props = defineProps({
 
 const emit = defineEmits(['view', 'edit', 'delete'])
 
+const showDeleteModal = ref(false)
+
 const handleDelete = () => {
-  if (confirm('Are you sure you want to delete this program?')) {
-    emit('delete')
-  }
+  showDeleteModal.value = true
+}
+
+const handleConfirmDelete = () => {
+  emit('delete')
+  showDeleteModal.value = false
 }
 </script>
 
