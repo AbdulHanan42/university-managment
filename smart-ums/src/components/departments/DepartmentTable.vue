@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="department-table-container">
     <div v-if="departments.length === 0" class="text-center py-12 text-gray-500">
-      <p>No departments found</p>
+      <p>No departments available</p>
     </div>
     <div v-else class="table-wrapper">
       <table class="department-table">
