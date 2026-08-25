@@ -58,8 +58,8 @@ const formatDate = (dateString) => {
 
 <style scoped>
 .leave-history {
-  background: white;
-  border: 1px solid #dfe7fb;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
 }
@@ -67,13 +67,13 @@ const formatDate = (dateString) => {
 .leave-history h3 {
   margin: 0 0 1rem;
   font-size: 1.1rem;
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 
 .no-leaves {
   text-align: center;
   padding: 2rem;
-  color: #7f8fa3;
+  color: var(--color-text-muted);
 }
 
 .leave-list {
@@ -83,8 +83,8 @@ const formatDate = (dateString) => {
 }
 
 .leave-item {
-  background: #f6f9ff;
-  border: 1px solid #dfe7fb;
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   padding: 1rem;
 }
@@ -95,12 +95,12 @@ const formatDate = (dateString) => {
   align-items: center;
   margin-bottom: 0.75rem;
   padding-bottom: 0.75rem;
-  border-bottom: 1px solid #dfe7fb;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .leave-type {
   font-weight: 600;
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 
 .leave-status {
@@ -111,18 +111,18 @@ const formatDate = (dateString) => {
 }
 
 .status-approved {
-  background: #d4edda;
-  color: #155724;
+  background: var(--color-success-bg);
+  color: var(--color-success);
 }
 
 .status-pending {
-  background: #fff3cd;
-  color: #856404;
+  background: var(--color-warning-bg);
+  color: var(--color-warning);
 }
 
 .status-rejected {
-  background: #f8d7da;
-  color: #721c24;
+  background: var(--color-error-bg);
+  color: var(--color-error);
 }
 
 .leave-details {
@@ -138,11 +138,11 @@ const formatDate = (dateString) => {
 
 .detail-row .label {
   font-weight: 600;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
   min-width: 80px;
 }
 
 .detail-row .value {
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 </style>
