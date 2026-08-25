@@ -104,8 +104,8 @@ const adminPercentage = computed(() => {
 
 <style scoped>
 .faculty-workload {
-  background: white;
-  border: 1px solid #dfe7fb;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
 }
@@ -113,7 +113,7 @@ const adminPercentage = computed(() => {
 .faculty-workload h3 {
   margin: 0 0 1rem;
   font-size: 1.1rem;
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 
 .workload-summary {
@@ -124,8 +124,8 @@ const adminPercentage = computed(() => {
 }
 
 .workload-card {
-  background: #f6f9ff;
-  border: 1px solid #dfe7fb;
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   padding: 1rem;
   display: flex;
@@ -145,18 +145,18 @@ const adminPercentage = computed(() => {
 .workload-card .value {
   font-size: 1.25rem;
   font-weight: bold;
-  color: #214d9c;
+  color: var(--color-primary);
 }
 
 .workload-card .label {
   font-size: 0.75rem;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
   text-transform: uppercase;
 }
 
 .workload-breakdown {
-  background: #f6f9ff;
-  border: 1px solid #dfe7fb;
+  background: var(--color-bg-light);
+  border: 1px solid var(--color-border);
   border-radius: 0.75rem;
   padding: 1rem;
   margin-bottom: 1.5rem;
@@ -166,7 +166,7 @@ const adminPercentage = computed(() => {
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 0;
-  border-bottom: 1px solid #dfe7fb;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .breakdown-item:last-child {
@@ -175,11 +175,11 @@ const adminPercentage = computed(() => {
 
 .breakdown-item .label {
   font-weight: 600;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
 }
 
 .breakdown-item .value {
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 
 .workload-progress {
@@ -197,13 +197,13 @@ const adminPercentage = computed(() => {
 .progress-label {
   min-width: 80px;
   font-size: 0.85rem;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
 }
 
 .progress-bar {
   flex: 1;
   height: 8px;
-  background: #eef2f9;
+  background: var(--color-border-light);
   border-radius: 4px;
   overflow: hidden;
 }
@@ -215,15 +215,15 @@ const adminPercentage = computed(() => {
 }
 
 .progress-fill.teaching {
-  background: #214d9c;
+  background: var(--color-primary);
 }
 
 .progress-fill.research {
-  background: #7c3aed;
+  background: var(--color-secondary);
 }
 
 .progress-fill.admin {
-  background: #10b981;
+  background: var(--color-success);
 }
 
 .progress-value {
@@ -231,6 +231,6 @@ const adminPercentage = computed(() => {
   text-align: right;
   font-size: 0.85rem;
   font-weight: 600;
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 </style>

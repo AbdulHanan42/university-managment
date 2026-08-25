@@ -20,7 +20,7 @@
       <p class="text-text-secondary text-sm leading-relaxed m-0">{{ faculty.specialization }}</p>
     </div>
 
-    <div class="bg-gray-50 rounded-lg p-4 mb-4 border border-border-light transition-all duration-300">
+    <div class="bg-bg-light rounded-lg p-4 mb-4 border border-border-light transition-all duration-300">
       <div class="flex gap-2 mb-2 text-sm">
         <span class="font-semibold text-text-secondary min-w-[70px]">Email:</span>
         <span class="text-primary flex-1 break-all">{{ faculty.email }}</span>
@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="grid grid-cols-4 gap-3 mb-4 bg-gray-50 p-4 rounded-lg border border-border-light transition-all duration-300">
+    <div class="grid grid-cols-4 gap-3 mb-4 bg-bg-light p-4 rounded-lg border border-border-light transition-all duration-300">
       <div class="text-center stat-item">
         <div class="text-2xl font-bold text-primary transition-colors duration-300">{{ faculty.courses }}</div>
         <div class="text-xs text-text-muted uppercase tracking-wider mt-0.5">Courses</div>
@@ -57,7 +57,7 @@
     <div v-if="faculty.researchInterests && faculty.researchInterests.length" class="mb-4">
       <span class="block text-sm font-semibold text-text-secondary mb-2">Research Interests:</span>
       <div class="flex flex-wrap gap-2">
-        <span v-for="interest in faculty.researchInterests" :key="interest" class="bg-gray-50 border border-border text-primary px-2 py-0.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:border-primary cursor-default">
+        <span v-for="interest in faculty.researchInterests" :key="interest" class="bg-bg-light border border-border text-primary px-2 py-0.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-primary hover:text-white hover:border-primary cursor-default">
           {{ interest }}
         </span>
       </div>
@@ -168,8 +168,8 @@ const statusBadgeClasses = computed(() => {
   color: var(--color-primary);
 }
 
-.faculty-card:hover .bg-gray-50 {
-  background: #f8fafc;
+.faculty-card:hover .bg-bg-light {
+  background: var(--color-bg-light);
   border-color: var(--color-primary-light);
 }
 

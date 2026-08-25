@@ -45,8 +45,8 @@ defineProps({
 
 <style scoped>
 .faculty-profile {
-  background: white;
-  border: 1px solid #dfe7fb;
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
   border-radius: 1rem;
   padding: 1.5rem;
 }
@@ -57,14 +57,14 @@ defineProps({
   gap: 1rem;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #dfe7fb;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .avatar-placeholder {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: #214d9c;
+  background: var(--color-primary);
   color: white;
   display: flex;
   align-items: center;
@@ -76,13 +76,13 @@ defineProps({
 .profile-info h3 {
   margin: 0 0 0.25rem;
   font-size: 1.1rem;
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 
 .profile-info p {
   margin: 0;
   font-size: 0.9rem;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
 }
 
 .profile-details {
@@ -98,11 +98,11 @@ defineProps({
 
 .detail-item .label {
   font-weight: 600;
-  color: #5d6d8f;
+  color: var(--color-text-secondary);
   min-width: 100px;
 }
 
 .detail-item .value {
-  color: #14213d;
+  color: var(--color-text-primary);
 }
 </style>

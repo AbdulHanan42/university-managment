@@ -394,6 +394,6 @@ const handleBulkDelete = () => {
 }
 
 .btn-delete-multi:hover {
-  background: #fdd5d5;
+  background: var(--color-error-bg);
 }
 </style>
