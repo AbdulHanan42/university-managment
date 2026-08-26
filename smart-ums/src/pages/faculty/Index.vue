@@ -1,5 +1,5 @@
 ﻿<script setup>
-import { ref, watch, onMounted } from 'vue'
+import { ref, watch, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useFacultyStore } from '@/stores/faculty.store'
 import { useToast } from '@/composables/useToast'
@@ -13,7 +13,7 @@ const router = useRouter()
 const facultyStore = useFacultyStore()
 const toast = useToast()
 
-const viewMode = ref('table') // 'table' or 'grid'
+const viewMode = ref('table') // 'table', 'grid', or 'workload'
 const summaryCards = ref([
   { title: 'Total faculty', value: '12', subtitle: 'Across 5 departments' },
   { title: 'Active faculty', value: '11', subtitle: 'Currently teaching' },
@@ -77,6 +77,13 @@ const updateSummary = () => {
   ]
 }
 
+const departmentCounts = computed(() => {
+  return facultyStore.faculty.reduce((acc, f) => {
+    acc[f.department] = (acc[f.department] || 0) + 1
+    return acc
+  }, {})
+})
+
 watch(() => facultyStore.faculty, updateSummary, { deep: true })
 
 onMounted(updateSummary)
@@ -122,6 +129,14 @@ onMounted(updateSummary)
         >
           ⊞ Grid
         </button>
+        <button
+          :class="viewMode === 'workload' ? 'bg-primary text-white border-primary' : 'bg-white border-border'"
+          @click="viewMode = 'workload'"
+          title="Workload View"
+          class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
+        >
+          📊 Workload
+        </button>
       </div>
       <div class="text-sm text-text-muted">
         Showing {{ facultyStore.filteredFaculty.length }} of {{ facultyStore.faculty.length }} faculty
@@ -140,7 +155,7 @@ onMounted(updateSummary)
     </div>
 
     <!-- Grid View -->
-    <div v-else class="animate-fade-in">
+    <div v-else-if="viewMode === 'grid'" class="animate-fade-in">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <FacultyCard
           v-for="facultyMember in facultyStore.filteredFaculty"
@@ -153,6 +168,56 @@ onMounted(updateSummary)
       </div>
       <div v-if="facultyStore.filteredFaculty.length === 0" class="text-center py-12 text-text-muted">
         <p>No faculty found</p>
+      </div>
+    </div>
+
+    <!-- Workload View -->
+    <div v-else-if="viewMode === 'workload'" class="animate-fade-in">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-primary-light border border-border rounded-lg p-5 text-center">
+          <div class="text-3xl font-bold text-primary mb-1">{{ facultyStore.faculty.length }}</div>
+          <div class="text-xs text-text-secondary uppercase tracking-wider">Total Faculty</div>
+        </div>
+        <div class="bg-success-light border border-border rounded-lg p-5 text-center">
+          <div class="text-3xl font-bold text-success mb-1">{{ facultyStore.faculty.filter(f => f.status === 'active').length }}</div>
+          <div class="text-xs text-text-secondary uppercase tracking-wider">Active Faculty</div>
+        </div>
+        <div class="bg-secondary-light border border-border rounded-lg p-5 text-center">
+          <div class="text-3xl font-bold text-secondary mb-1">{{ facultyStore.faculty.reduce((sum, f) => sum + (f.courses || 0), 0) }}</div>
+          <div class="text-xs text-text-secondary uppercase tracking-wider">Total Courses</div>
+        </div>
+        <div class="bg-warning-light border border-border rounded-lg p-5 text-center">
+          <div class="text-3xl font-bold text-warning mb-1">{{ facultyStore.faculty.reduce((sum, f) => sum + (f.totalStudents || 0), 0) }}</div>
+          <div class="text-xs text-text-secondary uppercase tracking-wider">Total Students</div>
+        </div>
+      </div>
+
+      <div class="bg-bg-light border border-border rounded-xl p-6 mb-6">
+        <h2 class="mb-5 text-lg font-bold text-text-primary">Hours Distribution (Weekly)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="bg-bg-white border border-border rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-primary mb-1">{{ facultyStore.faculty.reduce((sum, f) => sum + (f.teachingHours || 0), 0) }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Teaching Hours</div>
+          </div>
+          <div class="bg-bg-white border border-border rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-success mb-1">{{ facultyStore.faculty.reduce((sum, f) => sum + (f.researchHours || 0), 0) }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Research Hours</div>
+          </div>
+          <div class="bg-bg-white border border-border rounded-lg p-5 text-center">
+            <div class="text-3xl font-bold text-secondary mb-1">{{ facultyStore.faculty.reduce((sum, f) => sum + (f.adminHours || 0), 0) }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Admin Hours</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-bg-light border border-border rounded-xl p-6">
+        <h2 class="mb-5 text-lg font-bold text-text-primary">Faculty by Department</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div v-for="(count, department) in departmentCounts" :key="department" class="bg-bg-white border border-border rounded-lg p-4">
+            <div class="text-2xl font-bold text-primary mb-1">{{ count }}</div>
+            <div class="text-sm text-text-secondary">{{ department }}</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
