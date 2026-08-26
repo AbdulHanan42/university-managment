@@ -19,6 +19,12 @@ import ExaminationIndex from '../pages/examinations/Index.vue'
 import FeeIndex from '../pages/fees/Index.vue'
 import LibraryIndex from '../pages/library/Index.vue'
 import HostelIndex from '../pages/hostel/Index.vue'
+import HostelRooms from '../pages/hostel/Rooms.vue'
+import HostelAllocations from '../pages/hostel/Allocations.vue'
+import HostelMess from '../pages/hostel/Mess.vue'
+import HostelBooking from '../pages/hostel/Booking.vue'
+import HostelBookingConfirmation from '../pages/hostel/BookingConfirmation.vue'
+import HostelRequests from '../pages/hostel/Requests.vue'
 import TransportIndex from '../pages/transport/Index.vue'
 import LeaveIndex from '../pages/leaves/Index.vue'
 import NoticeIndex from '../pages/notices/Index.vue'
@@ -160,6 +166,42 @@ export const routes = [
     name: 'hostel',
     component: HostelIndex,
     meta: { title: 'Hostel' },
+  },
+  {
+    path: '/hostel/rooms',
+    name: 'hostel-rooms',
+    component: HostelRooms,
+    meta: { title: 'Hostel Rooms' },
+  },
+  {
+    path: '/hostel/allocations',
+    name: 'hostel-allocations',
+    component: HostelAllocations,
+    meta: { title: 'Hostel Allocations' },
+  },
+  {
+    path: '/hostel/mess',
+    name: 'hostel-mess',
+    component: HostelMess,
+    meta: { title: 'Hostel Mess' },
+  },
+  {
+    path: '/hostel/booking',
+    name: 'hostel-booking',
+    component: HostelBooking,
+    meta: { title: 'Hostel Booking' },
+  },
+  {
+    path: '/hostel/booking/confirmation',
+    name: 'hostel-booking-confirmation',
+    component: HostelBookingConfirmation,
+    meta: { title: 'Booking Confirmation' },
+  },
+  {
+    path: '/hostel/requests',
+    name: 'hostel-requests',
+    component: HostelRequests,
+    meta: { title: 'Hostel Requests' },
   },
   {
     path: '/transport',

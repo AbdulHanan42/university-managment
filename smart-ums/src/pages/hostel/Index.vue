@@ -25,6 +25,14 @@ const handleViewAllocations = () => {
 const handleViewMess = () => {
   router.push({ name: 'hostel-mess' })
 }
+
+const handleViewRequests = () => {
+  router.push({ name: 'hostel-requests' })
+}
+
+const handleNewBooking = () => {
+  router.push({ name: 'hostel-booking' })
+}
 </script>
 
 <template>
@@ -58,7 +66,7 @@ const handleViewMess = () => {
       <!-- Quick Actions -->
       <div class="bg-bg-light border border-border rounded-xl p-6">
         <h2 class="mb-4 text-lg font-bold text-text-primary">Quick Actions</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           <button @click="handleViewRooms" class="bg-bg-white border border-border rounded-lg p-4 text-left hover:border-primary transition-all">
             <div class="text-2xl mb-2">🏠</div>
             <div class="font-semibold text-text-primary">Rooms</div>
@@ -73,6 +81,16 @@ const handleViewMess = () => {
             <div class="text-2xl mb-2">🍽️</div>
             <div class="font-semibold text-text-primary">Mess Service</div>
             <div class="text-sm text-text-muted">Manage mess and meal services</div>
+          </button>
+          <button @click="handleViewRequests" class="bg-bg-white border border-border rounded-lg p-4 text-left hover:border-primary transition-all">
+            <div class="text-2xl mb-2">📋</div>
+            <div class="font-semibold text-text-primary">Requests</div>
+            <div class="text-sm text-text-muted">Review booking requests</div>
+          </button>
+          <button @click="handleNewBooking" class="bg-bg-white border border-border rounded-lg p-4 text-left hover:border-primary transition-all">
+            <div class="text-2xl mb-2">➕</div>
+            <div class="font-semibold text-text-primary">New Booking</div>
+            <div class="text-sm text-text-muted">Submit hostel booking request</div>
           </button>
         </div>
       </div>
