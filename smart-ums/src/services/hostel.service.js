@@ -41,6 +41,53 @@
         ])
       }, 500)
     })
+  },
+
+  async submitBookingRequest(bookingData) {
+    // Simulated API call for booking request submission
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          message: 'Booking request submitted successfully',
+          requestId: Date.now()
+        })
+      }, 1000)
+    })
+  },
+
+  async getBookingRequests() {
+    // Simulated API call for booking requests
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const storedRequests = localStorage.getItem('hostelRequests')
+        resolve(storedRequests ? JSON.parse(storedRequests) : [])
+      }, 500)
+    })
+  },
+
+  async approveRequest(requestId, assignmentData) {
+    // Simulated API call for approving request
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          message: 'Request approved and room assigned successfully'
+        })
+      }, 500)
+    })
+  },
+
+  async rejectRequest(requestId) {
+    // Simulated API call for rejecting request
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          message: 'Request rejected successfully'
+        })
+      }, 500)
+    })
   }
 }
 
