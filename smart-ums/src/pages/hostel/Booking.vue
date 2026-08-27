@@ -87,7 +87,7 @@ const handleCancel = () => {
 
     <div class="max-w-3xl mx-auto">
       <form @submit.prevent="handleSubmit" class="flex flex-col gap-6">
-        <!-- Personal Information -->
+        <!-- Personal Informat -->
         <div class="bg-bg-light border border-border rounded-xl p-6">
           <h2 class="mb-4 text-lg font-bold text-text-primary">Personal Information</h2>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
