@@ -14,6 +14,8 @@ import ProgramCreate from '../pages/programs/Create.vue'
 import ProgramEdit from '../pages/programs/Edit.vue'
 import ProgramShow from '../pages/programs/Show.vue'
 import EnrollmentIndex from '../pages/enrollment/Index.vue'
+import EnrollmentRegister from '../pages/enrollment/Register.vue'
+import EnrollmentHistory from '../pages/enrollment/History.vue'
 import AttendanceIndex from '../pages/attendance/Index.vue'
 import ExaminationIndex from '../pages/examinations/Index.vue'
 import FeeIndex from '../pages/fees/Index.vue'
@@ -136,6 +138,18 @@ export const routes = [
     name: 'enrollment',
     component: EnrollmentIndex,
     meta: { title: 'Enrollment' },
+  },
+  {
+    path: '/enrollment/register',
+    name: 'enrollment-register',
+    component: EnrollmentRegister,
+    meta: { title: 'Course Registration' },
+  },
+  {
+    path: '/enrollment/history',
+    name: 'enrollment-history',
+    component: EnrollmentHistory,
+    meta: { title: 'Enrollment History' },
   },
   {
     path: '/attendance',

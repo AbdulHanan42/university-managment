@@ -1,55 +1,110 @@
 ﻿<script setup>
-import { ref, watch } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useEnrollmentStore } from '@/stores/enrollment.store'
+import { useRouter } from 'vue-router'
 
-const props = defineProps({
-  summaryCards: {
-    type: Array,
-    default: () => [
-      { title: 'Registered this term', value: '3,702', subtitle: 'Course selections confirmed' },
-      { title: 'Pending approvals', value: '41', subtitle: 'Waiting for review' },
-      { title: 'Credit load average', value: '15.6', subtitle: 'Credit hours per student' }
-    ]
-  }
+defineOptions({ name: 'EnrollmentIndex' })
+
+const router = useRouter()
+const enrollmentStore = useEnrollmentStore()
+
+onMounted(() => {
+  enrollmentStore.fetchEnrollmentData()
 })
 
-const summaryCards = ref(props.summaryCards)
+const handleViewHistory = () => {
+  router.push({ name: 'enrollment-history' })
+}
 
-watch(
-  () => props.summaryCards,
-  (newCards) => {
-    summaryCards.value = newCards
-  },
-  { immediate: true }
-)
+const handleNewRegistration = () => {
+  router.push({ name: 'enrollment-register' })
+}
 </script>
 
 <template>
-  <section class="page-card">
-    <header class="page-header">
+  <section class="bg-bg-white border border-border rounded-xl shadow-lg p-5">
+    <header class="flex justify-between items-center gap-4 mb-6 flex-wrap">
       <div>
-        <p class="eyebrow">Enrollment management</p>
-        <h1>Enrollment</h1>
-        <p>Review registration activity, course requests, and student progression.</p>
+        <p class="mb-1 text-xs uppercase tracking-wider text-text-muted font-semibold">Enrollment Management</p>
+        <h1 class="mb-1 text-2xl font-bold text-text-primary">Enrollment</h1>
+        <p class="m-0 text-sm text-text-secondary">Review registration activity, course requests, and student progression.</p>
       </div>
     </header>
 
-    <div class="card-grid">
-      <article v-for="card in summaryCards" :key="card.title" class="summary-card">
-        <h2>{{ card.title }}</h2>
-        <p class="value">{{ card.value }}</p>
-        <span>{{ card.subtitle }}</span>
-      </article>
+    <div v-if="enrollmentStore.loading" class="text-center py-12 text-text-muted">
+      <p>Loading enrollment data...</p>
+    </div>
+
+    <div v-else-if="enrollmentStore.error" class="text-center py-12 text-error">
+      <p>{{ enrollmentStore.error }}</p>
+    </div>
+
+    <div v-else class="flex flex-col gap-6">
+      <!-- Summary Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <article v-for="card in enrollmentStore.summaryCards" :key="card.title" class="bg-primary-light rounded-xl p-5 border border-border transition-all hover:bg-primary">
+          <h2 class="mb-2 text-sm text-text-secondary font-semibold">{{ card.title }}</h2>
+          <p class="mb-1 text-3xl font-bold text-text-primary">{{ card.value }}</p>
+          <span class="text-xs text-text-muted">{{ card.subtitle }}</span>
+        </article>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="bg-bg-light border border-border rounded-xl p-6">
+        <h2 class="mb-4 text-lg font-bold text-text-primary">Quick Actions</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <button @click="handleNewRegistration" class="bg-bg-white border border-border rounded-lg p-4 text-left hover:border-primary transition-all">
+            <div class="text-2xl mb-2">📝</div>
+            <div class="font-semibold text-text-primary">New Registration</div>
+            <div class="text-sm text-text-muted">Register for courses</div>
+          </button>
+          <button @click="handleViewHistory" class="bg-bg-white border border-border rounded-lg p-4 text-left hover:border-primary transition-all">
+            <div class="text-2xl mb-2">📊</div>
+            <div class="font-semibold text-text-primary">Enrollment History</div>
+            <div class="text-sm text-text-muted">View past enrollments</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Statistics Overview -->
+      <div v-if="enrollmentStore.statistics" class="bg-bg-light border border-border rounded-xl p-6">
+        <h2 class="mb-4 text-lg font-bold text-text-primary">Enrollment Statistics</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-bg-white border border-border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-primary mb-1">{{ enrollmentStore.statistics.totalStudents }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Total Students</div>
+          </div>
+          <div class="bg-bg-white border border-border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-secondary mb-1">{{ enrollmentStore.statistics.totalCourses }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Total Courses</div>
+          </div>
+          <div class="bg-bg-white border border-border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-success mb-1">{{ enrollmentStore.statistics.activeEnrollments }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Active Enrollments</div>
+          </div>
+          <div class="bg-bg-white border border-border rounded-lg p-4 text-center">
+            <div class="text-2xl font-bold text-warning mb-1">{{ enrollmentStore.statistics.pendingApprovals }}</div>
+            <div class="text-xs text-text-secondary uppercase tracking-wider">Pending Approvals</div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>
 
 <style scoped>
-.page-card { background: white; border: 1px solid #dfe7fb; border-radius: 1.2rem; padding: 1.25rem; box-shadow: 0 16px 40px rgba(20, 33, 61, 0.06); }
-.page-header { margin-bottom: 1rem; }
-.eyebrow { margin: 0 0 0.25rem; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.2em; color: #60708f; }
-h1 { margin: 0 0 0.4rem; }
-.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
-.summary-card { background: #f6f9ff; border-radius: 1rem; padding: 1rem; }
-.summary-card h2 { margin: 0 0 0.4rem; font-size: 1rem; color: #5d6d8f; }
-.value { margin: 0 0 0.2rem; font-size: 1.5rem; font-weight: 700; color: #14213d; }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
 </style>
