@@ -31,6 +31,10 @@ import TransportIndex from '../pages/transport/Index.vue'
 import LeaveIndex from '../pages/leaves/Index.vue'
 import NoticeIndex from '../pages/notices/Index.vue'
 import ReportIndex from '../pages/reports/Index.vue'
+import PermissionsIndex from '../pages/permissions/Index.vue'
+import PermissionsRoles from '../pages/permissions/Roles.vue'
+import PermissionsList from '../pages/permissions/Permissions.vue'
+import PermissionsAssign from '../pages/permissions/Assign.vue'
 import LoginPage from '../pages/auth/Login.vue'
 import ForgotPassword from '../pages/auth/ForgotPassword.vue'
 import ResetPassword from '../pages/auth/ResetPassword.vue'
@@ -240,6 +244,30 @@ export const routes = [
     name: 'reports',
     component: ReportIndex,
     meta: { title: 'Reports' },
+  },
+  {
+    path: '/permissions',
+    name: 'permissions',
+    component: PermissionsIndex,
+    meta: { title: 'Permissions & Roles' },
+  },
+  {
+    path: '/permissions/roles',
+    name: 'permissions-roles',
+    component: PermissionsRoles,
+    meta: { title: 'Roles Management' },
+  },
+  {
+    path: '/permissions/list',
+    name: 'permissions-list',
+    component: PermissionsList,
+    meta: { title: 'System Permissions' },
+  },
+  {
+    path: '/permissions/assign',
+    name: 'permissions-assign',
+    component: PermissionsAssign,
+    meta: { title: 'Assign Roles' },
   },
   {
     path: '/login',

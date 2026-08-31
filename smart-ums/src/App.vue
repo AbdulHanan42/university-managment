@@ -39,6 +39,12 @@ const navigation = [
       { label: 'Notices', to: '/notices' },
     ],
   },
+  {
+    title: 'System',
+    items: [
+      { label: 'Permissions & Roles', to: '/permissions' },
+    ],
+  },
 ]
 
 const pageTitle = computed(() => {
