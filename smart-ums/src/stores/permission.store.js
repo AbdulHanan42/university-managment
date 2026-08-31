@@ -6,6 +6,7 @@ export const usePermissionStore = defineStore('permission', () => {
   const roles = ref([])
   const permissions = ref([])
   const users = ref([])
+  const organizations = ref([])
   const loading = ref(false)
   const error = ref(null)
 
@@ -30,8 +31,23 @@ export const usePermissionStore = defineStore('permission', () => {
     return grouped
   })
 
+  const permissionsByAction = computed(() => {
+    const grouped = {}
+    permissions.value.forEach(permission => {
+      if (!grouped[permission.action]) {
+        grouped[permission.action] = []
+      }
+      grouped[permission.action].push(permission)
+    })
+    return grouped
+  })
+
   const activeUsers = computed(() => {
     return users.value.filter(u => u.status === 'active')
+  })
+
+  const activeOrganizations = computed(() => {
+    return organizations.value.filter(o => o.status === 'active')
   })
 
   const usersByRole = computed(() => {
@@ -41,6 +57,17 @@ export const usePermissionStore = defineStore('permission', () => {
         grouped[user.role] = []
       }
       grouped[user.role].push(user)
+    })
+    return grouped
+  })
+
+  const usersByOrganization = computed(() => {
+    const grouped = {}
+    users.value.forEach(user => {
+      if (!grouped[user.organization]) {
+        grouped[user.organization] = []
+      }
+      grouped[user.organization].push(user)
     })
     return grouped
   })
@@ -82,6 +109,20 @@ export const usePermissionStore = defineStore('permission', () => {
     } catch (err) {
       error.value = 'Failed to fetch users'
       console.error('Error fetching users:', err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function fetchOrganizations() {
+    loading.value = true
+    error.value = null
+    try {
+      const data = await permissionService.getOrganizations()
+      organizations.value = data
+    } catch (err) {
+      error.value = 'Failed to fetch organizations'
+      console.error('Error fetching organizations:', err)
     } finally {
       loading.value = false
     }
@@ -135,11 +176,11 @@ export const usePermissionStore = defineStore('permission', () => {
     }
   }
 
-  async function assignRole(userId, roleId) {
+  async function assignRole(userId, roleId, organizationId) {
     loading.value = true
     error.value = null
     try {
-      const result = await permissionService.assignRole(userId, roleId)
+      const result = await permissionService.assignRole(userId, roleId, organizationId)
       await fetchUsers()
       return result
     } catch (err) {
@@ -151,11 +192,11 @@ export const usePermissionStore = defineStore('permission', () => {
     }
   }
 
-  async function updatePermissions(roleId, permissions) {
+  async function updatePermissions(roleId, permissions, organizations) {
     loading.value = true
     error.value = null
     try {
-      const result = await permissionService.updatePermissions(roleId, permissions)
+      const result = await permissionService.updatePermissions(roleId, permissions, organizations)
       await fetchRoles()
       return result
     } catch (err) {
@@ -164,6 +205,15 @@ export const usePermissionStore = defineStore('permission', () => {
       throw err
     } finally {
       loading.value = false
+    }
+  }
+
+  async function checkPermission(userRole, permission) {
+    try {
+      return await permissionService.checkPermission(userRole, permission)
+    } catch (err) {
+      console.error('Error checking permission:', err)
+      return false
     }
   }
 
@@ -178,25 +228,36 @@ export const usePermissionStore = defineStore('permission', () => {
     return permissions.value.filter(p => role.permissions.includes(p.name))
   }
 
+  function getOrganizationById(orgId) {
+    return organizations.value.find(o => o.id === orgId)
+  }
+
   return {
     roles,
     permissions,
     users,
+    organizations,
     loading,
     error,
     rolesByCategory,
     permissionsByCategory,
+    permissionsByAction,
     activeUsers,
+    activeOrganizations,
     usersByRole,
+    usersByOrganization,
     fetchRoles,
     fetchPermissions,
     fetchUsers,
+    fetchOrganizations,
     createRole,
     updateRole,
     deleteRole,
     assignRole,
     updatePermissions,
+    checkPermission,
     getRoleById,
-    getPermissionsByRole
+    getPermissionsByRole,
+    getOrganizationById
   }
 })

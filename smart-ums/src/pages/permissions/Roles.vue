@@ -17,19 +17,22 @@ const selectedRole = ref(null)
 const roleForm = ref({
   name: '',
   description: '',
-  permissions: []
+  permissions: [],
+  organizations: []
 })
 
 onMounted(() => {
   permissionStore.fetchRoles()
   permissionStore.fetchPermissions()
+  permissionStore.fetchOrganizations()
 })
 
 const handleCreateRole = () => {
   roleForm.value = {
     name: '',
     description: '',
-    permissions: []
+    permissions: [],
+    organizations: []
   }
   showCreateModal.value = true
 }
@@ -39,7 +42,8 @@ const handleEditRole = (role) => {
   roleForm.value = {
     name: role.name,
     description: role.description,
-    permissions: [...role.permissions]
+    permissions: [...role.permissions],
+    organizations: [...(role.organizations || [])]
   }
   showEditModal.value = true
 }
@@ -84,8 +88,21 @@ const togglePermission = (permissionName) => {
   }
 }
 
+const toggleOrganization = (orgCode) => {
+  const index = roleForm.value.organizations.indexOf(orgCode)
+  if (index !== -1) {
+    roleForm.value.organizations.splice(index, 1)
+  } else {
+    roleForm.value.organizations.push(orgCode)
+  }
+}
+
 const isPermissionSelected = (permissionName) => {
   return roleForm.value.permissions.includes(permissionName)
+}
+
+const isOrganizationSelected = (orgCode) => {
+  return roleForm.value.organizations.includes(orgCode)
 }
 
 const handleBack = () => {
@@ -200,6 +217,31 @@ const handleBack = () => {
           </div>
         </div>
 
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-bold text-text-primary">Organizations</h3>
+            <button @click="roleForm.organizations = ['all']" class="text-sm text-primary hover:text-primary-dark">All Organizations</button>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div 
+              v-for="org in permissionStore.activeOrganizations" 
+              :key="org.id"
+              @click="toggleOrganization(org.code)"
+              :class="isOrganizationSelected(org.code) || roleForm.organizations.includes('all') ? 'border-primary bg-primary-light' : 'border-border'"
+              class="border rounded-lg p-3 cursor-pointer hover:border-primary transition-all"
+            >
+              <div class="flex items-center gap-2">
+                <input type="checkbox" :checked="isOrganizationSelected(org.code) || roleForm.organizations.includes('all')" class="w-4 h-4" />
+                <div>
+                  <div class="text-sm font-medium text-text-primary">{{ org.name }}</div>
+                  <div class="text-xs text-text-secondary">{{ org.location }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="flex gap-3 justify-end">
           <button @click="showCreateModal = false" class="px-4 py-2 bg-bg-light text-text-primary border border-border rounded-lg font-medium hover:bg-bg-white transition-all">
             Cancel
@@ -249,6 +291,31 @@ const handleBack = () => {
                     <div class="text-sm font-medium text-text-primary">{{ perm.name }}</div>
                     <div class="text-xs text-text-secondary">{{ perm.description }}</div>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-3">
+            <h3 class="text-lg font-bold text-text-primary">Organizations</h3>
+            <button @click="roleForm.organizations = ['all']" class="text-sm text-primary hover:text-primary-dark">All Organizations</button>
+          </div>
+          
+          <div class="grid grid-cols-2 gap-2">
+            <div 
+              v-for="org in permissionStore.activeOrganizations" 
+              :key="org.id"
+              @click="toggleOrganization(org.code)"
+              :class="isOrganizationSelected(org.code) || roleForm.organizations.includes('all') ? 'border-primary bg-primary-light' : 'border-border'"
+              class="border rounded-lg p-3 cursor-pointer hover:border-primary transition-all"
+            >
+              <div class="flex items-center gap-2">
+                <input type="checkbox" :checked="isOrganizationSelected(org.code) || roleForm.organizations.includes('all')" class="w-4 h-4" />
+                <div>
+                  <div class="text-sm font-medium text-text-primary">{{ org.name }}</div>
+                  <div class="text-xs text-text-secondary">{{ org.location }}</div>
                 </div>
               </div>
             </div>
