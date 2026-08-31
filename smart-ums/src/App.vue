@@ -1,54 +1,69 @@
 ﻿<script setup>
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.store'
 import AppSidebar from './components/layout/AppSidebar.vue'
 import AppNavbar from './components/layout/AppNavbar.vue'
 import AppFooter from './components/layout/AppFooter.vue'
 
 const route = useRoute()
+const authStore = useAuthStore()
 
-const navigation = [
-  {
-    title: 'Overview',
-    items: [
-      { label: 'Dashboard', to: '/' },
-      { label: 'Reports', to: '/reports' },
-    ],
-  },
-  {
-    title: 'Academic Operations',
-    items: [
-      { label: 'Students', to: '/students' },
-      { label: 'Faculty', to: '/faculty' },
-      { label: 'Departments', to: '/departments' },
-      { label: 'Programs', to: '/programs' },
-      { label: 'Courses', to: '/courses' },
-      { label: 'Enrollment', to: '/enrollment' },
-      { label: 'Attendance', to: '/attendance' },
-      { label: 'Examinations', to: '/examinations' },
-    ],
-  },
-  {
-    title: 'Support Services',
-    items: [
-      { label: 'Fees', to: '/fees' },
-      { label: 'Library', to: '/library' },
-      { label: 'Hostel', to: '/hostel' },
-      { label: 'Transport', to: '/transport' },
-      { label: 'Leaves', to: '/leaves' },
-      { label: 'Notices', to: '/notices' },
-    ],
-  },
-  {
-    title: 'System',
-    items: [
-      { label: 'Permissions & Roles', to: '/permissions' },
-    ],
-  },
-]
+onMounted(() => {
+  authStore.initializeAuth()
+})
+
+const navigation = computed(() => {
+  const baseNavigation = [
+    {
+      title: 'Overview',
+      items: [
+        { label: 'Dashboard', to: '/' },
+        { label: 'Reports', to: '/reports' },
+      ],
+    },
+    {
+      title: 'Academic Operations',
+      items: [
+        { label: 'Students', to: '/students' },
+        { label: 'Faculty', to: '/faculty' },
+        { label: 'Departments', to: '/departments' },
+        { label: 'Programs', to: '/programs' },
+        { label: 'Courses', to: '/courses' },
+        { label: 'Enrollment', to: '/enrollment' },
+        { label: 'Attendance', to: '/attendance' },
+        { label: 'Examinations', to: '/examinations' },
+      ],
+    },
+    {
+      title: 'Support Services',
+      items: [
+        { label: 'Fees', to: '/fees' },
+        { label: 'Library', to: '/library' },
+        { label: 'Hostel', to: '/hostel' },
+        { label: 'Transport', to: '/transport' },
+        { label: 'Leaves', to: '/leaves' },
+        { label: 'Notices', to: '/notices' },
+      ],
+    },
+    {
+      title: 'System',
+      items: [
+        { label: 'Permissions & Roles', to: '/permissions' },
+      ],
+    },
+  ]
+
+  // Add User Approval for admins only
+  if (authStore.isAdmin) {
+    baseNavigation[3].items.push({ label: 'User Approval', to: '/user-approval' })
+  }
+
+  return baseNavigation
+})
 
 const pageTitle = computed(() => {
-  const current = navigation
+  const current = navigation.value
     .flatMap((section) => section.items)
     .find((item) => item.to === route.path)
 
