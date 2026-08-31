@@ -36,9 +36,12 @@ import PermissionsRoles from '../pages/permissions/Roles.vue'
 import PermissionsList from '../pages/permissions/Permissions.vue'
 import PermissionsAssign from '../pages/permissions/Assign.vue'
 import LoginPage from '../pages/auth/Login.vue'
+import SignupPage from '../pages/auth/Signup.vue'
+import UserApproval from '../pages/auth/UserApproval.vue'
 import ForgotPassword from '../pages/auth/ForgotPassword.vue'
 import ResetPassword from '../pages/auth/ResetPassword.vue'
 import Unauthorized from '../pages/auth/Unauthorized.vue'
+import { requiresAuth, requiresAdmin } from './guards'
 
 export const routes = [
   {
@@ -274,6 +277,19 @@ export const routes = [
     name: 'login',
     component: LoginPage,
     meta: { title: 'Login' },
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: SignupPage,
+    meta: { title: 'Sign Up' },
+  },
+  {
+    path: '/user-approval',
+    name: 'user-approval',
+    component: UserApproval,
+    meta: { title: 'User Approval' },
+    beforeEnter: requiresAdmin,
   },
   {
     path: '/forgot-password',
