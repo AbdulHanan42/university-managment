@@ -13,17 +13,20 @@ const toast = useToast()
 const searchQuery = ref('')
 const filterRole = ref('all')
 const filterStatus = ref('all')
+const filterOrganization = ref('all')
 const selectedUser = ref(null)
 const showAssignModal = ref(false)
 
 const assignForm = ref({
   userId: null,
-  roleId: null
+  roleId: null,
+  organizationId: null
 })
 
 onMounted(() => {
   permissionStore.fetchUsers()
   permissionStore.fetchRoles()
+  permissionStore.fetchOrganizations()
 })
 
 const filteredUsers = computed(() => {
@@ -35,6 +38,10 @@ const filteredUsers = computed(() => {
 
   if (filterStatus.value !== 'all') {
     users = users.filter(u => u.status === filterStatus.value)
+  }
+
+  if (filterOrganization.value !== 'all') {
+    users = users.filter(u => u.organization === filterOrganization.value)
   }
 
   if (searchQuery.value) {
@@ -52,18 +59,23 @@ const roleOptions = computed(() => {
   return ['all', ...permissionStore.roles.map(r => r.name)]
 })
 
+const organizationOptions = computed(() => {
+  return ['all', ...permissionStore.activeOrganizations.map(o => o.name)]
+})
+
 const handleAssignRole = (user) => {
   selectedUser.value = user
   assignForm.value = {
     userId: user.id,
-    roleId: permissionStore.roles.find(r => r.name === user.role)?.id || null
+    roleId: permissionStore.roles.find(r => r.name === user.role)?.id || null,
+    organizationId: permissionStore.organizations.find(o => o.name === user.organization)?.id || null
   }
   showAssignModal.value = true
 }
 
 const handleSaveAssignment = async () => {
   try {
-    await permissionStore.assignRole(assignForm.value.userId, assignForm.value.roleId)
+    await permissionStore.assignRole(assignForm.value.userId, assignForm.value.roleId, assignForm.value.organizationId)
     toast.success('Role assigned successfully')
     showAssignModal.value = false
   } catch (error) {
@@ -89,8 +101,8 @@ const handleBack = () => {
     <header class="flex justify-between items-center gap-4 mb-6 flex-wrap">
       <div>
         <p class="mb-1 text-xs uppercase tracking-wider text-text-muted font-semibold">Access Control</p>
-        <h1 class="mb-1 text-2xl font-bold text-text-primary">Assign Roles</h1>
-        <p class="m-0 text-sm text-text-secondary">Assign roles to users and manage access.</p>
+        <h1 class="mb-1 text-2xl font-bold text-text-primary">Assign Roles & Permissions</h1>
+        <p class="m-0 text-sm text-text-secondary">Assign roles and organizations to users with granular permissions.</p>
       </div>
       <button @click="handleBack" class="px-4 py-2 bg-bg-light text-text-primary border border-border rounded-lg font-medium hover:bg-bg-white transition-all">
         Back
@@ -117,14 +129,14 @@ const handleBack = () => {
           <div class="text-xs text-text-secondary uppercase tracking-wider">Available Roles</div>
         </div>
         <div class="bg-warning-light border border-border rounded-lg p-4 text-center">
-          <div class="text-2xl font-bold text-warning mb-1">{{ Object.keys(permissionStore.usersByRole).length }}</div>
-          <div class="text-xs text-text-secondary uppercase tracking-wider">Roles Assigned</div>
+          <div class="text-2xl font-bold text-warning mb-1">{{ permissionStore.activeOrganizations.length }}</div>
+          <div class="text-xs text-text-secondary uppercase tracking-wider">Active Organizations</div>
         </div>
       </div>
 
       <!-- Filters -->
       <div class="bg-bg-light border border-border rounded-xl p-4">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <div>
             <label class="block text-sm font-semibold text-text-secondary mb-2">Search</label>
             <input 
@@ -142,6 +154,17 @@ const handleBack = () => {
             >
               <option v-for="role in roleOptions" :key="role" :value="role">
                 {{ role === 'all' ? 'All Roles' : role }}
+              </option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-semibold text-text-secondary mb-2">Organization</label>
+            <select 
+              v-model="filterOrganization" 
+              class="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:border-primary"
+            >
+              <option v-for="org in organizationOptions" :key="org" :value="org">
+                {{ org === 'all' ? 'All Organizations' : org }}
               </option>
             </select>
           </div>
@@ -170,7 +193,8 @@ const handleBack = () => {
             <tr>
               <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">User</th>
               <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Email</th>
-              <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Current Role</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Role</th>
+              <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Organization</th>
               <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Status</th>
               <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Last Login</th>
               <th class="px-4 py-3 text-left text-sm font-semibold text-text-secondary">Actions</th>
@@ -194,6 +218,7 @@ const handleBack = () => {
               <td class="px-4 py-3">
                 <span class="bg-secondary-light text-secondary px-2 py-1 rounded text-xs font-semibold">{{ user.role }}</span>
               </td>
+              <td class="px-4 py-3 text-sm text-text-secondary">{{ user.organization }}</td>
               <td class="px-4 py-3">
                 <span :class="getStatusColor(user.status)" class="px-2 py-1 rounded text-xs font-semibold">
                   {{ user.status.charAt(0).toUpperCase() + user.status.slice(1) }}
@@ -217,7 +242,7 @@ const handleBack = () => {
     <!-- Assign Role Modal -->
     <div v-if="showAssignModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-bg-white border border-border rounded-xl p-6 max-w-md w-full">
-        <h2 class="mb-4 text-xl font-bold text-text-primary">Assign Role</h2>
+        <h2 class="mb-4 text-xl font-bold text-text-primary">Assign Role & Organization</h2>
         
         <div v-if="selectedUser" class="mb-4 p-3 bg-bg-light rounded-lg">
           <div class="font-semibold text-text-primary">{{ selectedUser.name }}</div>
@@ -226,14 +251,38 @@ const handleBack = () => {
 
         <div class="flex flex-col gap-4 mb-6">
           <div>
-            <label class="block text-sm font-semibold text-text-secondary mb-2">Select Role *</label>
+            <label class="block text-sm font-semibold text-text-secondary mb-2">Role *</label>
             <select 
               v-model="assignForm.roleId" 
               class="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:border-primary"
             >
               <option :value="null">Select a role</option>
               <option v-for="role in permissionStore.roles" :key="role.id" :value="role.id">
-                {{ role.name }}
+                {{ role.name }} - {{ role.description }}
+              </option>
+            </select>
+            <div v-if="assignForm.roleId" class="mt-2 text-xs text-text-muted">
+              <div class="font-semibold">Permissions:</div>
+              <div class="flex flex-wrap gap-1 mt-1">
+                <span v-for="perm in permissionStore.getPermissionsByRole(assignForm.roleId).slice(0, 5)" :key="perm.name" class="bg-bg-white border border-border px-2 py-1 rounded">
+                  {{ perm.name }}
+                </span>
+                <span v-if="permissionStore.getPermissionsByRole(assignForm.roleId).length > 5" class="text-text-muted">
+                  +{{ permissionStore.getPermissionsByRole(assignForm.roleId).length - 5 }} more
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-sm font-semibold text-text-secondary mb-2">Organization *</label>
+            <select 
+              v-model="assignForm.organizationId" 
+              class="w-full px-3 py-2 border border-border rounded-lg text-sm focus:outline-none focus:border-primary"
+            >
+              <option :value="null">Select an organization</option>
+              <option v-for="org in permissionStore.activeOrganizations" :key="org.id" :value="org.id">
+                {{ org.name }} ({{ org.location }})
               </option>
             </select>
           </div>
@@ -245,7 +294,7 @@ const handleBack = () => {
           </button>
           <button 
             @click="handleSaveAssignment"
-            :disabled="!assignForm.roleId"
+            :disabled="!assignForm.roleId || !assignForm.organizationId"
             class="px-4 py-2 bg-primary text-white rounded-lg font-medium hover:bg-primary-dark transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Assign
