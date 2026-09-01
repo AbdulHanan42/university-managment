@@ -39,6 +39,77 @@ const availableRoles = [
 
 const isStudent = computed(() => formData.value.role === 'Student')
 
+// Password strength calculation
+const passwordStrength = computed(() => {
+  const password = formData.value.password
+  if (!password) return { score: 0, label: '', color: '', checks: [] }
+
+  let score = 0
+  const checks = []
+
+  // Length check
+  if (password.length >= 8) {
+    score += 1
+    checks.push({ label: 'At least 8 characters', met: true })
+  } else {
+    checks.push({ label: 'At least 8 characters', met: false })
+  }
+
+  // Uppercase check
+  if (/[A-Z]/.test(password)) {
+    score += 1
+    checks.push({ label: 'Uppercase letter', met: true })
+  } else {
+    checks.push({ label: 'Uppercase letter', met: false })
+  }
+
+  // Lowercase check
+  if (/[a-z]/.test(password)) {
+    score += 1
+    checks.push({ label: 'Lowercase letter', met: true })
+  } else {
+    checks.push({ label: 'Lowercase letter', met: false })
+  }
+
+  // Number check
+  if (/[0-9]/.test(password)) {
+    score += 1
+    checks.push({ label: 'Number', met: true })
+  } else {
+    checks.push({ label: 'Number', met: false })
+  }
+
+  // Special character check
+  if (/[^A-Za-z0-9]/.test(password)) {
+    score += 1
+    checks.push({ label: 'Special character', met: true })
+  } else {
+    checks.push({ label: 'Special character', met: false })
+  }
+
+  let label = ''
+  let color = ''
+
+  if (score <= 1) {
+    label = 'Weak'
+    color = '#ef4444'
+  } else if (score <= 2) {
+    label = 'Fair'
+    color = '#f59e0b'
+  } else if (score <= 3) {
+    label = 'Good'
+    color = '#3b82f6'
+  } else if (score <= 4) {
+    label = 'Strong'
+    color = '#10b981'
+  } else {
+    label = 'Very Strong'
+    color = '#059669'
+  }
+
+  return { score, label, color, checks }
+})
+
 const handleProfilePicChange = (e) => {
   const file = e.target.files[0]
   if (file) {
@@ -141,6 +212,35 @@ onMounted(() => {
           required
           :disabled="isSubmitting"
         />
+        <!-- Password Strength Indicator -->
+        <div v-if="formData.password" class="password-strength">
+          <div class="strength-bar">
+            <div 
+              class="strength-fill" 
+              :style="{ 
+                width: `${(passwordStrength.score / 5) * 100}%`, 
+                backgroundColor: passwordStrength.color 
+              }"
+            ></div>
+          </div>
+          <div class="strength-info">
+            <span class="strength-label" :style="{ color: passwordStrength.color }">
+              {{ passwordStrength.label }}
+            </span>
+            <span class="strength-score">{{ passwordStrength.score }}/5</span>
+          </div>
+          <div class="strength-requirements">
+            <div 
+              v-for="(check, index) in passwordStrength.checks" 
+              :key="index"
+              class="requirement-item"
+              :class="{ met: check.met }"
+            >
+              <span class="check-icon">{{ check.met ? '✓' : '○' }}</span>
+              <span>{{ check.label }}</span>
+            </div>
+          </div>
+        </div>
       </label>
 
       <label>
@@ -375,5 +475,56 @@ input:disabled, select:disabled, textarea:disabled {
 }
 .link:hover {
   text-decoration: underline;
+}
+
+/* Password Strength Indicator */
+.password-strength {
+  margin-top: 0.5rem;
+}
+.strength-bar {
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+.strength-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: 3px;
+}
+.strength-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.strength-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.strength-score {
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+.strength-requirements {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.requirement-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: #9ca3af;
+}
+.requirement-item.met {
+  color: #10b981;
+}
+.check-icon {
+  font-weight: bold;
+  font-size: 0.9rem;
 }
 </style>

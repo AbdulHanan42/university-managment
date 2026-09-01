@@ -116,81 +116,83 @@ const getTypeColor = (type) => {
 </script>
 
 <template>
-  <div class="admin-panel-container">
+  <div class="min-h-screen bg-slate-50">
     <!-- Admin Panel Header -->
-    <header class="admin-header">
-      <div class="header-content">
-        <div class="logo-section">
-          <div class="logo-icon">🛡️</div>
+    <header class="bg-gradient-to-r from-blue-900 to-blue-700 text-white px-6 py-6">
+      <div class="max-w-7xl mx-auto flex justify-between items-center">
+        <div class="flex items-center gap-4">
+          <div class="text-4xl">🛡️</div>
           <div>
-            <h1>Admin Panel</h1>
-            <p class="subtitle">Smart UMS Request Management</p>
+            <h1 class="text-2xl font-bold m-0">Admin Panel</h1>
+            <p class="text-sm opacity-80 m-0 mt-1">Smart UMS Request Management</p>
           </div>
         </div>
-        <div class="header-actions">
-          <button @click="handleBackToUMS" class="back-button">
+        <div class="flex items-center gap-6">
+          <button @click="handleBackToUMS" class="px-5 py-2 bg-white/15 text-white border border-white/30 rounded-lg cursor-pointer transition-all hover:bg-white/25">
             ← Back to UMS
           </button>
-          <div class="admin-info">
-            <div class="admin-avatar">
-              {{ adminStore.admin?.name?.charAt(0) || 'A' }}
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center font-semibold text-lg">
+                {{ adminStore.admin?.name?.charAt(0) || 'A' }}
+              </div>
+              <div class="text-right">
+                <div class="font-semibold text-sm">{{ adminStore.admin?.name }}</div>
+                <div class="text-xs opacity-80">{{ adminStore.admin?.role }}</div>
+              </div>
+              <button @click="handleLogout" class="px-4 py-2 bg-white/15 text-white border border-white/30 rounded text-sm cursor-pointer transition-all hover:bg-white/25">
+                Logout
+              </button>
             </div>
-            <div class="admin-details">
-              <div class="admin-name">{{ adminStore.admin?.name }}</div>
-              <div class="admin-role">{{ adminStore.admin?.role }}</div>
-            </div>
-            <button @click="handleLogout" class="logout-button">
-              Logout
-            </button>
           </div>
         </div>
       </div>
     </header>
 
     <!-- Stats Cards -->
-    <div class="stats-section">
-      <div class="stat-card urgent">
-        <div class="stat-icon">⏰</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ adminStore.stats.pending }}</div>
-          <div class="stat-label">Pending Requests</div>
+    <div class="max-w-7xl mx-auto mt-8 px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm border-l-4 border-amber-500">
+        <div class="text-4xl">⏰</div>
+        <div>
+          <div class="text-3xl font-bold text-slate-800">{{ adminStore.stats.pending }}</div>
+          <div class="text-sm text-slate-600 mt-1">Pending Requests</div>
         </div>
       </div>
-      <div class="stat-card success">
-        <div class="stat-icon">✅</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ adminStore.stats.approved }}</div>
-          <div class="stat-label">Approved Today</div>
+      <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm border-l-4 border-green-500">
+        <div class="text-4xl">✅</div>
+        <div>
+          <div class="text-3xl font-bold text-slate-800">{{ adminStore.stats.approved }}</div>
+          <div class="text-sm text-slate-600 mt-1">Approved Today</div>
         </div>
       </div>
-      <div class="stat-card rejected">
-        <div class="stat-icon">❌</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ adminStore.stats.rejected }}</div>
-          <div class="stat-label">Rejected Today</div>
+      <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm border-l-4 border-red-500">
+        <div class="text-4xl">❌</div>
+        <div>
+          <div class="text-3xl font-bold text-slate-800">{{ adminStore.stats.rejected }}</div>
+          <div class="text-sm text-slate-600 mt-1">Rejected Today</div>
         </div>
       </div>
-      <div class="stat-card total">
-        <div class="stat-icon">📊</div>
-        <div class="stat-content">
-          <div class="stat-value">{{ adminStore.stats.total }}</div>
-          <div class="stat-label">Total Requests</div>
+      <div class="bg-white rounded-xl p-6 flex items-center gap-4 shadow-sm border-l-4 border-blue-500">
+        <div class="text-4xl">📊</div>
+        <div>
+          <div class="text-3xl font-bold text-slate-800">{{ adminStore.stats.total }}</div>
+          <div class="text-sm text-slate-600 mt-1">Total Requests</div>
         </div>
       </div>
     </div>
 
     <!-- Filters -->
-    <div class="filters-section">
-      <div class="filter-group">
+    <div class="max-w-7xl mx-auto mt-6 px-6 flex gap-4">
+      <div class="flex-1">
         <input 
           v-model="searchQuery" 
           type="text" 
           placeholder="Search requests..." 
-          class="search-input"
+          class="w-full px-4 py-3.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-900 focus:ring-2 focus:ring-blue-900/10"
         />
       </div>
-      <div class="filter-group">
-        <select v-model="filterType" class="filter-select">
+      <div class="flex-1">
+        <select v-model="filterType" class="w-full px-4 py-3.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-900 focus:ring-2 focus:ring-blue-900/10">
           <option value="all">All Types</option>
           <option v-for="type in requestTypes.filter(t => t !== 'all')" :key="type" :value="type">
             {{ type.replace('_', ' ').toUpperCase() }}
@@ -200,75 +202,75 @@ const getTypeColor = (type) => {
     </div>
 
     <!-- Requests List -->
-    <div class="requests-section">
-      <div v-if="adminStore.loading" class="loading-state">
+    <div class="max-w-7xl mx-auto mt-6 mb-12 px-6">
+      <div v-if="adminStore.loading" class="text-center py-16 text-slate-600">
         <p>Loading requests...</p>
       </div>
 
-      <div v-else-if="filteredRequests.length === 0" class="empty-state">
-        <div class="empty-icon">📭</div>
-        <h3>No Pending Requests</h3>
+      <div v-else-if="filteredRequests.length === 0" class="text-center py-16 text-slate-600">
+        <div class="text-6xl mb-4">📭</div>
+        <h3 class="text-2xl font-semibold mb-2">No Pending Requests</h3>
         <p>All requests have been processed</p>
       </div>
 
-      <div v-else class="requests-list">
+      <div v-else class="grid gap-6">
         <div 
           v-for="request in filteredRequests" 
           :key="request.id" 
-          class="request-card"
+          class="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
         >
-          <div class="request-header">
-            <div class="request-type">
-              <span class="type-icon">{{ getTypeIcon(request.type) }}</span>
-              <span class="type-label">{{ request.type.replace('_', ' ').toUpperCase() }}</span>
+          <div class="flex justify-between items-center mb-4 pb-4 border-b border-slate-200">
+            <div class="flex items-center gap-2">
+              <span class="text-3xl">{{ getTypeIcon(request.type) }}</span>
+              <span class="font-semibold text-slate-800">{{ request.type.replace('_', ' ').toUpperCase() }}</span>
             </div>
-            <div class="request-date">
+            <div class="text-sm text-slate-600">
               {{ new Date(request.createdAt).toLocaleString() }}
             </div>
           </div>
 
-          <div class="request-body">
-            <div class="requester-info">
-              <div class="requester-avatar">
+          <div class="flex gap-8 mb-6">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 bg-slate-200 rounded-full flex items-center justify-center font-semibold text-xl overflow-hidden">
                 {{ request.profilePic ? '' : request.name?.charAt(0) }}
-                <img v-if="request.profilePic" :src="request.profilePic" class="avatar-image" />
+                <img v-if="request.profilePic" :src="request.profilePic" class="w-full h-full object-cover" />
               </div>
-              <div class="requester-details">
-                <h4>{{ request.name }}</h4>
-                <p>{{ request.email }}</p>
+              <div>
+                <h4 class="text-base font-semibold text-slate-800 mb-1">{{ request.name }}</h4>
+                <p class="text-sm text-slate-600 m-0">{{ request.email }}</p>
               </div>
             </div>
 
-            <div class="request-details">
-              <div v-if="request.rollNumber" class="detail-item">
-                <span class="detail-label">Roll Number:</span>
-                <span class="detail-value">{{ request.rollNumber }}</span>
+            <div class="grid grid-cols-2 gap-3 flex-1">
+              <div v-if="request.rollNumber" class="flex gap-2">
+                <span class="text-sm text-slate-600 font-medium">Roll Number:</span>
+                <span class="text-sm text-slate-800 font-semibold">{{ request.rollNumber }}</span>
               </div>
-              <div v-if="request.department" class="detail-item">
-                <span class="detail-label">Department:</span>
-                <span class="detail-value">{{ request.department }}</span>
+              <div v-if="request.department" class="flex gap-2">
+                <span class="text-sm text-slate-600 font-medium">Department:</span>
+                <span class="text-sm text-slate-800 font-semibold">{{ request.department }}</span>
               </div>
-              <div v-if="request.organization" class="detail-item">
-                <span class="detail-label">Organization:</span>
-                <span class="detail-value">{{ request.organization }}</span>
+              <div v-if="request.organization" class="flex gap-2">
+                <span class="text-sm text-slate-600 font-medium">Organization:</span>
+                <span class="text-sm text-slate-800 font-semibold">{{ request.organization }}</span>
               </div>
-              <div class="detail-item">
-                <span class="detail-label">Role:</span>
-                <span class="detail-value">{{ request.role }}</span>
+              <div class="flex gap-2">
+                <span class="text-sm text-slate-600 font-medium">Role:</span>
+                <span class="text-sm text-slate-800 font-semibold">{{ request.role }}</span>
               </div>
             </div>
           </div>
 
-          <div class="request-actions">
+          <div class="flex gap-4">
             <button 
               @click="handleApprove(request.id)"
-              class="action-button approve"
+              class="flex-1 px-4 py-3.5 bg-green-500 text-white rounded-lg font-semibold cursor-pointer transition-all hover:bg-green-600"
             >
               ✅ Approve
             </button>
             <button 
               @click="handleRejectClick(request)"
-              class="action-button reject"
+              class="flex-1 px-4 py-3.5 bg-red-500 text-white rounded-lg font-semibold cursor-pointer transition-all hover:bg-red-600"
             >
               ❌ Reject
             </button>
@@ -278,27 +280,28 @@ const getTypeColor = (type) => {
     </div>
 
     <!-- Reject Modal -->
-    <div v-if="showRejectModal" class="modal-overlay">
-      <div class="modal-content">
-        <h2>Reject Request</h2>
-        <div v-if="selectedRequest" class="request-summary">
-          <p><strong>Name:</strong> {{ selectedRequest.name }}</p>
-          <p><strong>Email:</strong> {{ selectedRequest.email }}</p>
-          <p><strong>Type:</strong> {{ selectedRequest.type.replace('_', ' ').toUpperCase() }}</p>
+    <div v-if="showRejectModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div class="bg-white rounded-xl p-8 max-w-lg w-full mx-4">
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Reject Request</h2>
+        <div v-if="selectedRequest" class="bg-slate-50 p-4 rounded-lg mb-6">
+          <p class="text-sm mb-1"><strong>Name:</strong> {{ selectedRequest.name }}</p>
+          <p class="text-sm mb-1"><strong>Email:</strong> {{ selectedRequest.email }}</p>
+          <p class="text-sm"><strong>Type:</strong> {{ selectedRequest.type.replace('_', ' ').toUpperCase() }}</p>
         </div>
-        <div class="form-group">
-          <label>Rejection Reason *</label>
+        <div class="mb-6">
+          <label class="block mb-2 font-semibold text-slate-800">Rejection Reason *</label>
           <textarea 
             v-model="rejectionReason" 
             placeholder="Please provide a reason for rejection..." 
             rows="4"
+            class="w-full px-4 py-3.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-blue-900 focus:ring-2 focus:ring-blue-900/10 resize-y"
           ></textarea>
         </div>
-        <div class="modal-actions">
-          <button @click="showRejectModal = false; selectedRequest = null; rejectionReason = ''" class="cancel-button">
+        <div class="flex gap-4 justify-end">
+          <button @click="showRejectModal = false; selectedRequest = null; rejectionReason = ''" class="px-6 py-3 bg-slate-200 text-slate-800 rounded-lg font-semibold cursor-pointer transition-all hover:bg-slate-300">
             Cancel
           </button>
-          <button @click="handleReject" class="reject-confirm-button">
+          <button @click="handleReject" class="px-6 py-3 bg-red-500 text-white rounded-lg font-semibold cursor-pointer transition-all hover:bg-red-600">
             Reject Request
           </button>
         </div>
@@ -306,445 +309,3 @@ const getTypeColor = (type) => {
     </div>
   </div>
 </template>
-
-<style scoped>
-.admin-panel-container {
-  min-height: 100vh;
-  background: #f8fafc;
-}
-
-.admin-header {
-  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-  color: white;
-  padding: 1.5rem 2rem;
-}
-
-.header-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.logo-icon {
-  font-size: 2.5rem;
-}
-
-.admin-header h1 {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 700;
-}
-
-.subtitle {
-  margin: 0.25rem 0 0 0;
-  opacity: 0.8;
-  font-size: 0.9rem;
-}
-
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.back-button {
-  padding: 0.75rem 1.25rem;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.back-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.admin-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.admin-avatar {
-  width: 40px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-
-.admin-details {
-  text-align: right;
-}
-
-.admin-name {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.admin-role {
-  font-size: 0.8rem;
-  opacity: 0.8;
-}
-
-.logout-button {
-  padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s;
-}
-
-.logout-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-.stats-section {
-  max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 2rem;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-.stat-card.urgent {
-  border-left: 4px solid #f59e0b;
-}
-
-.stat-card.success {
-  border-left: 4px solid #10b981;
-}
-
-.stat-card.rejected {
-  border-left: 4px solid #ef4444;
-}
-
-.stat-card.total {
-  border-left: 4px solid #3b82f6;
-}
-
-.stat-icon {
-  font-size: 2rem;
-}
-
-.stat-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #1e293b;
-}
-
-.stat-label {
-  font-size: 0.875rem;
-  color: #64748b;
-  margin-top: 0.25rem;
-}
-
-.filters-section {
-  max-width: 1400px;
-  margin: 0 auto 2rem;
-  padding: 0 2rem;
-  display: flex;
-  gap: 1rem;
-}
-
-.filter-group {
-  flex: 1;
-}
-
-.search-input,
-.filter-select {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-}
-
-.requests-section {
-  max-width: 1400px;
-  margin: 0 auto 3rem;
-  padding: 0 2rem;
-}
-
-.loading-state,
-.empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: #64748b;
-}
-
-.empty-icon {
-  font-size: 4rem;
-  margin-bottom: 1rem;
-}
-
-.empty-state h3 {
-  margin: 0 0 0.5rem;
-  font-size: 1.25rem;
-}
-
-.requests-list {
-  display: grid;
-  gap: 1.5rem;
-}
-
-.request-card {
-  background: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s;
-}
-
-.request-card:hover {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.request-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e2e8f0;
-}
-
-.request-type {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.type-icon {
-  font-size: 1.5rem;
-}
-
-.type-label {
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.request-date {
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.request-body {
-  display: flex;
-  gap: 2rem;
-  margin-bottom: 1.5rem;
-}
-
-.requester-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.requester-avatar {
-  width: 50px;
-  height: 50px;
-  background: #e2e8f0;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  font-size: 1.25rem;
-  overflow: hidden;
-}
-
-.avatar-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.requester-details h4 {
-  margin: 0 0 0.25rem;
-  font-size: 1rem;
-  color: #1e293b;
-}
-
-.requester-details p {
-  margin: 0;
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.request-details {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.75rem;
-  flex: 1;
-}
-
-.detail-item {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.detail-label {
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.detail-value {
-  font-size: 0.875rem;
-  color: #1e293b;
-  font-weight: 600;
-}
-
-.request-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.action-button {
-  flex: 1;
-  padding: 0.875rem;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.action-button.approve {
-  background: #10b981;
-  color: white;
-}
-
-.action-button.approve:hover {
-  background: #059669;
-}
-
-.action-button.reject {
-  background: #ef4444;
-  color: white;
-}
-
-.action-button.reject:hover {
-  background: #dc2626;
-}
-
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-
-.modal-content {
-  background: white;
-  border-radius: 1rem;
-  padding: 2rem;
-  max-width: 500px;
-  width: 90%;
-}
-
-.modal-content h2 {
-  margin: 0 0 1.5rem;
-  color: #1e293b;
-}
-
-.request-summary {
-  background: #f8fafc;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  margin-bottom: 1.5rem;
-}
-
-.request-summary p {
-  margin: 0.5rem 0;
-  font-size: 0.9rem;
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.form-group textarea {
-  width: 100%;
-  padding: 0.875rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-  font-size: 0.95rem;
-  resize: vertical;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 1rem;
-  justify-content: flex-end;
-}
-
-.cancel-button {
-  padding: 0.75rem 1.5rem;
-  background: #e2e8f0;
-  color: #1e293b;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.cancel-button:hover {
-  background: #cbd5e1;
-}
-
-.reject-confirm-button {
-  padding: 0.75rem 1.5rem;
-  background: #ef4444;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.reject-confirm-button:hover {
-  background: #dc2626;
-}
-</style>
