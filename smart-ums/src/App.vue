@@ -2,15 +2,18 @@
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
+import { useAdminStore } from '@/stores/admin.store'
 import AppSidebar from './components/layout/AppSidebar.vue'
 import AppNavbar from './components/layout/AppNavbar.vue'
 import AppFooter from './components/layout/AppFooter.vue'
 
 const route = useRoute()
 const authStore = useAuthStore()
+const adminStore = useAdminStore()
 
 onMounted(() => {
   authStore.initializeAuth()
+  adminStore.initializeAdminPanel()
 })
 
 const navigation = computed(() => {
@@ -50,6 +53,7 @@ const navigation = computed(() => {
       title: 'System',
       items: [
         { label: 'Permissions & Roles', to: '/permissions' },
+        { label: 'Admin Panel', to: '/admin/login' },
       ],
     },
   ]

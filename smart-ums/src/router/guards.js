@@ -1,4 +1,5 @@
 ﻿import { useAuthStore } from '@/stores/auth.store'
+import { useAdminStore } from '@/stores/admin.store'
 
 // Admin-only route guard
 export const requiresAdmin = (to, from, next) => {
@@ -27,8 +28,20 @@ export const requiresAuth = (to, from, next) => {
   }
 }
 
+// Admin panel guard
+export const requiresAdminPanel = (to, from, next) => {
+  const adminStore = useAdminStore()
+  
+  if (adminStore.isAuthenticated) {
+    next()
+  } else {
+    next({ name: 'admin-login' })
+  }
+}
+
 export const guards = {
   requiresAdmin,
-  requiresAuth
+  requiresAuth,
+  requiresAdminPanel
 }
 

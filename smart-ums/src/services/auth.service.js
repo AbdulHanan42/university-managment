@@ -7,7 +7,7 @@
         
         if (user) {
           if (user.status === 'pending') {
-            reject({ message: 'Your account is pending approval from an administrator' })
+            reject({ message: 'Your account is pending approval from admin panel' })
           } else if (user.status === 'rejected') {
             reject({ message: 'Your account registration was rejected' })
           } else if (user.status === 'inactive') {
@@ -62,7 +62,7 @@
           password: userData.password,
           role: userData.role,
           organization: userData.organization || 'Main Campus',
-          status: 'pending', // Requires admin approval
+          status: 'pending', // Requires admin panel approval
           profilePic: userData.profilePic || null,
           rollNumber: userData.rollNumber || null,
           department: userData.department || null,
@@ -75,9 +75,22 @@
         users.push(newUser)
         localStorage.setItem('users', JSON.stringify(users))
 
+        // Create request in admin panel
+        const adminRequests = JSON.parse(localStorage.getItem('adminRequests') || '[]')
+        const newRequest = {
+          id: Date.now() + 1,
+          type: 'registration',
+          ...userData,
+          status: 'pending',
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+        adminRequests.push(newRequest)
+        localStorage.setItem('adminRequests', JSON.stringify(adminRequests))
+
         resolve({
           success: true,
-          message: 'Registration successful. Please wait for admin approval.',
+          message: 'Registration successful. Your request has been sent to the admin panel for approval.',
           user: newUser
         })
       }, 800)
