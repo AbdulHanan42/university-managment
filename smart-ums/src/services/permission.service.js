@@ -20,7 +20,7 @@ export const permissionService = {
           { id: 2, name: 'Admin', description: 'Administrative access with most permissions', permissions: ['users.manage', 'students.manage', 'faculty.manage', 'departments.manage', 'courses.manage', 'enrollment.manage', 'enrollment.approve', 'enrollment.reject', 'attendance.manage', 'examinations.manage', 'fees.manage', 'library.manage', 'hostel.manage', 'hostel.approve', 'hostel.reject', 'transport.manage', 'leaves.manage', 'leaves.approve', 'leaves.reject', 'notices.manage', 'reports.view'], organizations: ['all'], userCount: 5, createdAt: '2024-01-15' },
           { id: 3, name: 'Hostel Manager', description: 'Hostel management access', permissions: ['hostel.manage', 'hostel.rooms', 'hostel.allocations', 'hostel.mess', 'hostel.bookings', 'hostel.approve', 'hostel.reject', 'hostel.requests'], organizations: ['MAIN', 'NORTH', 'SOUTH'], userCount: 3, createdAt: '2024-02-01' },
           { id: 4, name: 'Employee', description: 'Staff access with limited permissions', permissions: ['students.view', 'faculty.view', 'attendance.manage', 'leaves.view', 'notices.view'], organizations: ['MAIN'], userCount: 25, createdAt: '2024-02-15' },
-          { id: 5, name: 'Student', description: 'Student access for personal data', permissions: ['students.view_own', 'courses.view', 'enrollment.view_own', 'enrollment.submit', 'attendance.view_own', 'examinations.view_own', 'fees.view_own', 'library.view', 'hostel.book_own', 'hostel.view_own', 'leaves.manage_own', 'leaves.submit'], organizations: ['all'], userCount: 4200, createdAt: '2024-03-01' },
+          { id: 5, name: 'Student', description: 'Student access for personal data', permissions: ['dashboard.view', 'reports.view_own', 'students.view_own', 'students.update_own', 'faculty.view_own_dept', 'departments.view_own', 'programs.view_own', 'courses.view', 'courses.view_available', 'enrollment.view_own', 'enrollment.create', 'enrollment.cancel', 'attendance.view_own', 'exams.view_schedule', 'exams.view_own_results', 'exams.view_subjects', 'fees.view_own', 'fees.view_payment_history', 'fees.download_invoice', 'fees.apply_installment', 'fees.view_installment_status', 'library.view', 'library.view_own', 'hostel.view_own', 'hostel.view_room', 'leave.view_own', 'leave.create', 'leave.cancel', 'notices.view'], organizations: ['all'], userCount: 4200, createdAt: '2024-03-01' },
           { id: 6, name: 'Department Head', description: 'Department-level management', permissions: ['students.view', 'students.manage_dept', 'faculty.view', 'faculty.manage_dept', 'courses.view', 'courses.manage_dept', 'enrollment.view', 'enrollment.approve_dept', 'attendance.manage_dept', 'examinations.view', 'examinations.manage_dept', 'reports.view'], organizations: ['all'], userCount: 8, createdAt: '2024-03-15' },
           { id: 7, name: 'Finance Manager', description: 'Financial management access', permissions: ['students.view', 'fees.manage', 'fees.approve', 'fees.reject', 'reports.view'], organizations: ['MAIN'], userCount: 2, createdAt: '2024-04-01' },
         ])
@@ -32,95 +32,126 @@ export const permissionService = {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve([
-          // Users
-          { id: 1, category: 'Users', name: 'users.manage', description: 'Manage users and accounts', action: 'manage' },
-          { id: 2, category: 'Users', name: 'users.view', description: 'View user information', action: 'view' },
-          
-          // Students
-          { id: 3, category: 'Students', name: 'students.manage', description: 'Manage all student records', action: 'manage' },
-          { id: 4, category: 'Students', name: 'students.manage_dept', description: 'Manage department students', action: 'manage' },
-          { id: 5, category: 'Students', name: 'students.view', description: 'View all student information', action: 'view' },
-          { id: 6, category: 'Students', name: 'students.view_own', description: 'View own student information', action: 'view' },
-          
-          // Faculty
-          { id: 7, category: 'Faculty', name: 'faculty.manage', description: 'Manage all faculty records', action: 'manage' },
-          { id: 8, category: 'Faculty', name: 'faculty.manage_dept', description: 'Manage department faculty', action: 'manage' },
-          { id: 9, category: 'Faculty', name: 'faculty.view', description: 'View faculty information', action: 'view' },
-          
-          // Departments
-          { id: 10, category: 'Departments', name: 'departments.manage', description: 'Manage departments', action: 'manage' },
-          { id: 11, category: 'Departments', name: 'departments.view', description: 'View departments', action: 'view' },
-          
-          // Courses
-          { id: 12, category: 'Courses', name: 'courses.manage', description: 'Manage all courses', action: 'manage' },
-          { id: 13, category: 'Courses', name: 'courses.manage_dept', description: 'Manage department courses', action: 'manage' },
-          { id: 14, category: 'Courses', name: 'courses.view', description: 'View courses', action: 'view' },
-          
-          // Enrollment
-          { id: 15, category: 'Enrollment', name: 'enrollment.manage', description: 'Manage all enrollments', action: 'manage' },
-          { id: 16, category: 'Enrollment', name: 'enrollment.approve', description: 'Approve enrollment requests', action: 'approve' },
-          { id: 17, category: 'Enrollment', name: 'enrollment.reject', description: 'Reject enrollment requests', action: 'reject' },
-          { id: 18, category: 'Enrollment', name: 'enrollment.approve_dept', description: 'Approve department enrollments', action: 'approve' },
-          { id: 19, category: 'Enrollment', name: 'enrollment.view', description: 'View all enrollments', action: 'view' },
-          { id: 20, category: 'Enrollment', name: 'enrollment.view_own', description: 'View own enrollments', action: 'view' },
-          { id: 21, category: 'Enrollment', name: 'enrollment.submit', description: 'Submit enrollment requests', action: 'submit' },
-          
-          // Attendance
-          { id: 22, category: 'Attendance', name: 'attendance.manage', description: 'Manage all attendance', action: 'manage' },
-          { id: 23, category: 'Attendance', name: 'attendance.manage_dept', description: 'Manage department attendance', action: 'manage' },
-          { id: 24, category: 'Attendance', name: 'attendance.view', description: 'View attendance', action: 'view' },
-          { id: 25, category: 'Attendance', name: 'attendance.view_own', description: 'View own attendance', action: 'view' },
-          
-          // Examinations
-          { id: 26, category: 'Examinations', name: 'examinations.manage', description: 'Manage all examinations', action: 'manage' },
-          { id: 27, category: 'Examinations', name: 'examinations.manage_dept', description: 'Manage department examinations', action: 'manage' },
-          { id: 28, category: 'Examinations', name: 'examinations.view', description: 'View examinations', action: 'view' },
-          { id: 29, category: 'Examinations', name: 'examinations.view_own', description: 'View own examination results', action: 'view' },
-          
-          // Fees
-          { id: 30, category: 'Fees', name: 'fees.manage', description: 'Manage all fee records', action: 'manage' },
-          { id: 31, category: 'Fees', name: 'fees.approve', description: 'Approve fee payments', action: 'approve' },
-          { id: 32, category: 'Fees', name: 'fees.reject', description: 'Reject fee payments', action: 'reject' },
-          { id: 33, category: 'Fees', name: 'fees.view', description: 'View fee records', action: 'view' },
-          { id: 34, category: 'Fees', name: 'fees.view_own', description: 'View own fee records', action: 'view' },
-          
-          // Library
-          { id: 35, category: 'Library', name: 'library.manage', description: 'Manage library resources', action: 'manage' },
-          { id: 36, category: 'Library', name: 'library.view', description: 'View library resources', action: 'view' },
-          
-          // Hostel
-          { id: 37, category: 'Hostel', name: 'hostel.manage', description: 'Full hostel management', action: 'manage' },
-          { id: 38, category: 'Hostel', name: 'hostel.rooms', description: 'Manage hostel rooms', action: 'manage' },
-          { id: 39, category: 'Hostel', name: 'hostel.allocations', description: 'Manage room allocations', action: 'manage' },
-          { id: 40, category: 'Hostel', name: 'hostel.mess', description: 'Manage mess schedules', action: 'manage' },
-          { id: 41, category: 'Hostel', name: 'hostel.bookings', description: 'Manage hostel bookings', action: 'manage' },
-          { id: 42, category: 'Hostel', name: 'hostel.approve', description: 'Approve hostel requests', action: 'approve' },
-          { id: 43, category: 'Hostel', name: 'hostel.reject', description: 'Reject hostel requests', action: 'reject' },
-          { id: 44, category: 'Hostel', name: 'hostel.requests', description: 'View booking requests', action: 'view' },
-          { id: 45, category: 'Hostel', name: 'hostel.book_own', description: 'Book own hostel accommodation', action: 'submit' },
-          { id: 46, category: 'Hostel', name: 'hostel.view_own', description: 'View own hostel details', action: 'view' },
-          
-          // Transport
-          { id: 47, category: 'Transport', name: 'transport.manage', description: 'Manage transport services', action: 'manage' },
-          { id: 48, category: 'Transport', name: 'transport.view', description: 'View transport information', action: 'view' },
-          
-          // Leaves
-          { id: 49, category: 'Leaves', name: 'leaves.manage', description: 'Manage all leave requests', action: 'manage' },
-          { id: 50, category: 'Leaves', name: 'leaves.approve', description: 'Approve leave requests', action: 'approve' },
-          { id: 51, category: 'Leaves', name: 'leaves.reject', description: 'Reject leave requests', action: 'reject' },
-          { id: 52, category: 'Leaves', name: 'leaves.view', description: 'View leave requests', action: 'view' },
-          { id: 53, category: 'Leaves', name: 'leaves.manage_own', description: 'Manage own leave requests', action: 'manage' },
-          { id: 54, category: 'Leaves', name: 'leaves.submit', description: 'Submit leave requests', action: 'submit' },
-          
-          // Notices
-          { id: 55, category: 'Notices', name: 'notices.manage', description: 'Manage notices', action: 'manage' },
-          { id: 56, category: 'Notices', name: 'notices.view', description: 'View notices', action: 'view' },
+          // Dashboard
+          { id: 1, category: 'Dashboard', name: 'dashboard.view', description: 'View dashboard', action: 'view' },
           
           // Reports
-          { id: 57, category: 'Reports', name: 'reports.view', description: 'View reports', action: 'view' },
+          { id: 2, category: 'Reports', name: 'reports.view', description: 'View all reports', action: 'view' },
+          { id: 3, category: 'Reports', name: 'reports.view_own', description: 'View own reports', action: 'view' },
+          
+          // Users
+          { id: 4, category: 'Users', name: 'users.manage', description: 'Manage users and accounts', action: 'manage' },
+          { id: 5, category: 'Users', name: 'users.view', description: 'View user information', action: 'view' },
+          
+          // Students
+          { id: 6, category: 'Students', name: 'students.manage', description: 'Manage all student records', action: 'manage' },
+          { id: 7, category: 'Students', name: 'students.manage_dept', description: 'Manage department students', action: 'manage' },
+          { id: 8, category: 'Students', name: 'students.view', description: 'View all student information', action: 'view' },
+          { id: 9, category: 'Students', name: 'students.view_own', description: 'View own student information', action: 'view' },
+          { id: 10, category: 'Students', name: 'students.update_own', description: 'Update own student information', action: 'update' },
+          
+          // Faculty
+          { id: 11, category: 'Faculty', name: 'faculty.manage', description: 'Manage all faculty records', action: 'manage' },
+          { id: 12, category: 'Faculty', name: 'faculty.manage_dept', description: 'Manage department faculty', action: 'manage' },
+          { id: 13, category: 'Faculty', name: 'faculty.view', description: 'View faculty information', action: 'view' },
+          { id: 14, category: 'Faculty', name: 'faculty.view_own_dept', description: 'View faculty of own department', action: 'view' },
+          
+          // Departments
+          { id: 15, category: 'Departments', name: 'departments.manage', description: 'Manage departments', action: 'manage' },
+          { id: 16, category: 'Departments', name: 'departments.view', description: 'View departments', action: 'view' },
+          { id: 17, category: 'Departments', name: 'departments.view_own', description: 'View own department', action: 'view' },
+          
+          // Programs
+          { id: 18, category: 'Programs', name: 'programs.manage', description: 'Manage programs', action: 'manage' },
+          { id: 19, category: 'Programs', name: 'programs.view', description: 'View programs', action: 'view' },
+          { id: 20, category: 'Programs', name: 'programs.view_own', description: 'View own program', action: 'view' },
+          
+          // Courses
+          { id: 21, category: 'Courses', name: 'courses.manage', description: 'Manage all courses', action: 'manage' },
+          { id: 22, category: 'Courses', name: 'courses.manage_dept', description: 'Manage department courses', action: 'manage' },
+          { id: 23, category: 'Courses', name: 'courses.view', description: 'View courses', action: 'view' },
+          { id: 24, category: 'Courses', name: 'courses.view_available', description: 'View available courses', action: 'view' },
+          
+          // Enrollment
+          { id: 25, category: 'Enrollment', name: 'enrollment.manage', description: 'Manage all enrollments', action: 'manage' },
+          { id: 26, category: 'Enrollment', name: 'enrollment.approve', description: 'Approve enrollment requests', action: 'approve' },
+          { id: 27, category: 'Enrollment', name: 'enrollment.reject', description: 'Reject enrollment requests', action: 'reject' },
+          { id: 28, category: 'Enrollment', name: 'enrollment.approve_dept', description: 'Approve department enrollments', action: 'approve' },
+          { id: 29, category: 'Enrollment', name: 'enrollment.view', description: 'View all enrollments', action: 'view' },
+          { id: 30, category: 'Enrollment', name: 'enrollment.view_own', description: 'View own enrollments', action: 'view' },
+          { id: 31, category: 'Enrollment', name: 'enrollment.create', description: 'Create enrollment requests', action: 'create' },
+          { id: 32, category: 'Enrollment', name: 'enrollment.cancel', description: 'Cancel enrollment requests', action: 'cancel' },
+          
+          // Attendance
+          { id: 33, category: 'Attendance', name: 'attendance.manage', description: 'Manage all attendance', action: 'manage' },
+          { id: 34, category: 'Attendance', name: 'attendance.manage_dept', description: 'Manage department attendance', action: 'manage' },
+          { id: 35, category: 'Attendance', name: 'attendance.view', description: 'View attendance', action: 'view' },
+          { id: 36, category: 'Attendance', name: 'attendance.view_own', description: 'View own attendance', action: 'view' },
+          
+          // Examinations
+          { id: 37, category: 'Examinations', name: 'examinations.manage', description: 'Manage all examinations', action: 'manage' },
+          { id: 38, category: 'Examinations', name: 'examinations.manage_dept', description: 'Manage department examinations', action: 'manage' },
+          { id: 39, category: 'Examinations', name: 'examinations.view', description: 'View examinations', action: 'view' },
+          { id: 40, category: 'Examinations', name: 'examinations.view_own', description: 'View own examination results', action: 'view' },
+          { id: 41, category: 'Examinations', name: 'exams.view_schedule', description: 'View exam schedule', action: 'view' },
+          { id: 42, category: 'Examinations', name: 'exams.view_own_results', description: 'View own exam results', action: 'view' },
+          { id: 43, category: 'Examinations', name: 'exams.view_subjects', description: 'View studied and pending subjects', action: 'view' },
+          
+          // Fees
+          { id: 44, category: 'Fees', name: 'fees.manage', description: 'Manage all fee records', action: 'manage' },
+          { id: 45, category: 'Fees', name: 'fees.approve', description: 'Approve fee payments', action: 'approve' },
+          { id: 46, category: 'Fees', name: 'fees.reject', description: 'Reject fee payments', action: 'reject' },
+          { id: 47, category: 'Fees', name: 'fees.view', description: 'View fee records', action: 'view' },
+          { id: 48, category: 'Fees', name: 'fees.view_own', description: 'View own fee records', action: 'view' },
+          { id: 49, category: 'Fees', name: 'fees.view_payment_history', description: 'View payment history', action: 'view' },
+          { id: 50, category: 'Fees', name: 'fees.download_invoice', description: 'Download invoices', action: 'download' },
+          { id: 51, category: 'Fees', name: 'fees.apply_installment', description: 'Apply for fee installment', action: 'create' },
+          { id: 52, category: 'Fees', name: 'fees.view_installment_status', description: 'View installment approval status', action: 'view' },
+          
+          // Library
+          { id: 53, category: 'Library', name: 'library.manage', description: 'Manage library resources', action: 'manage' },
+          { id: 54, category: 'Library', name: 'library.view', description: 'View library resources', action: 'view' },
+          { id: 55, category: 'Library', name: 'library.view_own', description: 'View own library records', action: 'view' },
+          
+          // Hostel
+          { id: 56, category: 'Hostel', name: 'hostel.manage', description: 'Full hostel management', action: 'manage' },
+          { id: 57, category: 'Hostel', name: 'hostel.rooms', description: 'Manage hostel rooms', action: 'manage' },
+          { id: 58, category: 'Hostel', name: 'hostel.allocations', description: 'Manage room allocations', action: 'manage' },
+          { id: 59, category: 'Hostel', name: 'hostel.mess', description: 'Manage mess schedules', action: 'manage' },
+          { id: 60, category: 'Hostel', name: 'hostel.bookings', description: 'Manage hostel bookings', action: 'manage' },
+          { id: 61, category: 'Hostel', name: 'hostel.approve', description: 'Approve hostel requests', action: 'approve' },
+          { id: 62, category: 'Hostel', name: 'hostel.reject', description: 'Reject hostel requests', action: 'reject' },
+          { id: 63, category: 'Hostel', name: 'hostel.requests', description: 'View booking requests', action: 'view' },
+          { id: 64, category: 'Hostel', name: 'hostel.book_own', description: 'Book own hostel accommodation', action: 'submit' },
+          { id: 65, category: 'Hostel', name: 'hostel.view_own', description: 'View own hostel details', action: 'view' },
+          { id: 66, category: 'Hostel', name: 'hostel.view', description: 'View hostel information', action: 'view' },
+          { id: 67, category: 'Hostel', name: 'hostel.apply', description: 'Apply for hostel', action: 'create' },
+          { id: 68, category: 'Hostel', name: 'hostel.cancel_application', description: 'Cancel hostel application', action: 'cancel' },
+          { id: 69, category: 'Hostel', name: 'hostel.view_room', description: 'View own hostel room number', action: 'view' },
+          
+          // Transport
+          { id: 70, category: 'Transport', name: 'transport.manage', description: 'Manage transport services', action: 'manage' },
+          { id: 71, category: 'Transport', name: 'transport.view', description: 'View transport information', action: 'view' },
+          { id: 72, category: 'Transport', name: 'transport.view_own', description: 'View own transport details', action: 'view' },
+          { id: 73, category: 'Transport', name: 'transport.apply', description: 'Apply for transport', action: 'create' },
+          
+          // Leaves
+          { id: 74, category: 'Leaves', name: 'leaves.manage', description: 'Manage all leave requests', action: 'manage' },
+          { id: 75, category: 'Leaves', name: 'leaves.approve', description: 'Approve leave requests', action: 'approve' },
+          { id: 76, category: 'Leaves', name: 'leaves.reject', description: 'Reject leave requests', action: 'reject' },
+          { id: 77, category: 'Leaves', name: 'leaves.view', description: 'View leave requests', action: 'view' },
+          { id: 78, category: 'Leaves', name: 'leaves.manage_own', description: 'Manage own leave requests', action: 'manage' },
+          { id: 79, category: 'Leaves', name: 'leaves.submit', description: 'Submit leave requests', action: 'submit' },
+          { id: 80, category: 'Leaves', name: 'leave.view_own', description: 'View own leave requests', action: 'view' },
+          { id: 81, category: 'Leaves', name: 'leave.create', description: 'Create leave requests', action: 'create' },
+          { id: 82, category: 'Leaves', name: 'leave.cancel', description: 'Cancel leave requests', action: 'cancel' },
+          
+          // Notices
+          { id: 83, category: 'Notices', name: 'notices.manage', description: 'Manage notices', action: 'manage' },
+          { id: 84, category: 'Notices', name: 'notices.view', description: 'View notices', action: 'view' },
           
           // System
-          { id: 58, category: 'System', name: 'all', description: 'All system permissions', action: 'all' },
+          { id: 85, category: 'System', name: 'all', description: 'All system permissions', action: 'all' },
         ])
       }, 500)
     })
@@ -177,12 +208,23 @@ export const permissionService = {
     })
   },
 
-  async assignRole(userId, roleId, organizationId) {
+  async assignRole(userId, roleId) {
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve({
           success: true,
-          message: 'Role assigned successfully'
+          message: 'Role assigned successfully - permissions inherited from role'
+        })
+      }, 500)
+    })
+  },
+
+  async updateUserRole(userId, newRoleName) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({
+          success: true,
+          message: `User role updated to ${newRoleName} - permissions automatically applied from role definition`
         })
       }, 500)
     })
@@ -206,7 +248,7 @@ export const permissionService = {
       'Admin': ['users.manage', 'students.manage', 'faculty.manage', 'departments.manage', 'courses.manage', 'enrollment.manage', 'enrollment.approve', 'enrollment.reject', 'attendance.manage', 'examinations.manage', 'fees.manage', 'library.manage', 'hostel.manage', 'hostel.approve', 'hostel.reject', 'transport.manage', 'leaves.manage', 'leaves.approve', 'leaves.reject', 'notices.manage', 'reports.view'],
       'Hostel Manager': ['hostel.manage', 'hostel.rooms', 'hostel.allocations', 'hostel.mess', 'hostel.bookings', 'hostel.approve', 'hostel.reject', 'hostel.requests'],
       'Employee': ['students.view', 'faculty.view', 'attendance.manage', 'leaves.view', 'notices.view'],
-      'Student': ['students.view_own', 'courses.view', 'enrollment.view_own', 'enrollment.submit', 'attendance.view_own', 'examinations.view_own', 'fees.view_own', 'library.view', 'hostel.book_own', 'hostel.view_own', 'leaves.manage_own', 'leaves.submit'],
+      'Student': ['dashboard.view', 'reports.view_own', 'students.view_own', 'students.update_own', 'faculty.view_own_dept', 'departments.view_own', 'programs.view_own', 'courses.view', 'courses.view_available', 'enrollment.view_own', 'enrollment.create', 'enrollment.cancel', 'attendance.view_own', 'exams.view_schedule', 'exams.view_own_results', 'exams.view_subjects', 'fees.view_own', 'fees.view_payment_history', 'fees.download_invoice', 'fees.apply_installment', 'fees.view_installment_status', 'library.view', 'library.view_own', 'hostel.view_own', 'hostel.view_room', 'leave.view_own', 'leave.create', 'leave.cancel', 'notices.view'],
       'Department Head': ['students.view', 'students.manage_dept', 'faculty.view', 'faculty.manage_dept', 'courses.view', 'courses.manage_dept', 'enrollment.view', 'enrollment.approve_dept', 'attendance.manage_dept', 'examinations.view', 'examinations.manage_dept', 'reports.view'],
       'Finance Manager': ['students.view', 'fees.manage', 'fees.approve', 'fees.reject', 'reports.view'],
     }
