@@ -42,7 +42,7 @@ import ForgotPassword from '../pages/auth/ForgotPassword.vue'
 import ResetPassword from '../pages/auth/ResetPassword.vue'
 import Unauthorized from '../pages/auth/Unauthorized.vue'
 import AdminPanel from '../pages/admin/AdminPanel.vue'
-import { requiresAuth, requiresAdmin, requiresSuperAdmin } from './guards'
+import { requiresAuth, requiresAdmin, requiresSuperAdmin, requiresPermission } from './guards'
 import { useAuthStore } from '@/stores/auth.store'
 
 export const routes = [
@@ -63,18 +63,21 @@ export const routes = [
     name: 'dashboard',
     component: Dashboard,
     meta: { title: 'Dashboard', requiresAuth: true },
+    beforeEnter: requiresPermission('dashboard.view'),
   },
   {
     path: '/students',
     name: 'students',
     component: StudentIndex,
     meta: { title: 'Students', requiresAuth: true },
+    beforeEnter: requiresPermission('students.view_own'),
   },
   {
     path: '/faculty',
     name: 'faculty',
     component: FacultyIndex,
     meta: { title: 'Faculty', requiresAuth: true },
+    beforeEnter: requiresPermission('faculty.view_own_dept'),
   },
   {
     path: '/faculty/create',
@@ -99,12 +102,14 @@ export const routes = [
     name: 'courses',
     component: CourseIndex,
     meta: { title: 'Courses', requiresAuth: true },
+    beforeEnter: requiresPermission('courses.view'),
   },
   {
     path: '/departments',
     name: 'departments',
     component: DepartmentIndex,
     meta: { title: 'Departments', requiresAuth: true },
+    beforeEnter: requiresPermission('departments.view_own'),
   },
   {
     path: '/departments/create',
@@ -129,6 +134,7 @@ export const routes = [
     name: 'programs',
     component: ProgramIndex,
     meta: { title: 'Programs', requiresAuth: true },
+    beforeEnter: requiresPermission('programs.view_own'),
   },
   {
     path: '/programs/create',
@@ -153,6 +159,7 @@ export const routes = [
     name: 'enrollment',
     component: EnrollmentIndex,
     meta: { title: 'Enrollment', requiresAuth: true },
+    beforeEnter: requiresPermission('enrollment.view_own'),
   },
   {
     path: '/enrollment/register',
@@ -171,30 +178,35 @@ export const routes = [
     name: 'attendance',
     component: AttendanceIndex,
     meta: { title: 'Attendance', requiresAuth: true },
+    beforeEnter: requiresPermission('attendance.view_own'),
   },
   {
     path: '/examinations',
     name: 'examinations',
     component: ExaminationIndex,
     meta: { title: 'Examinations', requiresAuth: true },
+    beforeEnter: requiresPermission('exams.view_schedule'),
   },
   {
     path: '/fees',
     name: 'fees',
     component: FeeIndex,
     meta: { title: 'Fees', requiresAuth: true },
+    beforeEnter: requiresPermission('fees.view_own'),
   },
   {
     path: '/library',
     name: 'library',
     component: LibraryIndex,
     meta: { title: 'Library', requiresAuth: true },
+    beforeEnter: requiresPermission('library.view'),
   },
   {
     path: '/hostel',
     name: 'hostel',
     component: HostelIndex,
     meta: { title: 'Hostel', requiresAuth: true },
+    beforeEnter: requiresPermission('hostel.view_own'),
   },
   {
     path: '/hostel/rooms',
@@ -237,24 +249,28 @@ export const routes = [
     name: 'transport',
     component: TransportIndex,
     meta: { title: 'Transport', requiresAuth: true },
+    beforeEnter: requiresPermission('transport.view'),
   },
   {
     path: '/leaves',
     name: 'leaves',
     component: LeaveIndex,
     meta: { title: 'Leaves', requiresAuth: true },
+    beforeEnter: requiresPermission('leave.view_own'),
   },
   {
     path: '/notices',
     name: 'notices',
     component: NoticeIndex,
     meta: { title: 'Notices', requiresAuth: true },
+    beforeEnter: requiresPermission('notices.view'),
   },
   {
     path: '/reports',
     name: 'reports',
     component: ReportIndex,
     meta: { title: 'Reports', requiresAuth: true },
+    beforeEnter: requiresPermission('reports.view_own'),
   },
   {
     path: '/permissions',

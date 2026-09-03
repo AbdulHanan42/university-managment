@@ -17,16 +17,19 @@ onMounted(() => {
 })
 
 const navigation = computed(() => {
+  const authStore = useAuthStore()
+
+  // Base navigation structure
   const baseNavigation = [
     {
-      title: 'Overview',
+      title: 'Academic Operations',
       items: [
         { label: 'Dashboard', to: '/' },
         { label: 'Reports', to: '/reports' },
       ],
     },
     {
-      title: 'Academic Operations',
+      title: 'Academic',
       items: [
         { label: 'Students', to: '/students' },
         { label: 'Faculty', to: '/faculty' },
@@ -54,6 +57,42 @@ const navigation = computed(() => {
       items: [],
     },
   ]
+
+  // Student-specific navigation
+  if (authStore.isStudent) {
+    return [
+      {
+        title: '',
+        items: [
+          { label: 'Dashboard', to: '/' },
+          { label: 'Reports', to: '/reports' },
+        ],
+      },
+      {
+        title: 'Academic',
+        items: [
+          { label: 'My Profile', to: '/students' },
+          { label: 'Faculty', to: '/faculty' },
+          { label: 'Departments', to: '/departments' },
+          { label: 'Programs', to: '/programs' },
+          { label: 'Courses', to: '/courses' },
+          { label: 'My Enrollment', to: '/enrollment' },
+          { label: 'My Attendance', to: '/attendance' },
+          { label: 'Examinations', to: '/examinations' },
+        ],
+      },
+      {
+        title: 'Support Services',
+        items: [
+          { label: 'My Fees', to: '/fees' },
+          { label: 'Library', to: '/library' },
+          { label: 'Hostel', to: '/hostel' },
+          { label: 'My Leaves', to: '/leaves' },
+          { label: 'Notices', to: '/notices' },
+        ],
+      },
+    ]
+  }
 
   // Add User Approval and Admin Panel for admins only
   if (authStore.isAdmin) {

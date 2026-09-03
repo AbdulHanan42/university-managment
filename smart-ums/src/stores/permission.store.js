@@ -176,11 +176,12 @@ export const usePermissionStore = defineStore('permission', () => {
     }
   }
 
-  async function assignRole(userId, roleId, organizationId) {
+  async function assignRole(userId, roleId) {
     loading.value = true
     error.value = null
     try {
-      const result = await permissionService.assignRole(userId, roleId, organizationId)
+      // Assign role to user - permissions come from role definition
+      const result = await permissionService.assignRole(userId, roleId)
       await fetchUsers()
       return result
     } catch (err) {
@@ -190,6 +191,30 @@ export const usePermissionStore = defineStore('permission', () => {
     } finally {
       loading.value = false
     }
+  }
+
+  async function updateUserRole(userId, newRoleName) {
+    loading.value = true
+    error.value = null
+    try {
+      // Update user's role - permissions automatically update based on new role
+      const result = await permissionService.updateUserRole(userId, newRoleName)
+      await fetchUsers()
+      return result
+    } catch (err) {
+      error.value = 'Failed to update user role'
+      console.error('Error updating user role:', err)
+      throw err
+    } finally {
+      loading.value = false
+    }
+  }
+
+  function getPermissionsByRoleName(roleName) {
+    const role = roles.value.find(r => r.name === roleName)
+    if (!role) return []
+    if (role.permissions.includes('all')) return permissions.value
+    return permissions.value.filter(p => role.permissions.includes(p.name))
   }
 
   async function updatePermissions(roleId, permissions, organizations) {
@@ -254,10 +279,12 @@ export const usePermissionStore = defineStore('permission', () => {
     updateRole,
     deleteRole,
     assignRole,
+    updateUserRole,
     updatePermissions,
     checkPermission,
     getRoleById,
     getPermissionsByRole,
+    getPermissionsByRoleName,
     getOrganizationById
   }
 })

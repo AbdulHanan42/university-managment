@@ -32,6 +32,25 @@ export const requiresSuperAdmin = (to, from, next) => {
   }
 }
 
+// Permission-based route guard
+export const requiresPermission = (permission) => {
+  return async (to, from, next) => {
+    const authStore = useAuthStore()
+    
+    if (!authStore.isAuthenticated) {
+      next({ name: 'login' })
+      return
+    }
+    
+    const hasPermission = await authStore.hasPermission(permission)
+    if (hasPermission) {
+      next()
+    } else {
+      next({ name: 'unauthorized' })
+    }
+  }
+}
+
 // Authentication guard
 export const requiresAuth = (to, from, next) => {
   const authStore = useAuthStore()
@@ -46,6 +65,7 @@ export const requiresAuth = (to, from, next) => {
 export const guards = {
   requiresAdmin,
   requiresSuperAdmin,
-  requiresAuth
+  requiresAuth,
+  requiresPermission
 }
 

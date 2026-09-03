@@ -1,6 +1,7 @@
 ﻿import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { authService } from '@/services/auth.service'
+import { permissionService } from '@/services/permission.service'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref(null)
@@ -9,6 +10,7 @@ export const useAuthStore = defineStore('auth', () => {
   const error = ref(null)
   const pendingUsers = ref([])
   const allUsers = ref([])
+  const userPermissions = ref([])
 
   const isAuthenticated = computed(() => !!user.value && !!token.value)
   const isAdmin = computed(() => user.value?.role === 'Super Admin' || user.value?.role === 'Admin')
@@ -25,6 +27,7 @@ export const useAuthStore = defineStore('auth', () => {
       token.value = response.token
       localStorage.setItem('currentUser', JSON.stringify(response.user))
       localStorage.setItem('authToken', response.token)
+      await loadUserPermissions()
       return response
     } catch (err) {
       error.value = err.message || 'Login failed'
@@ -69,6 +72,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (currentUser) {
         user.value = currentUser
         token.value = localStorage.getItem('authToken')
+        await loadUserPermissions()
       }
     } catch (err) {
       error.value = err.message || 'Failed to fetch current user'
@@ -177,6 +181,48 @@ export const useAuthStore = defineStore('auth', () => {
     fetchCurrentUser()
   }
 
+  async function initializePermissions() {
+    if (user.value) {
+      await loadUserPermissions()
+    }
+  }
+
+  async function hasPermission(permission) {
+    if (!user.value) return false
+    
+    // Super Admin has all permissions
+    if (user.value.role === 'Super Admin') return true
+    
+    // Get permissions for the user's role
+    const rolePermissions = await getRolePermissions(user.value.role)
+    
+    // Check if role has the specific permission
+    return rolePermissions.includes(permission) || rolePermissions.includes('all')
+  }
+
+  async function getRolePermissions(roleName) {
+    try {
+      const roles = await permissionService.getRoles()
+      const role = roles.find(r => r.name === roleName)
+      return role ? role.permissions : []
+    } catch (err) {
+      console.error('Failed to get role permissions:', err)
+      return []
+    }
+  }
+
+  async function loadUserPermissions() {
+    if (!user.value) return
+    
+    try {
+      // Load permissions based on user's role (role-based, not user-based)
+      const rolePermissions = await getRolePermissions(user.value.role)
+      userPermissions.value = rolePermissions
+    } catch (err) {
+      console.error('Failed to load user permissions:', err)
+    }
+  }
+
   return {
     user,
     token,
@@ -184,6 +230,7 @@ export const useAuthStore = defineStore('auth', () => {
     error,
     pendingUsers,
     allUsers,
+    userPermissions,
     isAuthenticated,
     isAdmin,
     isSuperAdmin,
@@ -199,7 +246,10 @@ export const useAuthStore = defineStore('auth', () => {
     rejectUser,
     updateUser,
     deleteUser,
-    initializeAuth
+    initializeAuth,
+    initializePermissions,
+    hasPermission,
+    loadUserPermissions
   }
 })
 
