@@ -42,7 +42,7 @@ import ForgotPassword from '../pages/auth/ForgotPassword.vue'
 import ResetPassword from '../pages/auth/ResetPassword.vue'
 import Unauthorized from '../pages/auth/Unauthorized.vue'
 import AdminPanel from '../pages/admin/AdminPanel.vue'
-import { requiresAuth, requiresAdmin } from './guards'
+import { requiresAuth, requiresAdmin, requiresSuperAdmin } from './guards'
 import { useAuthStore } from '@/stores/auth.store'
 
 export const routes = [
@@ -261,24 +261,28 @@ export const routes = [
     name: 'permissions',
     component: PermissionsIndex,
     meta: { title: 'Permissions & Roles', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/permissions/roles',
     name: 'permissions-roles',
     component: PermissionsRoles,
-    meta: { title: 'Roles Management', requiresAuth: true },
+    meta: { title: 'Manage Roles', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/permissions/list',
     name: 'permissions-list',
     component: PermissionsList,
     meta: { title: 'System Permissions', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/permissions/assign',
     name: 'permissions-assign',
     component: PermissionsAssign,
     meta: { title: 'Assign Roles', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/user-approval',
