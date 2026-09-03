@@ -80,7 +80,7 @@ const handleLogin = async (e) => {
       </form>
 
       <div class="mt-8 text-center flex flex-col gap-3">
-        <p class="text-xs text-slate-400">Default credentials: abdulhananjaved4412@gmail.com / 12345678</p>
+        <!-- <p class="text-xs text-slate-400">Default credentials: abdulhananjaved4412@gmail.com / 12345678</p> -->
         <router-link to="/" class="text-blue-900 no-underline font-semibold text-sm hover:text-blue-700 hover:underline transition-colors">
           ← Back to UMS System
         </router-link>

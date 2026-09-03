@@ -41,9 +41,8 @@ import UserApproval from '../pages/auth/UserApproval.vue'
 import ForgotPassword from '../pages/auth/ForgotPassword.vue'
 import ResetPassword from '../pages/auth/ResetPassword.vue'
 import Unauthorized from '../pages/auth/Unauthorized.vue'
-import AdminLogin from '../pages/admin/Login.vue'
 import AdminPanel from '../pages/admin/AdminPanel.vue'
-import { requiresAuth, requiresAdmin, requiresAdminPanel } from './guards'
+import { requiresAuth, requiresAdmin, requiresSuperAdmin } from './guards'
 import { useAuthStore } from '@/stores/auth.store'
 
 export const routes = [
@@ -58,12 +57,6 @@ export const routes = [
     name: 'signup',
     component: SignupPage,
     meta: { title: 'Sign Up', public: true },
-  },
-  {
-    path: '/admin/login',
-    name: 'admin-login',
-    component: AdminLogin,
-    meta: { title: 'Admin Login', public: true },
   },
   {
     path: '/',
@@ -268,24 +261,28 @@ export const routes = [
     name: 'permissions',
     component: PermissionsIndex,
     meta: { title: 'Permissions & Roles', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/permissions/roles',
     name: 'permissions-roles',
     component: PermissionsRoles,
-    meta: { title: 'Roles Management', requiresAuth: true },
+    meta: { title: 'Manage Roles', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/permissions/list',
     name: 'permissions-list',
     component: PermissionsList,
     meta: { title: 'System Permissions', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/permissions/assign',
     name: 'permissions-assign',
     component: PermissionsAssign,
     meta: { title: 'Assign Roles', requiresAuth: true },
+    beforeEnter: requiresSuperAdmin,
   },
   {
     path: '/user-approval',
@@ -316,8 +313,7 @@ export const routes = [
     path: '/admin/panel',
     name: 'admin-panel',
     component: AdminPanel,
-    meta: { title: 'Admin Panel' },
-    beforeEnter: requiresAdminPanel,
+    meta: { title: 'Admin Panel', requiresAuth: true },
   },
   {
     path: '/:pathMatch(.*)*',

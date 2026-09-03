@@ -51,16 +51,19 @@ const navigation = computed(() => {
     },
     {
       title: 'System',
-      items: [
-        { label: 'Permissions & Roles', to: '/permissions' },
-        { label: 'Admin Panel', to: '/admin/login' },
-      ],
+      items: [],
     },
   ]
 
-  // Add User Approval for admins only
+  // Add User Approval and Admin Panel for admins only
   if (authStore.isAdmin) {
     baseNavigation[3].items.push({ label: 'User Approval', to: '/user-approval' })
+    baseNavigation[3].items.push({ label: 'Admin Panel', to: '/admin/panel' })
+  }
+
+  // Add Permissions & Roles for Super Admin only
+  if (authStore.isSuperAdmin) {
+    baseNavigation[3].items.push({ label: 'Permissions & Roles', to: '/permissions' })
   }
 
   return baseNavigation

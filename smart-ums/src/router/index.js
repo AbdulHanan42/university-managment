@@ -14,7 +14,6 @@ const router = createRouter({
 // Global navigation guard to enforce authentication
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
-  const adminStore = useAdminStore()
   
   // Check if route is public (login, signup, etc.)
   const isPublicRoute = to.meta.public === true
@@ -28,8 +27,8 @@ router.beforeEach((to, from, next) => {
     return
   }
   
-  // Redirect to dashboard if authenticated and trying to access public routes (except admin panel)
-  if (isPublicRoute && authStore.isAuthenticated && !to.path.includes('/admin')) {
+  // Redirect to dashboard if authenticated and trying to access public routes
+  if (isPublicRoute && authStore.isAuthenticated) {
     next({ name: 'dashboard' })
     return
   }
