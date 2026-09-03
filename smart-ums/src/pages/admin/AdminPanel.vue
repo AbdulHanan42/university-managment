@@ -2,12 +2,14 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAdminStore } from '@/stores/admin.store'
+import { useAuthStore } from '@/stores/auth.store'
 import { useToast } from '@/composables/useToast'
 
 defineOptions({ name: 'AdminPanel' })
 
 const router = useRouter()
 const adminStore = useAdminStore()
+const authStore = useAuthStore()
 const toast = useToast()
 
 const searchQuery = ref('')
@@ -19,11 +21,12 @@ const rejectionReason = ref('')
 
 onMounted(() => {
   adminStore.initializeAdminPanel()
-  if (adminStore.isAuthenticated) {
+  // Check UMS authentication and admin role
+  if (authStore.isAuthenticated && authStore.isAdmin) {
     adminStore.fetchPendingRequests()
     adminStore.fetchStats()
   } else {
-    router.push({ name: 'admin-login' })
+    router.push({ name: 'login' })
   }
 })
 
@@ -84,8 +87,8 @@ const handleReject = async () => {
 }
 
 const handleLogout = async () => {
-  await adminStore.adminLogout()
-  router.push({ name: 'admin-login' })
+  await authStore.logout()
+  router.push({ name: 'login' })
 }
 
 const handleBackToUMS = () => {
@@ -134,11 +137,11 @@ const getTypeColor = (type) => {
           <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center font-semibold text-lg">
-                {{ adminStore.admin?.name?.charAt(0) || 'A' }}
+                {{ authStore.user?.name?.charAt(0) || 'A' }}
               </div>
               <div class="text-right">
-                <div class="font-semibold text-sm">{{ adminStore.admin?.name }}</div>
-                <div class="text-xs opacity-80">{{ adminStore.admin?.role }}</div>
+                <div class="font-semibold text-sm">{{ authStore.user?.name }}</div>
+                <div class="text-xs opacity-80">{{ authStore.user?.role }}</div>
               </div>
               <button @click="handleLogout" class="px-4 py-2 bg-white/15 text-white border border-white/30 rounded text-sm cursor-pointer transition-all hover:bg-white/25">
                 Logout

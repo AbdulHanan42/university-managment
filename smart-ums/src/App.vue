@@ -53,14 +53,14 @@ const navigation = computed(() => {
       title: 'System',
       items: [
         { label: 'Permissions & Roles', to: '/permissions' },
-        { label: 'Admin Panel', to: '/admin/login' },
       ],
     },
   ]
 
-  // Add User Approval for admins only
+  // Add User Approval and Admin Panel for admins only
   if (authStore.isAdmin) {
     baseNavigation[3].items.push({ label: 'User Approval', to: '/user-approval' })
+    baseNavigation[3].items.push({ label: 'Admin Panel', to: '/admin/panel' })
   }
 
   return baseNavigation
