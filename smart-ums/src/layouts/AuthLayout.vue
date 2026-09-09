@@ -1,7 +1,7 @@
 ﻿<template>
   <div class="placeholder">
     <h2>AuthLayout</h2>
-    <p>Placeholder aa for src/layouts/AuthLayout.vue.</p>
+    <p>Placeholder  for src/layouts/AuthLayout.vue.</p>
   </div>
 </template>
 
