@@ -75,7 +75,7 @@
         users.push(newUser)
         localStorage.setItem('users', JSON.stringify(users))
 
-        // Create request in admin panel
+        // Create request in admi
         const adminRequests = JSON.parse(localStorage.getItem('adminRequests') || '[]')
         const newRequest = {
           id: Date.now() + 1,

@@ -2,7 +2,6 @@
 import { ref, onMounted, computed } from 'vue'
 import { useNoticeStore } from '@/stores/notice.store'
 import { useAuthStore } from '@/stores/auth.store'
-import { usePermission } from '@/composables/usePermission'
 import { useToast } from '@/composables/useToast'
 import AppButton from '@/components/common/AppButton.vue'
 
@@ -10,7 +9,7 @@ defineOptions({ name: 'NoticeIndex' })
 
 const noticeStore = useNoticeStore()
 const authStore = useAuthStore()
-const { can } = usePermission()
+const isSuperAdmin = computed(() => authStore.user?.role === 'Super Admin')
 const toast = useToast()
 
 const activeTab = ref('all')
@@ -197,7 +196,7 @@ function isExpired(notice) {
         <p class="m-0 text-sm text-text-secondary">Publish official announcements and campus-wide updates.</p>
       </div>
       <AppButton 
-        v-if="can('notices.create')" 
+        v-if="isSuperAdmin" 
         @click="showCreateModal = true"
       >
         + Create Notice
@@ -261,7 +260,7 @@ function isExpired(notice) {
         Events
       </button>
       <button
-        v-if="can('notices.manage')"
+        v-if="isSuperAdmin"
         :class="activeTab === 'active' ? 'bg-primary text-white border-primary' : 'bg-white border-border'"
         @click="activeTab = 'active'"
         class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
@@ -269,7 +268,7 @@ function isExpired(notice) {
         Active
       </button>
       <button
-        v-if="can('notices.manage')"
+        v-if="isSuperAdmin"
         :class="activeTab === 'expired' ? 'bg-primary text-white border-primary' : 'bg-white border-border'"
         @click="activeTab = 'expired'"
         class="px-4 py-2 border rounded-lg cursor-pointer transition-all font-medium text-sm"
@@ -309,7 +308,7 @@ function isExpired(notice) {
               <span>Audience: {{ notice.targetAudience.join(', ') }}</span>
             </div>
           </div>
-          <div v-if="can('notices.manage')" class="flex gap-2 ml-4">
+          <div v-if="isSuperAdmin" class="flex gap-2 ml-4">
             <button
               @click="handleEditClick(notice)"
               class="px-3 py-1 bg-secondary text-white rounded text-sm hover:bg-secondary-dark transition-all"
