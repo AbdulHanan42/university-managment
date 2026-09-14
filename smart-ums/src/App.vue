@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.store'
 import { useAdminStore } from '@/stores/admin.store'
+import { useTheme } from '@/composables/useTheme'
 import AppSidebar from './components/layout/AppSidebar.vue'
 import AppNavbar from './components/layout/AppNavbar.vue'
 import AppFooter from './components/layout/AppFooter.vue'
@@ -10,10 +11,12 @@ import AppFooter from './components/layout/AppFooter.vue'
 const route = useRoute()
 const authStore = useAuthStore()
 const adminStore = useAdminStore()
+const { initTheme, isDark } = useTheme()
 
 onMounted(() => {
   authStore.initializeAuth()
   adminStore.initializeAdminPanel()
+  initTheme()
 })
 
 const navigation = computed(() => {
@@ -118,7 +121,7 @@ const pageTitle = computed(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-blue-50/50 to-blue-100/50 ml-[280px]">
+  <div :class="['min-h-screen ml-[280px]', isDark ? 'bg-gray-900' : 'bg-gradient-to-br from-blue-50/50 to-blue-100/50']">
     <AppSidebar :navigation="navigation" />
 
     <div class="flex flex-col">
@@ -139,6 +142,12 @@ const pageTitle = computed(() => {
   font-family: Inter, 'Segoe UI', sans-serif;
   background: #f3f6ff;
   color: #14213d;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+:global(.dark body) {
+  background: #111827;
+  color: #f9fafb;
 }
 
 :global(*) {
