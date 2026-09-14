@@ -50,6 +50,54 @@
   --color-accent-green-light: #d4edda;
 }
 
+/* Dark Mode Colors */
+.dark {
+  color-scheme: dark;
+  
+  /* Primary Colors */
+  --color-primary: #3b82f6;
+  --color-primary-light: #1e3a8a;
+  --color-primary-dark: #60a5fa;
+  --color-primary-accent: #2563eb;
+  
+  /* Secondary Colors */
+  --color-secondary: #8b5cf6;
+  --color-secondary-light: #4c1d95;
+  
+  /* Success Colors */
+  --color-success: #22c55e;
+  --color-success-bg: #166534;
+  
+  /* Error Colors */
+  --color-error: #ef4444;
+  --color-error-bg: #991b1b;
+  --color-error-light: #7f1d1d;
+  --color-error-dark: #dc2626;
+  
+  /* Warning Colors */
+  --color-warning: #f59e0b;
+  --color-warning-bg: #92400e;
+  
+  /* Neutral Colors */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+  --color-border: #374151;
+  --color-border-light: #4b5563;
+  --color-bg-light: #1f2937;
+  --color-bg-selected: #374151;
+  
+  /* Background Colors */
+  --color-bg-white: #111827;
+  --color-bg-page: #0f172a;
+  
+  /* Accent Colors */
+  --color-accent-purple: #a78bfa;
+  --color-accent-purple-light: #7c3aed;
+  --color-accent-green: #4ade80;
+  --color-accent-green-light: #22c55e;
+}
+
 /* Ensure CSS variables are available globally */
 * {
   --color-primary: #214d9c;
@@ -81,6 +129,36 @@
   --color-accent-green-light: #d4edda;
 }
 
+.dark * {
+  --color-primary: #3b82f6;
+  --color-primary-light: #1e3a8a;
+  --color-primary-dark: #60a5fa;
+  --color-primary-accent: #2563eb;
+  --color-secondary: #8b5cf6;
+  --color-secondary-light: #4c1d95;
+  --color-success: #22c55e;
+  --color-success-bg: #166534;
+  --color-error: #ef4444;
+  --color-error-bg: #991b1b;
+  --color-error-light: #7f1d1d;
+  --color-error-dark: #dc2626;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #92400e;
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #d1d5db;
+  --color-text-muted: #9ca3af;
+  --color-border: #374151;
+  --color-border-light: #4b5563;
+  --color-bg-light: #1f2937;
+  --color-bg-selected: #374151;
+  --color-bg-white: #111827;
+  --color-bg-page: #0f172a;
+  --color-accent-purple: #a78bfa;
+  --color-accent-purple-light: #7c3aed;
+  --color-accent-green: #4ade80;
+  --color-accent-green-light: #22c55e;
+}
+
 /* Custom Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
@@ -106,4 +184,46 @@
 
 ::-webkit-scrollbar-corner {
   background: #f1f5f9;
+}
+
+/* Dark Mode Scrollbar */
+.dark ::-webkit-scrollbar-track {
+  background: #1f2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border: 2px solid #1f2937;
+  background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+  background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-corner {
+  background: #1f2937;
+}
+
+/* Input Field Dark Mode Styles */
+.dark input,
+.dark textarea,
+.dark select {
+  color: #ffffff !important;
+  background-color: #1f2937 !important;
+  border-color: #4b5563 !important;
+}
+
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: #9ca3af !important;
+}
+
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  color: #ffffff !important;
+  background-color: #1f2937 !important;
+  border-color: #3b82f6 !important;
 }
